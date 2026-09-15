@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สื่อการเรียนรู้หุ่นยนต์ ROBOCART</title>
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font: Sarabun -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+    
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: var(--bg-color);
+      color: #334155;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    .custom-card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      background: #ffffff;
+    }
+
+    .lesson-nav .nav-link {
+      color: #64748b;
+      font-weight: 500;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 6px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .lesson-nav .nav-link:hover {
+      background-color: #f1f5f9;
+      color: var(--primary-color);
+    }
+
+    .lesson-nav .nav-link.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      background: #000;
+      margin-bottom: 20px;
+    }
+    
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .form-control, .form-select {
+      border-radius: 10px;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-custom-primary {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .btn-custom-primary:hover {
+      background-color: var(--primary-hover);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark mb-4 py-3 shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2" href="#">
+      <i class="bi bi-robot text-warning fs-3"></i> ROBOCART Learning Center
+    </a>
+    <button class="btn btn-outline-light rounded-pill px-3 shadow-sm" onclick="openAdminModal()">
+      <i class="bi bi-shield-lock-fill me-1"></i> ระบบ Admin
+    </button>
+  </div>
+</nav>
+
+<!-- Main Container -->
+<div class="container mb-5">
+  <div class="row g-4">
+    <!-- เมนูบทเรียน Side Menu -->
+    <div class="col-lg-3">
+      <div class="custom-card p-3">
+        <h6 class="fw-bold mb-3 text-uppercase text-muted small tracking-wide px-2">
+          <i class="bi bi-journal-bookmark me-1"></i> สารบัญบทเรียน
+        </h6>
+        <div class="nav flex-column lesson-nav" id="lessonTabs" role="tablist"></div>
+      </div>
+    </div>
+
+    <!-- แสดงเนื้อหาบทเรียน Content Area -->
+    <div class="col-lg-9">
+      <div class="custom-card p-4 p-md-5" id="lessonContent">
+        <div class="text-center my-5 py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="text-muted mt-3 fw-medium">กำลังโหลดเนื้อหาบทเรียน...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Admin -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-gear-fill me-2 text-warning"></i>จัดการเนื้อหาบทเรียน (Admin System)
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <div class="modal-body p-4">
+        <!-- หน้า Login Admin Password -->
+        <div id="adminAuthSection">
+          <div class="text-center py-4">
+            <i class="bi bi-shield-lock text-primary display-4"></i>
+            <h5 class="fw-bold mt-3">กรุณายืนยันตัวตน</h5>
+            <p class="text-muted small">กรอกรหัสผ่านผู้ดูแลระบบเพื่อแก้ไขข้อมูลบทเรียน</p>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-md-8 mx-auto">
+              <div class="mb-3">
+                <input type="password" class="form-control text-center" id="adminPassInput" placeholder="กรอกรหัสผ่าน Admin (ค่าเริ่มต้น: admin1234)">
+              </div>
+              <div id="authAlert"></div>
+              <button class="btn btn-custom-primary w-100 py-2" onclick="verifyAdminPassword()">
+                เข้าสู่ระบบ Admin
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ฟอร์มแก้ไขเนื้อหา Admin Content Editor -->
+        <div id="adminEditorSection" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">
+              <i class="bi bi-check-circle-fill me-1"></i> เข้าสู่ระบบในฐานะ Admin
+            </span>
+            <button class="btn btn-sm btn-outline-danger" onclick="logoutAdmin()">ออกจากระบบ</button>
+          </div>
+          <div id="adminFormArea"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer bg-light" id="adminModalFooter" style="display: none;">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-success rounded-pill px-4" onclick="saveAdminData()">
+          <i class="bi bi-save me-1"></i> บันทึกการแก้ไข
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // 🔴 นำ URL ที่ได้จาก New Deployment ของ Google Apps Script มาวางที่นี่
+  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwQB_vrw95XTJ-7542_i7SOtkHdy1OVPEgh5RYdj3HgU3ee43fHNhGs_zwpo_PsjIGm/exec";
+
+  let lessonsData = [];
+  let currentLessonId = null;
+  let adminModalObj = null;
+
+  window.onload = function() {
+    adminModalObj = new bootstrap.Modal(document.getElementById('adminModal'));
+    fetchInitialData();
+  };
+
+  // 1. ฟังก์ชันดึงข้อมูลบทเรียนเริ่มต้นจาก Google Apps Script
+  function fetchInitialData() {
+    fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "getInitialData" })
+    })
+    .then(res => res.json())
+    .then(data => {
+      renderLessons(data);
+    })
+    .catch(err => {
+      console.error("Error loading data:", err);
+      document.getElementById('lessonContent').innerHTML = `
+        <div class="alert alert-danger text-center my-4">
+          <i class="bi bi-exclamation-triangle-fill fs-3 d-block mb-2"></i>
+          เกิดข้อผิดพลาดในการโหลดข้อมูลบทเรียน กรุณาตรวจสอบการเชื่อมต่อ API
+        </div>`;
+    });
+  }
+
+  // 2. แปลง URL YouTube ให้เป็น Embed URL
+  function getEmbedYoutubeUrl(url) {
+    if (!url) return '';
+    url = url.trim();
+    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    let match = url.match(regExp);
+    return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : url;
+  }
+
+  // 3. แสดงผลแถบเมนูบทเรียน
+  function renderLessons(data) {
+    lessonsData = data;
+    let tabs = '';
+    data.forEach((l, idx) => {
+      tabs += `
+        <button class="nav-link ${idx===0?'active':''}" onclick="loadLesson(${l.id}, this)">
+          <i class="bi bi-journal-text me-2"></i> ${l.title}
+        </button>`;
+    });
+    document.getElementById('lessonTabs').innerHTML = tabs;
+    if (data.length > 0) loadLesson(data[0].id);
+  }
+
+  // 4. แสดงผลเนื้อหาของบทเรียนที่เลือก
+  function loadLesson(id, btnElem) {
+    currentLessonId = id;
+    if(btnElem) {
+      document.querySelectorAll('#lessonTabs .nav-link').forEach(b => b.classList.remove('active'));
+      btnElem.classList.add('active');
+    }
+
+    let l = lessonsData.find(item => item.id === id);
+    if (!l) return;
+
+    let vids = l.videos ? l.videos.map(v => {
+      let embedUrl = getEmbedYoutubeUrl(v);
+      return embedUrl ? `<div class="video-container"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
+    }).join('') : '';
+
+    let html = `
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold text-primary mb-0">${l.title}</h3>
+        ${l.worksheetUrl ? `<a href="${l.worksheetUrl}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill fw-bold"><i class="bi bi-file-earmark-arrow-down-fill me-1"></i> ดาวน์โหลดใบงาน</a>` : ''}
+      </div>
+      <p class="text-secondary fs-6 mb-4">${l.desc || ''}</p>
+      
+      <h5 class="fw-bold mb-3"><i class="bi bi-play-btn-fill text-danger me-1"></i> วิดีโอประกอบการเรียน</h5>
+      ${vids || '<div class="alert alert-light text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
+
+      <!-- ส่วนตรวจโค้ดรองรับทุกบทเรียน -->
+      <hr class="my-4">
+      <div class="bg-light p-4 rounded-4 border">
+        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-search text-success me-1"></i> ตรวจสอบ Block Code ของคุณ (${l.title})</h5>
+        <p class="text-muted small mb-3">วาง Project Link ที่แชร์จาก Microsoft MakeCode เพื่อตรวจคำสั่งก่อนนำโค้ดไปลงหุ่นยนต์จริง</p>
+        
+        <form onsubmit="handleInlineCheck(event, ${l.id})">
+          <div class="input-group mb-3">
+            <span class="input-group-text bg-white"><i class="bi bi-link-45deg"></i></span>
+            <input type="url" class="form-control" id="inlineCheckUrl_${l.id}" placeholder="https://makecode.microbit.org/S00000-00000-00000-00000" required>
+            <button type="submit" class="btn btn-custom-primary px-4" id="btnInlineCheck_${l.id}">
+              ตรวจสอบโค้ด
+            </button>
+          </div>
+        </form>
+        <div id="inlineCheckResult_${l.id}"></div>
+      </div>
+    `;
+
+    document.getElementById('lessonContent').innerHTML = html;
+  }
+
+  // 5. ส่งลิงก์ MakeCode ไปตรวจสอบผ่าน Google Apps Script API
+  function handleInlineCheck(event, chapterId) {
+    event.preventDefault();
+    let urlInput = document.getElementById(`inlineCheckUrl_${chapterId}`);
+    let btn = document.getElementById(`btnInlineCheck_${chapterId}`);
+    let resDiv = document.getElementById(`inlineCheckResult_${chapterId}`);
+
+    btn.disabled = true;
+    resDiv.innerHTML = `
+      <div class="p-3 text-center text-muted bg-white rounded border mt-2">
+        <div class="spinner-border spinner-border-sm text-primary me-2"></div> กำลังอ่านข้อมูลและวิเคราะห์ Block Code...
+      </div>`;
+
+    fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "checkCode",
+        chapterId: chapterId,
+        shareUrl: urlInput.value
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      btn.disabled = false;
+      if(!res.success) {
+        resDiv.innerHTML = `<div class="alert alert-danger mb-0 mt-2">${res.message}</div>`;
+      } else if(res.passed) {
+        resDiv.innerHTML = `<div class="alert alert-success mb-0 mt-2"><h5><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่าน</h5><p class="mb-0 fw-bold">${res.message}</p></div>`;
+      } else {
+        let list = res.feedback.map(f => `<li>${f}</li>`).join('');
+        resDiv.innerHTML = `<div class="alert alert-warning mb-0 mt-2"><h5><i class="bi bi-exclamation-triangle-fill me-1"></i> จุดที่ต้องแก้ไขเพิ่มเติม:</h5><ul class="mb-0 ps-3">${list}</ul></div>`;
+      }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      resDiv.innerHTML = `<div class="alert alert-danger mb-0 mt-2">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
+    });
+  }
+
+  // 6. การจัดการระบบ Admin (Modal & Authentication)
+  function openAdminModal() {
+    logoutAdmin();
+    adminModalObj.show();
+  }
+
+  function verifyAdminPassword() {
+    let pass = document.getElementById('adminPassInput').value;
+    let alertDiv = document.getElementById('authAlert');
+
+    if (!pass) {
+      alertDiv.innerHTML = `<div class="alert alert-danger py-2 small">กรุณากรอกรหัสผ่าน</div>`;
+      return;
+    }
+
+    if (pass === 'admin1234') {
+      alertDiv.innerHTML = '';
+      showAdminEditor();
+    } else {
+      alertDiv.innerHTML = `<div class="alert alert-danger py-2 small">รหัสผ่าน Admin ไม่ถูกต้อง!</div>`;
+    }
+  }
+
+  function showAdminEditor() {
+    document.getElementById('adminAuthSection').style.display = 'none';
+    document.getElementById('adminEditorSection').style.display = 'block';
+    document.getElementById('adminModalFooter').style.display = 'flex';
+
+    let html = '';
+    lessonsData.forEach((l, i) => {
+      html += `
+        <div class="card p-3 mb-3 bg-light border-0 shadow-sm rounded-3">
+          <h6 class="fw-bold text-primary mb-3">
+            <i class="bi bi-journal-text me-1"></i> บทเรียนที่ ${i+1}: ${l.title}
+          </h6>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ชื่อบทเรียน</label>
+            <input type="text" class="form-control form-control-sm" id="title_${i}" value="${l.title || ''}">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">รายละเอียดบทเรียน</label>
+            <textarea class="form-control form-control-sm" id="desc_${i}" rows="2">${l.desc || ''}</textarea>
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ลิงก์ YouTube (หากมีหลายคลิปให้คั่นด้วยเครื่องหมายจุลภาค ,)</label>
+            <input type="text" class="form-control form-control-sm" id="vid_${i}" value="${l.videos ? l.videos.join(',') : ''}">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ลิงก์ดาวน์โหลดใบงาน</label>
+            <input type="text" class="form-control form-control-sm" id="work_${i}" value="${l.worksheetUrl || ''}">
+          </div>
+        </div>
+      `;
+    });
+    document.getElementById('adminFormArea').innerHTML = html;
+  }
+
+  function logoutAdmin() {
+    document.getElementById('adminAuthSection').style.display = 'block';
+    document.getElementById('adminEditorSection').style.display = 'none';
+    document.getElementById('adminModalFooter').style.display = 'none';
+    document.getElementById('adminPassInput').value = '';
+    document.getElementById('authAlert').innerHTML = '';
+  }
+
+  // 7. บันทึกข้อมูล Admin ไปยัง Google Apps Script API
+  function saveAdminData() {
+    let pass = document.getElementById('adminPassInput').value;
+    let updated = lessonsData.map((l, i) => {
+      l.title = document.getElementById(`title_${i}`).value;
+      l.desc = document.getElementById(`desc_${i}`).value;
+      let vidInput = document.getElementById(`vid_${i}`).value;
+      l.videos = vidInput ? vidInput.split(',').map(v => v.trim()) : [];
+      l.worksheetUrl = document.getElementById(`work_${i}`).value;
+      return l;
+    });
+
+    fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "saveLessonData",
+        updatedData: updated,
+        password: pass
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      alert(res.message);
+      if(res.success) {
+        adminModalObj.hide();
+        renderLessons(updated);
+      }
+    })
+    .catch(err => {
+      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + err.message);
+    });
+  }
+</script>
+</body>
+</html>
