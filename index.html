@@ -85,22 +85,17 @@
       border: 1px solid #cbd5e1;
     }
 
-    .form-control:focus, .form-select:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
     .btn-custom-primary {
       background-color: var(--primary-color);
       color: white;
       border-radius: 10px;
       font-weight: 600;
-      transition: all 0.2s ease;
     }
 
-    .btn-custom-primary:hover {
-      background-color: var(--primary-hover);
-      color: white;
+    .teacher-section {
+      background-color: #f0fdf4;
+      border: 2px dashed #22c55e;
+      border-radius: 16px;
     }
   </style>
 </head>
@@ -112,11 +107,28 @@
     <a class="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2" href="#">
       <i class="bi bi-robot text-warning fs-3"></i> ROBOCART Learning Center
     </a>
-    <button class="btn btn-outline-light rounded-pill px-3 shadow-sm" onclick="openAdminModal()">
-      <i class="bi bi-shield-lock-fill me-1"></i> ระบบ Admin
-    </button>
+    
+    <div class="d-flex gap-2">
+      <!-- ปุ่มเข้าสู่ระบบสำหรับคุณครู -->
+      <button class="btn btn-warning rounded-pill px-3 shadow-sm fw-bold text-dark" id="btnTeacherLogin" onclick="openAdminModal('teacher')">
+        <i class="bi bi-person-badge-fill me-1"></i> โหมดคุณครู
+      </button>
+
+      <!-- ปุ่ม Admin -->
+      <button class="btn btn-outline-light rounded-pill px-3 shadow-sm" onclick="openAdminModal('admin')">
+        <i class="bi bi-shield-lock-fill me-1"></i> จัดการระบบ
+      </button>
+    </div>
   </div>
 </nav>
+
+<!-- แถบแจ้งเตือนสถานะคุณครู -->
+<div class="container" id="teacherBadgeBar" style="display: none;">
+  <div class="alert alert-success d-flex justify-content-between align-items-center rounded-4 shadow-sm py-2">
+    <span><i class="bi bi-check-circle-fill me-2"></i><strong>คุณกำลังอยู่ในโหมดคุณครู:</strong> แสดงข้อมูลเฉลยและเอกสารคำชี้แจงผู้สอนแล้ว</span>
+    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="logoutTeacher()">ออกจากโหมดคุณครู</button>
+  </div>
+</div>
 
 <!-- Main Container -->
 <div class="container mb-5">
@@ -143,33 +155,33 @@
   </div>
 </div>
 
-<!-- Modal Admin -->
+<!-- Modal ยืนยันตัวตน / Admin Editor -->
 <div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-gear-fill me-2 text-warning"></i>จัดการเนื้อหาบทเรียน (Admin System)
+        <h5 class="modal-title fw-bold" id="modalTitle">
+          <i class="bi bi-shield-lock-fill me-2 text-warning"></i>ยืนยันตัวตนเข้าใช้งาน
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       
       <div class="modal-body p-4">
-        <!-- หน้า Login Admin Password -->
+        <!-- หน้า Login -->
         <div id="adminAuthSection">
           <div class="text-center py-4">
-            <i class="bi bi-shield-lock text-primary display-4"></i>
-            <h5 class="fw-bold mt-3">กรุณายืนยันตัวตน</h5>
-            <p class="text-muted small">กรอกรหัสผ่านผู้ดูแลระบบเพื่อแก้ไขข้อมูลบทเรียน</p>
+            <i class="bi bi-person-check text-primary display-4"></i>
+            <h5 class="fw-bold mt-3" id="loginHeaderTitle">กรุณายืนยันตัวตน</h5>
+            <p class="text-muted small">กรอกรหัสผ่านเพื่อเข้าถึงข้อมูลสำหรับคุณครู/ผู้ดูแลระบบ</p>
           </div>
           <div class="row justify-content-center">
             <div class="col-md-8 mx-auto">
               <div class="mb-3">
-                <input type="password" class="form-control text-center" id="adminPassInput" placeholder="กรอกรหัสผ่าน Admin (ค่าเริ่มต้น: admin1234)">
+                <input type="password" class="form-control text-center" id="adminPassInput" placeholder="กรอกรหัสผ่าน (ค่าเริ่มต้น: admin1234)">
               </div>
               <div id="authAlert"></div>
               <button class="btn btn-custom-primary w-100 py-2" onclick="verifyAdminPassword()">
-                เข้าสู่ระบบ Admin
+                เข้าสู่ระบบ
               </button>
             </div>
           </div>
@@ -179,7 +191,7 @@
         <div id="adminEditorSection" style="display: none;">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">
-              <i class="bi bi-check-circle-fill me-1"></i> เข้าสู่ระบบในฐานะ Admin
+              <i class="bi bi-check-circle-fill me-1"></i> เข้าสู่ระบบจัดการเนื้อหา
             </span>
             <button class="btn btn-sm btn-outline-danger" onclick="logoutAdmin()">ออกจากระบบ</button>
           </div>
@@ -197,52 +209,32 @@
   </div>
 </div>
 
-<!-- Bootstrap Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // 🔴 นำ URL ที่ได้จาก New Deployment ของ Google Apps Script มาวางที่นี่
   const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwQB_vrw95XTJ-7542_i7SOtkHdy1OVPEgh5RYdj3HgU3ee43fHNhGs_zwpo_PsjIGm/exec";
 
   let lessonsData = [];
   let currentLessonId = null;
   let adminModalObj = null;
+  let isTeacherLoggedIn = false;
+  let currentLoginTarget = 'teacher'; // 'teacher' หรือ 'admin'
 
   window.onload = function() {
     adminModalObj = new bootstrap.Modal(document.getElementById('adminModal'));
     fetchInitialData();
   };
 
-  // 1. ฟังก์ชันดึงข้อมูลบทเรียนเริ่มต้นจาก Google Apps Script
   function fetchInitialData() {
     fetch(GAS_API_URL, {
       method: "POST",
       body: JSON.stringify({ action: "getInitialData" })
     })
     .then(res => res.json())
-    .then(data => {
-      renderLessons(data);
-    })
-    .catch(err => {
-      console.error("Error loading data:", err);
-      document.getElementById('lessonContent').innerHTML = `
-        <div class="alert alert-danger text-center my-4">
-          <i class="bi bi-exclamation-triangle-fill fs-3 d-block mb-2"></i>
-          เกิดข้อผิดพลาดในการโหลดข้อมูลบทเรียน กรุณาตรวจสอบการเชื่อมต่อ API
-        </div>`;
-    });
+    .then(data => renderLessons(data))
+    .catch(err => console.error("Error loading data:", err));
   }
 
-  // 2. แปลง URL YouTube ให้เป็น Embed URL
-  function getEmbedYoutubeUrl(url) {
-    if (!url) return '';
-    url = url.trim();
-    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = url.match(regExp);
-    return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : url;
-  }
-
-  // 3. แสดงผลแถบเมนูบทเรียน
   function renderLessons(data) {
     lessonsData = data;
     let tabs = '';
@@ -256,7 +248,6 @@
     if (data.length > 0) loadLesson(data[0].id);
   }
 
-  // 4. แสดงผลเนื้อหาของบทเรียนที่เลือก
   function loadLesson(id, btnElem) {
     currentLessonId = id;
     if(btnElem) {
@@ -272,17 +263,61 @@
       return embedUrl ? `<div class="video-container"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
     }).join('') : '';
 
+    // ส่วนสำหรับคุณครู (จะแสดงเมื่อล็อกอินเป็นคุณครูเท่านั้น)
+    let teacherHtml = '';
+    if (isTeacherLoggedIn) {
+      teacherHtml = `
+        <div class="teacher-section p-4 my-4">
+          <h5 class="fw-bold text-success mb-3">
+            <i class="bi bi-person-badge-fill me-2"></i>สื่อและเอกสารสำหรับผู้สอน (โหมดคุณครู)
+          </h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm p-3">
+                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>คำชี้แจงและแนวทางการสอน (PDF)</h6>
+                <p class="text-muted small mb-3">คู่มือการสอน กำหนดการ และวัตถุประสงค์เชิงพฤติกรรม</p>
+                ${l.teacherPdfUrl ? `<a href="${l.teacherPdfUrl}" target="_blank" class="btn btn-danger btn-sm rounded-pill fw-bold"><i class="bi bi-download me-1"></i> ดาวน์โหลดคู่มือผู้สอน</a>` : '<span class="text-muted small">ยังไม่มีไฟล์คู่มือ</span>'}
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm p-3">
+                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-file-earmark-check-fill text-success me-2"></i>เฉลยใบงาน / ใบกิจกรรม</h6>
+                <p class="text-muted small mb-3">เอกสารเฉลยคำตอบของกิจกรรมประจำบทเรียน</p>
+                ${l.answerSheetUrl ? `<a href="${l.answerSheetUrl}" target="_blank" class="btn btn-success btn-sm rounded-pill fw-bold"><i class="bi bi-file-earmark-text me-1"></i> ดูเฉลยใบงาน</a>` : '<span class="text-muted small">ยังไม่มีไฟล์เฉลย</span>'}
+              </div>
+            </div>
+
+            <div class="col-12 mt-3">
+              <div class="card border-0 shadow-sm p-3 bg-white">
+                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-code-slash text-primary me-2"></i>เฉลย Block Code ที่ถูกต้อง</h6>
+                <div class="mb-2">
+                  <strong>ลิงก์โปรเจกต์เฉลย (MakeCode):</strong> 
+                  ${l.solutionCodeUrl ? `<a href="${l.solutionCodeUrl}" target="_blank" class="ms-1 fw-bold text-primary">${l.solutionCodeUrl}</a>` : '<span class="text-muted ms-1">ยังไม่มีลิงก์เฉลย</span>'}
+                </div>
+                <div>
+                  <strong>รูปภาพบล็อกคำสั่งที่ถูกต้อง:</strong><br>
+                  ${l.solutionImgUrl ? `<img src="${l.solutionImgUrl}" class="img-fluid rounded border mt-2 style="max-height: 400px;">` : '<p class="text-muted small mt-1">ยังไม่มีรูปภาพเฉลย</p>'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     let html = `
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold text-primary mb-0">${l.title}</h3>
-        ${l.worksheetUrl ? `<a href="${l.worksheetUrl}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill fw-bold"><i class="bi bi-file-earmark-arrow-down-fill me-1"></i> ดาวน์โหลดใบงาน</a>` : ''}
+        ${l.worksheetUrl ? `<a href="${l.worksheetUrl}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill fw-bold"><i class="bi bi-file-earmark-arrow-down-fill me-1"></i> ดาวน์โหลดใบงานนักเรียน</a>` : ''}
       </div>
       <p class="text-secondary fs-6 mb-4">${l.desc || ''}</p>
-      
+
+      ${teacherHtml}
+
       <h5 class="fw-bold mb-3"><i class="bi bi-play-btn-fill text-danger me-1"></i> วิดีโอประกอบการเรียน</h5>
       ${vids || '<div class="alert alert-light text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
 
-      <!-- ส่วนตรวจโค้ดรองรับทุกบทเรียน -->
       <hr class="my-4">
       <div class="bg-light p-4 rounded-4 border">
         <h5 class="fw-bold text-dark mb-2"><i class="bi bi-search text-success me-1"></i> ตรวจสอบ Block Code ของคุณ (${l.title})</h5>
@@ -304,7 +339,14 @@
     document.getElementById('lessonContent').innerHTML = html;
   }
 
-  // 5. ส่งลิงก์ MakeCode ไปตรวจสอบผ่าน Google Apps Script API
+  function getEmbedYoutubeUrl(url) {
+    if (!url) return '';
+    url = url.trim();
+    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    let match = url.match(regExp);
+    return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : url;
+  }
+
   function handleInlineCheck(event, chapterId) {
     event.preventDefault();
     let urlInput = document.getElementById(`inlineCheckUrl_${chapterId}`);
@@ -312,18 +354,11 @@
     let resDiv = document.getElementById(`inlineCheckResult_${chapterId}`);
 
     btn.disabled = true;
-    resDiv.innerHTML = `
-      <div class="p-3 text-center text-muted bg-white rounded border mt-2">
-        <div class="spinner-border spinner-border-sm text-primary me-2"></div> กำลังอ่านข้อมูลและวิเคราะห์ Block Code...
-      </div>`;
+    resDiv.innerHTML = `<div class="p-3 text-center text-muted bg-white rounded border mt-2"><div class="spinner-border spinner-border-sm text-primary me-2"></div> กำลังวิเคราะห์ Block Code...</div>`;
 
     fetch(GAS_API_URL, {
       method: "POST",
-      body: JSON.stringify({
-        action: "checkCode",
-        chapterId: chapterId,
-        shareUrl: urlInput.value
-      })
+      body: JSON.stringify({ action: "checkCode", chapterId: chapterId, shareUrl: urlInput.value })
     })
     .then(res => res.json())
     .then(res => {
@@ -343,9 +378,10 @@
     });
   }
 
-  // 6. การจัดการระบบ Admin (Modal & Authentication)
-  function openAdminModal() {
+  function openAdminModal(target) {
+    currentLoginTarget = target;
     logoutAdmin();
+    document.getElementById('loginHeaderTitle').innerText = target === 'teacher' ? 'เข้าสู่ระบบโหมดคุณครู' : 'เข้าสู่ระบบจัดการเนื้อหา (Admin)';
     adminModalObj.show();
   }
 
@@ -353,17 +389,27 @@
     let pass = document.getElementById('adminPassInput').value;
     let alertDiv = document.getElementById('authAlert');
 
-    if (!pass) {
-      alertDiv.innerHTML = `<div class="alert alert-danger py-2 small">กรุณากรอกรหัสผ่าน</div>`;
-      return;
-    }
-
     if (pass === 'admin1234') {
       alertDiv.innerHTML = '';
-      showAdminEditor();
+      if (currentLoginTarget === 'teacher') {
+        isTeacherLoggedIn = true;
+        document.getElementById('teacherBadgeBar').style.display = 'block';
+        document.getElementById('btnTeacherLogin').style.display = 'none';
+        adminModalObj.hide();
+        loadLesson(currentLessonId);
+      } else {
+        showAdminEditor();
+      }
     } else {
-      alertDiv.innerHTML = `<div class="alert alert-danger py-2 small">รหัสผ่าน Admin ไม่ถูกต้อง!</div>`;
+      alertDiv.innerHTML = `<div class="alert alert-danger py-2 small">รหัสผ่านไม่ถูกต้อง!</div>`;
     }
+  }
+
+  function logoutTeacher() {
+    isTeacherLoggedIn = false;
+    document.getElementById('teacherBadgeBar').style.display = 'none';
+    document.getElementById('btnTeacherLogin').style.display = 'inline-block';
+    loadLesson(currentLessonId);
   }
 
   function showAdminEditor() {
@@ -375,9 +421,7 @@
     lessonsData.forEach((l, i) => {
       html += `
         <div class="card p-3 mb-3 bg-light border-0 shadow-sm rounded-3">
-          <h6 class="fw-bold text-primary mb-3">
-            <i class="bi bi-journal-text me-1"></i> บทเรียนที่ ${i+1}: ${l.title}
-          </h6>
+          <h6 class="fw-bold text-primary mb-3"><i class="bi bi-journal-text me-1"></i> บทเรียนที่ ${i+1}: ${l.title}</h6>
           <div class="mb-2">
             <label class="form-label small fw-bold mb-1">ชื่อบทเรียน</label>
             <input type="text" class="form-control form-control-sm" id="title_${i}" value="${l.title || ''}">
@@ -387,12 +431,31 @@
             <textarea class="form-control form-control-sm" id="desc_${i}" rows="2">${l.desc || ''}</textarea>
           </div>
           <div class="mb-2">
-            <label class="form-label small fw-bold mb-1">ลิงก์ YouTube (หากมีหลายคลิปให้คั่นด้วยเครื่องหมายจุลภาค ,)</label>
+            <label class="form-label small fw-bold mb-1">ลิงก์ YouTube (คั่นด้วยเครื่องหมาย ,)</label>
             <input type="text" class="form-control form-control-sm" id="vid_${i}" value="${l.videos ? l.videos.join(',') : ''}">
           </div>
           <div class="mb-2">
-            <label class="form-label small fw-bold mb-1">ลิงก์ดาวน์โหลดใบงาน</label>
+            <label class="form-label small fw-bold mb-1">ลิงก์ใบงานนักเรียน</label>
             <input type="text" class="form-control form-control-sm" id="work_${i}" value="${l.worksheetUrl || ''}">
+          </div>
+          
+          <hr class="my-3">
+          <h6 class="fw-bold text-success mb-2"><i class="bi bi-person-badge me-1"></i> ข้อมูลสำหรับคุณครู ( Teacher Mode )</h6>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ลิงก์ PDF คำชี้แจง/คู่มือผู้สอน</label>
+            <input type="text" class="form-control form-control-sm" id="teacherPdf_${i}" value="${l.teacherPdfUrl || ''}">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ลิงก์เฉลยใบงาน/กิจกรรม</label>
+            <input type="text" class="form-control form-control-sm" id="answerSheet_${i}" value="${l.answerSheetUrl || ''}">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ลิงก์ MakeCode เฉลยที่ถูกต้อง</label>
+            <input type="text" class="form-control form-control-sm" id="solutionCode_${i}" value="${l.solutionCodeUrl || ''}">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold mb-1">ลิงก์รูปภาพ Block Code เฉลย</label>
+            <input type="text" class="form-control form-control-sm" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}">
           </div>
         </div>
       `;
@@ -408,7 +471,6 @@
     document.getElementById('authAlert').innerHTML = '';
   }
 
-  // 7. บันทึกข้อมูล Admin ไปยัง Google Apps Script API
   function saveAdminData() {
     let pass = document.getElementById('adminPassInput').value;
     let updated = lessonsData.map((l, i) => {
@@ -417,16 +479,18 @@
       let vidInput = document.getElementById(`vid_${i}`).value;
       l.videos = vidInput ? vidInput.split(',').map(v => v.trim()) : [];
       l.worksheetUrl = document.getElementById(`work_${i}`).value;
+      
+      // บันทึกฟิลด์ของคุณครูเพิ่ม
+      l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
+      l.answerSheetUrl = document.getElementById(`answerSheet_${i}`).value;
+      l.solutionCodeUrl = document.getElementById(`solutionCode_${i}`).value;
+      l.solutionImgUrl = document.getElementById(`solutionImg_${i}`).value;
       return l;
     });
 
     fetch(GAS_API_URL, {
       method: "POST",
-      body: JSON.stringify({
-        action: "saveLessonData",
-        updatedData: updated,
-        password: pass
-      })
+      body: JSON.stringify({ action: "saveLessonData", updatedData: updated, password: pass })
     })
     .then(res => res.json())
     .then(res => {
@@ -435,9 +499,6 @@
         adminModalObj.hide();
         renderLessons(updated);
       }
-    })
-    .catch(err => {
-      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + err.message);
     });
   }
 </script>
