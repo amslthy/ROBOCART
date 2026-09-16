@@ -15,10 +15,9 @@
     :root {
       --primary-color: #2563eb;
       --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      --bg-color: #f1f5f9;
+      --bg-color: #f8fafc;
       --card-radius: 16px;
       --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
-      --card-hover-shadow: 0 12px 25px -5px rgba(15, 23, 42, 0.1);
     }
     
     body {
@@ -43,7 +42,6 @@
       border-radius: var(--card-radius);
       box-shadow: var(--card-shadow);
       background: #ffffff;
-      transition: all 0.25s ease-in-out;
     }
 
     /* Lesson Sidebar Nav */
@@ -75,21 +73,43 @@
       border-color: transparent;
     }
 
-    /* Teacher Section UI */
+    /* 🟢 Teacher Section & Solution Card Design */
     .teacher-section {
-      background: linear-gradient(180deg, #f0fdf4 0%, #dc262608 100%);
+      background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 100%);
       border: 2px dashed #10b981;
       border-radius: var(--card-radius);
     }
 
     .teacher-card {
       border: 1px solid #a7f3d0;
-      border-radius: 12px;
+      border-radius: 14px;
       background: #ffffff;
-      transition: transform 0.2s ease;
+      transition: all 0.2s ease;
     }
+
     .teacher-card:hover {
+      box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.12);
       transform: translateY(-2px);
+    }
+
+    /* 🖼️ Frame แสดงรูปภาพ Block Code เฉลย */
+    .solution-img-wrapper {
+      position: relative;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .solution-img-preview {
+      max-height: 480px;
+      width: 100%;
+      object-fit: contain; /* รักษาสัดส่วนรูปบล็อกไม่ให้เบี้ยว */
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
     /* Video Container */
@@ -110,7 +130,7 @@
       border: 0;
     }
 
-    /* Buttons & Form Inputs */
+    /* Form Controls */
     .form-control {
       border-radius: 10px;
       padding: 12px 16px;
@@ -133,7 +153,6 @@
     .btn-custom-primary:hover {
       color: white;
       opacity: 0.95;
-      transform: translateY(-1px);
     }
 
     .badge-chapter {
@@ -173,7 +192,7 @@
   <div class="alert alert-success d-flex justify-content-between align-items-center rounded-4 shadow-sm py-2 mb-4 border-0 bg-success text-white">
     <span class="d-flex align-items-center gap-2">
       <i class="bi bi-check-circle-fill fs-5"></i>
-      <div><strong>โหมดคุณครูทำงานอยู่:</strong> แสดงข้อมูลเฉลยและคู่มือผู้สอนแล้ว</div>
+      <div><strong>โหมดคุณครูทำงานอยู่:</strong> แสดงสื่อเอกสารและเฉลย Block Code เรียบร้อยแล้ว</div>
     </span>
     <button class="btn btn-sm btn-light text-danger rounded-pill fw-bold" onclick="logoutTeacher()">ออกจากโหมดคุณครู</button>
   </div>
@@ -262,7 +281,7 @@
 
 <script>
   const GAS_API_URL = "https://script.google.com/macros/s/AKfycbx_xYO1ZwGvGDtWjpfUKUBx5nlAuKf_r7ZnWhSlZPbcICzoInQf1pZm8UAgJduRoO9B/exec";
-  
+
   let lessonsData = [];
   let currentLessonId = null;
   let adminModalObj = null;
@@ -313,41 +332,63 @@
       return embedUrl ? `<div class="video-container mb-3"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
     }).join('') : '';
 
+    // 🟢 โครงสร้างสื่อและเอกสารผู้สอน (ปรับปรุง UX/UI ใหม่)
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
       teacherHtml = `
         <div class="teacher-section p-4 my-4">
-          <div class="d-flex align-items-center gap-2 text-success mb-3">
+          <div class="d-flex align-items-center gap-2 text-success mb-3 pb-2 border-bottom border-success-subtle">
             <i class="bi bi-person-badge-fill fs-4"></i>
             <h5 class="fw-bold mb-0 font-heading">สื่อและเอกสารสำหรับผู้สอน (โหมดคุณครู)</h5>
           </div>
+          
           <div class="row g-3">
-            <div class="col-md-6">
-              <div class="teacher-card p-3 h-100">
-                <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>คู่มือคำชี้แจงผู้สอน</h6>
-                <p class="text-muted small mb-3">แนวทางการจัดการเรียนรู้และวัตถุประสงค์</p>
-                ${l.teacherPdfUrl ? `<a href="${l.teacherPdfUrl}" target="_blank" class="btn btn-danger btn-sm rounded-pill font-heading px-3"><i class="bi bi-download me-1"></i> ดาวน์โหลด PDF</a>` : '<span class="badge bg-light text-muted">ยังไม่มีไฟล์</span>'}
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="teacher-card p-3 h-100">
-                <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-file-earmark-check-fill text-success me-2"></i>เฉลยใบกิจกรรม</h6>
-                <p class="text-muted small mb-3">คำตอบเฉลยประจำบทเรียน</p>
-                ${l.answerSheetUrl ? `<a href="${l.answerSheetUrl}" target="_blank" class="btn btn-success btn-sm rounded-pill font-heading px-3"><i class="bi bi-file-earmark-text me-1"></i> ดูเฉลยใบงาน</a>` : '<span class="badge bg-light text-muted">ยังไม่มีไฟล์</span>'}
-              </div>
-            </div>
-
-            <div class="col-12">
-              <div class="teacher-card p-3">
-                <h6 class="fw-bold text-dark font-heading mb-2"><i class="bi bi-code-slash text-primary me-2"></i>เฉลย Block Code ที่ถูกต้อง</h6>
-                <div class="mb-3">
-                  <span class="text-muted small">ลิงก์ MakeCode: </span>
-                  ${l.solutionCodeUrl ? `<a href="${l.solutionCodeUrl}" target="_blank" class="fw-bold text-primary text-decoration-none">${l.solutionCodeUrl} <i class="bi bi-box-arrow-up-right small"></i></a>` : '<span class="text-muted small">ยังไม่มีลิงก์</span>'}
-                </div>
+            <!-- 1. คู่มือ PDF -->
+            <div class="col-md-4">
+              <div class="teacher-card p-3 h-100 d-flex flex-column justify-content-between">
                 <div>
-                  <div class="text-muted small mb-1">รูปภาพตัวอย่างผังบล็อกคำสั่ง:</div>
-                  ${l.solutionImgUrl ? `<img src="${l.solutionImgUrl}" class="img-fluid rounded-3 border shadow-sm" style="max-height: 400px;">` : '<div class="p-3 bg-light rounded text-center text-muted small">ยังไม่ได้อัปโหลดรูปภาพเฉลย</div>'}
+                  <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>คู่มือคำชี้แจงผู้สอน</h6>
+                  <p class="text-muted small mb-3">แนวทางการสอนและแผนกิจกรรม</p>
+                </div>
+                ${l.teacherPdfUrl ? `<a href="${l.teacherPdfUrl}" target="_blank" class="btn btn-danger btn-sm rounded-pill font-heading w-100"><i class="bi bi-download me-1"></i> ดาวน์โหลด PDF</a>` : '<span class="badge bg-light text-muted w-100 py-2">ยังไม่มีไฟล์คู่มือ</span>'}
+              </div>
+            </div>
+
+            <!-- 2. เฉลยใบกิจกรรม -->
+            <div class="col-md-4">
+              <div class="teacher-card p-3 h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-file-earmark-check-fill text-success me-2"></i>เฉลยใบกิจกรรม</h6>
+                  <p class="text-muted small mb-3">คำตอบเฉลยประจำบทเรียน</p>
+                </div>
+                ${l.answerSheetUrl ? `<a href="${l.answerSheetUrl}" target="_blank" class="btn btn-success btn-sm rounded-pill font-heading w-100"><i class="bi bi-file-earmark-text me-1"></i> ดูเฉลยใบงาน</a>` : '<span class="badge bg-light text-muted w-100 py-2">ยังไม่มีไฟล์เฉลย</span>'}
+              </div>
+            </div>
+
+            <!-- 3. ลิงก์ MakeCode -->
+            <div class="col-md-4">
+              <div class="teacher-card p-3 h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-code-slash text-primary me-2"></i> MakeCode Project</h6>
+                  <p class="text-muted small mb-3">ลิงก์โปรเจกต์โค้ดเฉลยต้นแบบ</p>
+                </div>
+                ${l.solutionCodeUrl ? `<a href="${l.solutionCodeUrl}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill font-heading w-100"><i class="bi bi-box-arrow-up-right me-1"></i> เปิด MakeCode</a>` : '<span class="badge bg-light text-muted w-100 py-2">ยังไม่มีลิงก์</span>'}
+              </div>
+            </div>
+
+            <!-- 4. ส่วนแสดงรูปภาพ Block Code เฉลย (ปรับสัดส่วนให้สวยงาม) -->
+            <div class="col-12 mt-3">
+              <div class="teacher-card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="fw-bold text-dark font-heading mb-0"><i class="bi bi-image text-info me-2"></i>รูปภาพเฉลย Block Code ที่ถูกต้อง</h6>
+                  ${l.solutionImgUrl ? `<a href="${l.solutionImgUrl}" target="_blank" class="btn btn-sm btn-link text-decoration-none small"><i class="bi bi-arrows-angle-expand me-1"></i> ดูภาพขนาดเต็ม</a>` : ''}
+                </div>
+                
+                <div class="solution-img-wrapper mt-2">
+                  ${l.solutionImgUrl ? 
+                    `<img src="${l.solutionImgUrl}" class="solution-img-preview" alt="รูปเฉลย Block Code">` : 
+                    '<div class="py-5 text-muted small"><i class="bi bi-image fs-1 d-block mb-2 text-black-50"></i>ยังไม่ได้อัปโหลดรูปภาพ Block Code เฉลยสำหรับบทเรียนนี้</div>'
+                  }
                 </div>
               </div>
             </div>
