@@ -427,8 +427,9 @@
             <input type="text" class="form-control form-control-sm" id="title_${i}" value="${l.title || ''}">
           </div>
           <div class="mb-2">
-            <label class="form-label small fw-bold mb-1">รายละเอียดบทเรียน</label>
-            <textarea class="form-control form-control-sm" id="desc_${i}" rows="2">${l.desc || ''}</textarea>
+            <label class="form-label small fw-bold mb-1">อัปโหลดรูปภาพ Block Code เฉลย</label>
+            <input type="file" class="form-control form-control-sm mb-1" id="fileInput_${i}" accept="image/*" onchange="uploadSolutionImage(${i})">
+            <input type="text" class="form-control form-control-sm" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="URL รูปภาพจะแสดงที่นี่อัตโนมัติ" readonly>
           </div>
           <div class="mb-2">
             <label class="form-label small fw-bold mb-1">ลิงก์ YouTube (คั่นด้วยเครื่องหมาย ,)</label>
@@ -500,6 +501,41 @@
         renderLessons(updated);
       }
     });
+  }
+  function uploadSolutionImage(index) {
+    let fileInput = document.getElementById(`fileInput_${index}`);
+    let urlInput = document.getElementById(`solutionImg_${index}`);
+    let file = fileInput.files[0];
+  
+    if (!file) return;
+  
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      let base64Data = e.target.result;
+      
+      // แสดงสถานะกำลังอัปโหลด
+      urlInput.value = "กำลังอัปโหลดรูปภาพ...";
+  
+      fetch(GAS_API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "uploadImage",
+          base64Data: base64Data,
+          fileName: `robocart_solution_ch${index + 1}_${Date.now()}`
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          urlInput.value = res.url;
+          alert("อัปโหลดรูปภาพเรียบร้อยแล้ว!");
+        } else {
+          alert("เกิดข้อผิดพลาดในการอัปโหลด: " + res.message);
+          urlInput.value = "";
+        }
+      });
+    };
+    reader.readAsDataURL(file);
   }
 </script>
 </body>
