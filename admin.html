@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบจัดการเนื้อหา (Admin Dashboard) - ROBOCART</title>
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font: Prompt & Sarabun -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      --bg-color: #f8fafc;
+      --card-radius: 16px;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: var(--bg-color);
+      color: #1e293b;
+    }
+
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: 'Prompt', sans-serif;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-bottom: 3px solid #eab308;
+    }
+
+    .admin-card-item {
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .admin-card-header {
+      background-color: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+      border-top-left-radius: 13px;
+      border-top-right-radius: 13px;
+      padding: 12px 18px;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-custom-primary {
+      background: var(--primary-gradient);
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      font-family: 'Prompt', sans-serif;
+      border: none;
+    }
+
+    .btn-custom-primary:hover {
+      color: white;
+      opacity: 0.95;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Admin Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark mb-4 py-3 shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2" href="index.html">
+      <i class="bi bi-robot text-warning fs-3"></i> 
+      <span>ROBOCART <small class="fs-6 fw-normal text-warning">Admin System</small></span>
+    </a>
+    <a href="index.html" class="btn btn-outline-light rounded-pill px-3 shadow-sm d-flex align-items-center gap-1">
+      <i class="bi bi-house-door-fill"></i> กลับสู่หน้าหลัก
+    </a>
+  </div>
+</nav>
+
+<div class="container mb-5">
+  <!-- หน้า Login ยืนยันตัวตน Admin -->
+  <div id="authSection" class="row justify-content-center my-5">
+    <div class="col-md-6 col-lg-5">
+      <div class="card border-0 shadow-lg p-4" style="border-radius: var(--card-radius);">
+        <div class="text-center py-3">
+          <i class="bi bi-shield-lock-fill text-warning display-3"></i>
+          <h4 class="fw-bold mt-3 font-heading">เข้าสู่ระบบ Admin</h4>
+          <p class="text-muted small">กรอกรหัสผ่านผู้ดูแลระบบเพื่อจัดการเนื้อหาบทเรียน</p>
+        </div>
+        <div class="mb-3">
+          <input type="password" class="form-control text-center fs-5 py-2" id="adminPassInput" placeholder="กรอกรหัสผ่าน Admin">
+        </div>
+        <div id="authAlert"></div>
+        <button class="btn btn-custom-primary w-100 py-2 fs-6 font-heading" onclick="verifyAdminPassword()">
+          เข้าสู่ระบบจัดการ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- โซน Form แก้ไขเนื้อหา (แสดงเมื่อล็อกอินผ่าน) -->
+  <div id="editorSection" style="display: none;">
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm border">
+      <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill font-heading fs-6">
+        <i class="bi bi-check-circle-fill me-1"></i> เข้าสู่ระบบในฐานะ ผู้ดูแลระบบ
+      </span>
+      <button class="btn btn-success rounded-pill px-4 font-heading shadow-sm" onclick="saveAdminData()">
+        <i class="bi bi-save me-1"></i> บันทึกการแก้ไขทั้งหมด
+      </button>
+    </div>
+
+    <!-- พื้นที่แสดงฟอร์มจัดการบทเรียน -->
+    <div id="adminFormArea"></div>
+
+    <div class="text-end mb-5">
+      <button class="btn btn-success btn-lg rounded-pill px-5 font-heading shadow" onclick="saveAdminData()">
+        <i class="bi bi-save me-2"></i> บันทึกการแก้ไขทั้งหมด
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // 🔴 Web App URL ของ Google Apps Script
+  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbx_xYO1ZwGvGDtWjpfUKUBx5nlAuKf_r7ZnWhSlZPbcICzoInQf1pZm8UAgJduRoO9B/exec";
+  let lessonsData = [];
+
+  // 1. ตรวจสอบรหัสผ่านเข้าสู่ระบบ Admin
+  function verifyAdminPassword() {
+    let pass = document.getElementById('adminPassInput').value;
+    let alertDiv = document.getElementById('authAlert');
+
+    if (pass === 'admin1234') {
+      alertDiv.innerHTML = '';
+      fetchInitialData();
+    } else {
+      alertDiv.innerHTML = `<div class="alert alert-danger py-2 small rounded-3 mb-3">รหัสผ่านไม่ถูกต้อง!</div>`;
+    }
+  }
+
+  // 2. ดึงข้อมูลบทเรียนตั้งต้นจาก Google Apps Script API
+  function fetchInitialData() {
+    fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "getInitialData" })
+    })
+    .then(res => res.json())
+    .then(data => {
+      lessonsData = data;
+      showAdminEditor();
+    })
+    .catch(err => console.error("Error loading data:", err));
+  }
+
+  // 3. แสดงผลฟอร์มสำหรับแก้ไขเนื้อหา Admin
+  function showAdminEditor() {
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('editorSection').style.display = 'block';
+
+    let html = '';
+    lessonsData.forEach((l, i) => {
+      html += `
+        <div class="admin-card-item mb-4 shadow-sm">
+          <div class="admin-card-header d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold text-primary font-heading mb-0">
+              <span class="badge bg-primary me-2 font-heading">บทที่ ${i+1}</span> ${l.title}
+            </h6>
+            <small class="text-muted">ID: ${l.id}</small>
+          </div>
+          
+          <div class="p-3">
+            <!-- ส่วนที่ 1: ข้อมูลบทเรียนของนักเรียน -->
+            <div class="bg-light p-3 rounded-3 mb-3 border">
+              <span class="badge bg-primary-subtle text-primary border border-primary-subtle mb-3">1. ข้อมูลบทเรียนสำหรับนักเรียน</span>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold mb-1">ชื่อบทเรียน</label>
+                  <input type="text" class="form-control form-control-sm" id="title_${i}" value="${l.title || ''}">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-arrow-down text-success me-1"></i>ลิงก์ใบงานนักเรียน</label>
+                  <input type="text" class="form-control form-control-sm" id="work_${i}" value="${l.worksheetUrl || ''}">
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold mb-1">รายละเอียดบทเรียน</label>
+                  <textarea class="form-control form-control-sm" id="desc_${i}" rows="2">${l.desc || ''}</textarea>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-youtube text-danger me-1"></i>ลิงก์ YouTube (คั่นด้วยเครื่องหมาย ,)</label>
+                  <input type="text" class="form-control form-control-sm" id="vid_${i}" value="${l.videos ? l.videos.join(',') : ''}">
+                </div>
+              </div>
+            </div>
+
+            <!-- ส่วนที่ 2: สื่อและเฉลยสำหรับคุณครู -->
+            <div class="bg-success-subtle p-3 rounded-3 border border-success-subtle">
+              <span class="badge bg-success text-white mb-3 font-heading">2. สื่อและเอกสารเฉพาะโหมดคุณครู (Teacher Mode)</span>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-pdf text-danger me-1"></i>PDF คู่มือผู้สอน</label>
+                  <input type="text" class="form-control form-control-sm bg-white" id="teacherPdf_${i}" value="${l.teacherPdfUrl || ''}">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-check text-success me-1"></i>เฉลยใบงาน/กิจกรรม</label>
+                  <input type="text" class="form-control form-control-sm bg-white" id="answerSheet_${i}" value="${l.answerSheetUrl || ''}">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-code-slash text-primary me-1"></i>ลิงก์ MakeCode เฉลย</label>
+                  <input type="text" class="form-control form-control-sm bg-white" id="solutionCode_${i}" value="${l.solutionCodeUrl || ''}">
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-image text-info me-1"></i>รูปภาพ Block Code เฉลย</label>
+                  <div class="input-group input-group-sm">
+                    <input type="file" class="form-control form-control-sm" id="fileInput_${i}" accept="image/*" onchange="uploadSolutionImage(${i})">
+                    <input type="text" class="form-control form-control-sm bg-white w-50" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="URL รูปภาพจะแสดงที่นี่อัตโนมัติ" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    document.getElementById('adminFormArea').innerHTML = html;
+  }
+
+  // 4. บันทึกข้อมูล Admin ไปยัง Google Apps Script API
+  function saveAdminData() {
+    let pass = document.getElementById('adminPassInput').value;
+    let updated = lessonsData.map((l, i) => {
+      l.title = document.getElementById(`title_${i}`).value;
+      l.desc = document.getElementById(`desc_${i}`).value;
+      let vidInput = document.getElementById(`vid_${i}`).value;
+      l.videos = vidInput ? vidInput.split(',').map(v => v.trim()) : [];
+      l.worksheetUrl = document.getElementById(`work_${i}`).value;
+      
+      l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
+      l.answerSheetUrl = document.getElementById(`answerSheet_${i}`).value;
+      l.solutionCodeUrl = document.getElementById(`solutionCode_${i}`).value;
+      l.solutionImgUrl = document.getElementById(`solutionImg_${i}`).value;
+      return l;
+    });
+
+    fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "saveLessonData", updatedData: updated, password: pass })
+    })
+    .then(res => res.json())
+    .then(res => {
+      alert(res.message);
+      if(res.success) {
+        window.location.href = "index.html";
+      }
+    })
+    .catch(err => {
+      alert("เกิดข้อผิดพลาดในการบันทึก: " + err.message);
+    });
+  }
+
+  // 5. อัปโหลดรูปภาพไปยัง Google Drive
+  function uploadSolutionImage(index) {
+    let fileInput = document.getElementById(`fileInput_${index}`);
+    let urlInput = document.getElementById(`solutionImg_${index}`);
+    let file = fileInput.files[0];
+    if (!file) return;
+  
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      let base64Data = e.target.result;
+      urlInput.value = "กำลังอัปโหลดรูปภาพ...";
+  
+      fetch(GAS_API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "uploadImage",
+          base64Data: base64Data,
+          fileName: `robocart_solution_ch${index + 1}_${Date.now()}`
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          urlInput.value = res.url;
+          alert("อัปโหลดรูปภาพเรียบร้อยแล้ว!");
+        } else {
+          alert("เกิดข้อผิดพลาดในการอัปโหลด: " + res.message);
+          urlInput.value = "";
+        }
+      })
+      .catch(err => {
+        alert("เกิดข้อผิดพลาดในการอัปโหลด: " + err.message);
+        urlInput.value = "";
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+</script>
+</body>
+</html>
