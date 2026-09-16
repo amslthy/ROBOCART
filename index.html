@@ -130,7 +130,7 @@
       border: 0;
     }
 
-    /* Buttons & Controls */
+    /* Form Controls & Buttons */
     .form-control {
       border-radius: 10px;
       padding: 12px 16px;
@@ -284,7 +284,7 @@
     let l = lessonsData.find(item => item.id === id);
     if (!l) return;
 
-    // 🟢 ตรวจสอบการ์ตูนสถานการณ์ (แสดงเฉพาะบทที่ 2, 3, 4)
+    // 🟢 1. เตรียม HTML วิดีโอการ์ตูนสถานการณ์ (ถ้ามี)
     let scenarioVidHtml = '';
     if ([2, 3, 4].includes(l.id) && l.scenarioVideo) {
       let embedScenario = getEmbedYoutubeUrl(l.scenarioVideo);
@@ -303,11 +303,31 @@
       }
     }
 
+    // 🟢 2. เตรียม HTML วิดีโอเนื้อหาประกอบการเรียนรู้หลัก
     let vids = l.videos ? l.videos.map(v => {
       let embedUrl = getEmbedYoutubeUrl(v);
       return embedUrl ? `<div class="video-container mb-3"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
     }).join('') : '';
 
+    let mainVidsHtml = `
+      <div class="mb-4">
+        <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-play-btn-fill text-danger"></i> วิดีโอเนื้อหาประกอบการเรียนรู้
+        </h5>
+        ${vids || '<div class="p-4 bg-light rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
+      </div>
+    `;
+
+    // 🟢 3. จัดเรียงลำดับวิดีโอ (ตามที่เลือกใน Admin: before = ก่อน / after = หลัง)
+    let combinedVideosHtml = '';
+    let pos = l.scenarioPosition || 'before';
+    if (pos === 'after') {
+      combinedVideosHtml = mainVidsHtml + scenarioVidHtml;
+    } else {
+      combinedVideosHtml = scenarioVidHtml + mainVidsHtml;
+    }
+
+    // 🟢 4. เตรียมสื่อผู้สอน
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
       teacherHtml = `
@@ -379,14 +399,7 @@
       <p class="text-secondary fs-6 mb-4 leading-relaxed">${l.desc || ''}</p>
 
       ${teacherHtml}
-      ${scenarioVidHtml}
-
-      <div class="mb-4">
-        <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2">
-          <i class="bi bi-play-btn-fill text-danger"></i> วิดีโอเนื้อหาประกอบการเรียนรู้
-        </h5>
-        ${vids || '<div class="p-4 bg-light rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
-      </div>
+      ${combinedVideosHtml}
 
       <div class="bg-light p-4 rounded-4 border">
         <h5 class="fw-bold font-heading text-dark mb-1"><i class="bi bi-check-circle text-success me-1"></i> ตรวจสอบ Block Code อัตโนมัติ</h5>
