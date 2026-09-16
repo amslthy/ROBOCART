@@ -51,14 +51,14 @@
       padding: 14px 20px;
     }
 
-    .form-control {
+    .form-control, .form-select {
       border-radius: 10px;
       padding: 10px 14px;
       border: 1px solid #cbd5e1;
       font-size: 0.95rem;
     }
 
-    .form-control:focus {
+    .form-control:focus, .form-select:focus {
       border-color: var(--primary-color);
       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
     }
@@ -197,15 +197,24 @@
 
     let html = '';
     lessonsData.forEach((l, i) => {
-      // 🟢 แสดงช่องกรอกการ์ตูนสถานการณ์เฉพาะบทที่ 2, 3, 4
+      // 🟢 เพิ่มตัวเลือกสลับตำแหน่งแสดงผลก่อน-หลัง
       let scenarioInputHtml = '';
       if ([2, 3, 4].includes(l.id)) {
         scenarioInputHtml = `
-          <div class="col-12">
+          <div class="col-md-8">
             <label class="form-label small fw-bold mb-1 text-warning-emphasis">
               <i class="bi bi-film text-warning me-1"></i>ลิงก์วิดีโอการ์ตูนสถานการณ์ ( YouTube - เฉพาะบทที่ 2, 3, 4 )
             </label>
-            <input type="text" class="form-control border-warning-subtle" id="scenarioVid_${i}" value="${l.scenarioVideo || ''}" placeholder="https://www.youtube.com/watch?v=...">
+            <input type="text" class="form-control border-warning-subtle bg-white" id="scenarioVid_${i}" value="${l.scenarioVideo || ''}" placeholder="https://www.youtube.com/watch?v=...">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-bold mb-1 text-warning-emphasis">
+              <i class="bi bi-arrows-vertical me-1"></i>ตำแหน่งจัดวางการ์ตูน
+            </label>
+            <select class="form-select border-warning-subtle bg-white fw-medium" id="scenarioPos_${i}">
+              <option value="before" ${l.scenarioPosition !== 'after' ? 'selected' : ''}>🎬 แสดงก่อนเนื้อหาหลัก</option>
+              <option value="after" ${l.scenarioPosition === 'after' ? 'selected' : ''}>🎬 แสดงหลังเนื้อหาหลัก</option>
+            </select>
           </div>
         `;
       }
@@ -287,10 +296,14 @@
       l.videos = vidInput ? vidInput.split(',').map(v => v.trim()) : [];
       l.worksheetUrl = document.getElementById(`work_${i}`).value;
       
-      // ดึงค่าการ์ตูนสถานการณ์ (ถ้าบทนั้นมีช่องกรอก)
+      // ดึงค่าลิงก์และตำแหน่งจัดวางการ์ตูนสถานการณ์
       let scenarioElem = document.getElementById(`scenarioVid_${i}`);
+      let scenarioPosElem = document.getElementById(`scenarioPos_${i}`);
       if (scenarioElem) {
         l.scenarioVideo = scenarioElem.value;
+      }
+      if (scenarioPosElem) {
+        l.scenarioPosition = scenarioPosElem.value;
       }
       
       l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
