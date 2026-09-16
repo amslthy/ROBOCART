@@ -218,7 +218,7 @@
   let currentLessonId = null;
   let adminModalObj = null;
   let isTeacherLoggedIn = false;
-  let currentLoginTarget = 'teacher'; // 'teacher' หรือ 'admin'
+  let currentLoginTarget = 'teacher';
 
   window.onload = function() {
     adminModalObj = new bootstrap.Modal(document.getElementById('adminModal'));
@@ -263,7 +263,6 @@
       return embedUrl ? `<div class="video-container"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
     }).join('') : '';
 
-    // ส่วนสำหรับคุณครู (จะแสดงเมื่อล็อกอินเป็นคุณครูเท่านั้น)
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
       teacherHtml = `
@@ -297,7 +296,7 @@
                 </div>
                 <div>
                   <strong>รูปภาพบล็อกคำสั่งที่ถูกต้อง:</strong><br>
-                  ${l.solutionImgUrl ? `<img src="${l.solutionImgUrl}" class="img-fluid rounded border mt-2 style="max-height: 400px;">` : '<p class="text-muted small mt-1">ยังไม่มีรูปภาพเฉลย</p>'}
+                  ${l.solutionImgUrl ? `<img src="${l.solutionImgUrl}" class="img-fluid rounded border mt-2" style="max-height: 400px;">` : '<p class="text-muted small mt-1">ยังไม่มีรูปภาพเฉลย</p>'}
                 </div>
               </div>
             </div>
@@ -427,9 +426,8 @@
             <input type="text" class="form-control form-control-sm" id="title_${i}" value="${l.title || ''}">
           </div>
           <div class="mb-2">
-            <label class="form-label small fw-bold mb-1">อัปโหลดรูปภาพ Block Code เฉลย</label>
-            <input type="file" class="form-control form-control-sm mb-1" id="fileInput_${i}" accept="image/*" onchange="uploadSolutionImage(${i})">
-            <input type="text" class="form-control form-control-sm" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="URL รูปภาพจะแสดงที่นี่อัตโนมัติ" readonly>
+            <label class="form-label small fw-bold mb-1">รายละเอียดบทเรียน</label>
+            <textarea class="form-control form-control-sm" id="desc_${i}" rows="2">${l.desc || ''}</textarea>
           </div>
           <div class="mb-2">
             <label class="form-label small fw-bold mb-1">ลิงก์ YouTube (คั่นด้วยเครื่องหมาย ,)</label>
@@ -455,8 +453,9 @@
             <input type="text" class="form-control form-control-sm" id="solutionCode_${i}" value="${l.solutionCodeUrl || ''}">
           </div>
           <div class="mb-2">
-            <label class="form-label small fw-bold mb-1">ลิงก์รูปภาพ Block Code เฉลย</label>
-            <input type="text" class="form-control form-control-sm" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}">
+            <label class="form-label small fw-bold mb-1">อัปโหลดรูปภาพ Block Code เฉลย</label>
+            <input type="file" class="form-control form-control-sm mb-1" id="fileInput_${i}" accept="image/*" onchange="uploadSolutionImage(${i})">
+            <input type="text" class="form-control form-control-sm" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="URL รูปภาพจะแสดงที่นี่อัตโนมัติ" readonly>
           </div>
         </div>
       `;
@@ -481,7 +480,6 @@
       l.videos = vidInput ? vidInput.split(',').map(v => v.trim()) : [];
       l.worksheetUrl = document.getElementById(`work_${i}`).value;
       
-      // บันทึกฟิลด์ของคุณครูเพิ่ม
       l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
       l.answerSheetUrl = document.getElementById(`answerSheet_${i}`).value;
       l.solutionCodeUrl = document.getElementById(`solutionCode_${i}`).value;
@@ -502,6 +500,7 @@
       }
     });
   }
+
   function uploadSolutionImage(index) {
     let fileInput = document.getElementById(`fileInput_${index}`);
     let urlInput = document.getElementById(`solutionImg_${index}`);
@@ -512,8 +511,6 @@
     let reader = new FileReader();
     reader.onload = function(e) {
       let base64Data = e.target.result;
-      
-      // แสดงสถานะกำลังอัปโหลด
       urlInput.value = "กำลังอัปโหลดรูปภาพ...";
   
       fetch(GAS_API_URL, {
@@ -533,6 +530,10 @@
           alert("เกิดข้อผิดพลาดในการอัปโหลด: " + res.message);
           urlInput.value = "";
         }
+      })
+      .catch(err => {
+        alert("เกิดข้อผิดพลาดในการอัปโหลด: " + err.message);
+        urlInput.value = "";
       });
     };
     reader.readAsDataURL(file);
