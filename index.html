@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>สื่อการเรียนรู้หุ่นยนต์ ROBOCART</title>
   
+  <!-- Bootstrap 5 CSS & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font: Prompt & Sarabun -->
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
   
   <style>
@@ -17,22 +19,146 @@
       --card-radius: 16px;
       --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
     }
-    body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); color: #1e293b; }
-    h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Prompt', sans-serif; }
-    .navbar { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: 3px solid #3b82f6; }
-    .custom-card { border: 1px solid #e2e8f0; border-radius: var(--card-radius); box-shadow: var(--card-shadow); background: #ffffff; }
-    .lesson-nav .nav-link { color: #64748b; font-weight: 500; font-family: 'Prompt', sans-serif; border-radius: 12px; padding: 14px 18px; margin-bottom: 8px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between; border: 1px solid transparent; background-color: #f8fafc; }
-    .lesson-nav .nav-link:hover { background-color: #e0e7ff; color: var(--primary-color); transform: translateX(4px); }
-    .lesson-nav .nav-link.active { background: var(--primary-gradient); color: #ffffff; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); border-color: transparent; }
-    .teacher-section { background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 100%); border: 2px dashed #10b981; border-radius: var(--card-radius); }
-    .teacher-card { border: 1px solid #a7f3d0; border-radius: 14px; background: #ffffff; transition: all 0.2s ease; }
-    .solution-img-wrapper { position: relative; background-color: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; text-align: center; overflow: hidden; }
-    .solution-img-preview { max-height: 480px; width: 100%; object-fit: contain; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
-    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 14px; box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.15); background: #000; }
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-    .form-control { border-radius: 10px; padding: 12px 16px; border: 1px solid #cbd5e1; }
-    .btn-custom-primary { background: var(--primary-gradient); color: white; border-radius: 10px; font-weight: 600; font-family: 'Prompt', sans-serif; border: none; }
-    .badge-chapter { background-color: #eff6ff; color: #1d4ed8; font-size: 0.85rem; padding: 6px 12px; border-radius: 20px; font-weight: 600; }
+    
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: var(--bg-color);
+      color: #1e293b;
+    }
+
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: 'Prompt', sans-serif;
+    }
+
+    /* Navbar UI */
+    .navbar {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-bottom: 3px solid #3b82f6;
+    }
+
+    /* Custom Card Style */
+    .custom-card {
+      border: 1px solid #e2e8f0;
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      background: #ffffff;
+    }
+
+    /* Lesson Sidebar Nav */
+    .lesson-nav .nav-link {
+      color: #64748b;
+      font-weight: 500;
+      font-family: 'Prompt', sans-serif;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid transparent;
+      background-color: #f8fafc;
+    }
+
+    .lesson-nav .nav-link:hover {
+      background-color: #e0e7ff;
+      color: var(--primary-color);
+      transform: translateX(4px);
+    }
+
+    .lesson-nav .nav-link.active {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      border-color: transparent;
+    }
+
+    /* Teacher Section & Solution Card Design */
+    .teacher-section {
+      background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 100%);
+      border: 2px dashed #10b981;
+      border-radius: var(--card-radius);
+    }
+
+    .teacher-card {
+      border: 1px solid #a7f3d0;
+      border-radius: 14px;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .teacher-card:hover {
+      box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* Frame แสดงรูปภาพ Block Code เฉลย */
+    .solution-img-wrapper {
+      position: relative;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .solution-img-preview {
+      max-height: 480px;
+      width: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Video Container */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.15);
+      background: #000;
+    }
+    
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+
+    /* Buttons & Controls */
+    .form-control {
+      border-radius: 10px;
+      padding: 12px 16px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-custom-primary {
+      background: var(--primary-gradient);
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      font-family: 'Prompt', sans-serif;
+      border: none;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+    .btn-custom-primary:hover {
+      color: white;
+      opacity: 0.95;
+    }
+
+    .badge-chapter {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -50,7 +176,6 @@
         <i class="bi bi-person-badge-fill"></i> โหมดคุณครู
       </button>
 
-      <!-- 🔗 เปลี่ยนเป็นลิงก์เปิดหน้า admin.html -->
       <a href="admin.html" class="btn btn-outline-light rounded-pill px-3 shadow-sm d-flex align-items-center gap-1">
         <i class="bi bi-gear-fill"></i> จัดการระบบ
       </a>
@@ -159,6 +284,25 @@
     let l = lessonsData.find(item => item.id === id);
     if (!l) return;
 
+    // 🟢 ตรวจสอบการ์ตูนสถานการณ์ (แสดงเฉพาะบทที่ 2, 3, 4)
+    let scenarioVidHtml = '';
+    if ([2, 3, 4].includes(l.id) && l.scenarioVideo) {
+      let embedScenario = getEmbedYoutubeUrl(l.scenarioVideo);
+      if (embedScenario) {
+        scenarioVidHtml = `
+          <div class="card border-0 shadow-sm p-3 mb-4 rounded-4" style="background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-left: 5px solid #f97316 !important;">
+            <h5 class="fw-bold text-warning-emphasis font-heading mb-2">
+              <i class="bi bi-film me-2 text-danger"></i> 🎬 การ์ตูนสถานการณ์จำลอง (บทที่ ${l.id})
+            </h5>
+            <p class="text-secondary small mb-3">ชวนคิดก่อนเริ่มเรียน: มาดูสถานการณ์จำลองของบทเรียนนี้กันก่อนเลย!</p>
+            <div class="video-container shadow-sm mb-0">
+              <iframe src="${embedScenario}" allowfullscreen></iframe>
+            </div>
+          </div>
+        `;
+      }
+    }
+
     let vids = l.videos ? l.videos.map(v => {
       let embedUrl = getEmbedYoutubeUrl(v);
       return embedUrl ? `<div class="video-container mb-3"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
@@ -235,10 +379,11 @@
       <p class="text-secondary fs-6 mb-4 leading-relaxed">${l.desc || ''}</p>
 
       ${teacherHtml}
+      ${scenarioVidHtml}
 
       <div class="mb-4">
         <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2">
-          <i class="bi bi-play-btn-fill text-danger"></i> วิดีโอประกอบการเรียนรู้
+          <i class="bi bi-play-btn-fill text-danger"></i> วิดีโอเนื้อหาประกอบการเรียนรู้
         </h5>
         ${vids || '<div class="p-4 bg-light rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
       </div>
