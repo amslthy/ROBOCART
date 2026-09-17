@@ -15,7 +15,7 @@
     :root {
       --primary-color: #00bcd4;
       --bg-color: #e0e0e0;
-      --card-radius: 12px;
+      --card-radius: 14px;
     }
     
     body {
@@ -30,7 +30,7 @@
       font-family: 'Prompt', sans-serif;
     }
 
-    /* Top Navbar สไตล์เรียบตามภาพ Wireframe */
+    /* Top Navbar */
     .navbar {
       background-color: #00b4d8;
       padding: 12px 24px;
@@ -65,7 +65,7 @@
       color: #fff;
     }
 
-    /* Canvas พื้นที่หลักขยายเต็มตา */
+    /* Main Layout Canvas */
     .main-wrapper {
       width: 100%;
       max-width: 1750px;
@@ -73,14 +73,6 @@
       padding: 16px;
     }
 
-    .custom-card {
-      border: none;
-      border-radius: var(--card-radius);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      background: #ffffff;
-    }
-
-    /* Sidebar เมนูด้านซ้ายสีส้มตามภาพ */
     .sidebar-card {
       background-color: #ffb703;
       border-radius: var(--card-radius);
@@ -114,7 +106,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* Content Card ฝั่งขวาขยายพื้นที่กว้างพิเศษ */
     .content-card-large {
       background-color: #ffffff;
       border-radius: var(--card-radius);
@@ -123,7 +114,7 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
-    /* Video Container ขนาดใหญ่ */
+    /* Video Container */
     .video-container {
       position: relative;
       padding-bottom: 56.25%;
@@ -141,6 +132,72 @@
       border: 0;
     }
 
+    /* ✨ 1. ปรับปรุงกรอบการ์ตูนสถานการณ์จำลอง (Playful Cartoon Box) */
+    .scenario-card-modern {
+      background: linear-gradient(135deg, #fff3eb 0%, #ffe5d9 100%);
+      border: 2px solid #ff9f1c;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 25px -5px rgba(255, 159, 28, 0.25);
+      position: relative;
+    }
+
+    .scenario-badge {
+      background: linear-gradient(135deg, #ff9f1c 0%, #ff4000 100%);
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      font-size: 0.9rem;
+      padding: 6px 16px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(255, 64, 0, 0.3);
+    }
+
+    /* 🔥 2. ปรับปรุงกล่องตรวจสอบ Block Code ให้โดดเด่นเป็นพิเศษ (Hero Code Checker) */
+    .checker-hero-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 2px solid #38bdf8;
+      border-radius: 20px;
+      padding: 28px;
+      color: #ffffff;
+      box-shadow: 0 12px 30px -5px rgba(15, 23, 42, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .checker-hero-card::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 150px;
+      height: 150px;
+      background: rgba(56, 189, 248, 0.15);
+      border-radius: 50%;
+      blur: 40px;
+    }
+
+    .btn-checker-submit {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      color: #ffffff;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px 28px;
+      border: none;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-checker-submit:hover {
+      background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.5);
+    }
+
     .teacher-section {
       background: #f0fdf4;
       border: 2px dashed #10b981;
@@ -150,7 +207,7 @@
 </head>
 <body>
 
-<!-- Navbar ตามโทน Wireframe -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid px-3">
     <a class="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2 text-white" href="#">
@@ -181,10 +238,10 @@
   </div>
 </div>
 
-<!-- Main Wrapper สัดส่วนขยายฝั่งขวาใหญ่พิเศษ -->
+<!-- Main Wrapper -->
 <div class="main-wrapper">
   <div class="row g-3">
-    <!-- ฝั่งซ้าย: แถบสารบัญ (สัดส่วน col-lg-2) -->
+    <!-- ฝั่งซ้าย: สารบัญ -->
     <div class="col-lg-2 col-md-3">
       <div class="sidebar-card">
         <h6 class="fw-bold mb-3 text-dark font-heading d-flex align-items-center gap-2">
@@ -194,7 +251,7 @@
       </div>
     </div>
 
-    <!-- ฝั่งขวา: พื้นที่แสดงเนื้อหาขนาดใหญ่ (สัดส่วน col-lg-10) -->
+    <!-- ฝั่งขวา: เนื้อหาหลัก -->
     <div class="col-lg-10 col-md-9">
       <div class="content-card-large" id="lessonContent">
         <div class="text-center my-5 py-5">
@@ -272,17 +329,22 @@
     let l = lessonsData.find(item => item.id === id);
     if (!l) return;
 
+    // ✨ 1. การ์ตูนสถานการณ์จำลอง (สไตล์ใหม่ Playful Frame)
     let scenarioVidHtml = '';
     if ([2, 3, 4].includes(l.id) && l.scenarioVideo) {
       let embedScenario = getEmbedYoutubeUrl(l.scenarioVideo);
       if (embedScenario) {
         scenarioVidHtml = `
-          <div class="card border-0 shadow-sm p-3 mb-4 rounded-4" style="background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-left: 5px solid #f97316 !important;">
-            <h5 class="fw-bold text-warning-emphasis font-heading mb-2">
-              <i class="bi bi-film me-2 text-danger"></i> 🎬 การ์ตูนสถานการณ์จำลอง (บทที่ ${l.id})
-            </h5>
-            <p class="text-secondary small mb-3">ชวนคิดก่อนเริ่มเรียน: มาดูสถานการณ์จำลองของบทเรียนนี้กันก่อนเลย!</p>
-            <div class="video-container shadow-sm mb-0">
+          <div class="scenario-card-modern mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="scenario-badge">
+                <i class="bi bi-stars"></i> การ์ตูนสถานการณ์จำลอง (บทที่ ${l.id})
+              </span>
+              <span class="text-orange-emphasis fw-semibold small d-none d-sm-inline">
+                <i class="bi bi-lightbulb me-1"></i>ชวนคิดก่อนเริ่มลงมือปฏิบัติ!
+              </span>
+            </div>
+            <div class="video-container shadow">
               <iframe src="${embedScenario}" allowfullscreen></iframe>
             </div>
           </div>
@@ -297,8 +359,8 @@
 
     let mainVidsHtml = `
       <div class="mb-4">
-        <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2">
-          <i class="bi bi-play-btn-fill text-danger"></i> วิดีโอเนื้อหาประกอบการเรียนรู้
+        <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2 text-dark">
+          <i class="bi bi-play-btn-fill text-danger fs-4"></i> วิดีโอเนื้อหาประกอบการเรียนรู้
         </h5>
         ${vids || '<div class="p-4 bg-light rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
       </div>
@@ -372,6 +434,7 @@
       `;
     }
 
+    // 🔥 2. ส่วนตรวจ Code อัตโนมัติ (Hero Card Design)
     let html = `
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
         <div>
@@ -385,17 +448,31 @@
       ${teacherHtml}
       ${combinedVideosHtml}
 
-      <div class="bg-light p-4 rounded-4 border mt-4">
-        <h5 class="fw-bold font-heading text-dark mb-1"><i class="bi bi-check-circle text-success me-1"></i> ตรวจสอบ Block Code อัตโนมัติ</h5>
-        <p class="text-muted small mb-3">วาง Project Link จาก Microsoft MakeCode เพื่อตรวจทานความถูกต้องก่อนนำโค้ดลงหุ่นยนต์</p>
+      <!-- Hero Auto Code Checker Zone -->
+      <div class="checker-hero-card mt-5">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge bg-warning text-dark fw-bold font-heading px-3 py-1 rounded-pill">
+            <i class="bi bi-lightning-charge-fill me-1"></i> Feature สำคัญ
+          </span>
+          <h4 class="fw-bold font-heading mb-0 text-white">ระบบตรวจสอบ Block Code อัตโนมัติ</h4>
+        </div>
+        <p class="text-light opacity-75 fs-6 mb-4">
+          คัดลอก Share Link จาก Microsoft MakeCode มาวางในช่องด้านล่าง เพื่อตรวจทานความถูกต้องของโค้ดก่อนทำการแฟลชลงหุ่นยนต์ ROBOCART
+        </p>
         
         <form onsubmit="handleInlineCheck(event, ${l.id})">
-          <div class="input-group mb-3">
-            <span class="input-group-text bg-white border-end-0"><i class="bi bi-link-45deg text-muted"></i></span>
-            <input type="url" class="form-control border-start-0" id="inlineCheckUrl_${l.id}" placeholder="https://makecode.microbit.org/S00000-00000-00000-00000" required>
-            <button type="submit" class="btn btn-primary px-4 font-heading" id="btnInlineCheck_${l.id}">
-              ตรวจสอบโค้ด
-            </button>
+          <div class="row g-2">
+            <div class="col-md-9">
+              <div class="input-group">
+                <span class="input-group-text bg-white border-0 text-primary fs-5 px-3"><i class="bi bi-link-45deg"></i></span>
+                <input type="url" class="form-control border-0 py-3 fs-6" id="inlineCheckUrl_${l.id}" placeholder="วางลิงก์ MakeCode ที่นี่ (เช่น https://makecode.microbit.org/S00000-...)" required>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-checker-submit w-100 h-100 d-flex align-items-center justify-content-center gap-2 fs-6" id="btnInlineCheck_${l.id}">
+                <i class="bi bi-cpu-fill fs-5"></i> ตรวจสอบโค้ด
+              </button>
+            </div>
           </div>
         </form>
         <div id="inlineCheckResult_${l.id}"></div>
@@ -420,7 +497,7 @@
     let resDiv = document.getElementById(`inlineCheckResult_${chapterId}`);
 
     btn.disabled = true;
-    resDiv.innerHTML = `<div class="p-3 text-center text-muted bg-white rounded-3 border mt-2"><div class="spinner-border spinner-border-sm text-primary me-2"></div> กำลังวิเคราะห์ Block Code...</div>`;
+    resDiv.innerHTML = `<div class="p-3 text-center text-white bg-dark rounded-3 border border-secondary mt-3"><div class="spinner-border spinner-border-sm text-info me-2"></div> กำลังวิเคราะห์ Block Code อัตโนมัติ...</div>`;
 
     fetch(GAS_API_URL, {
       method: "POST",
@@ -430,17 +507,17 @@
     .then(res => {
       btn.disabled = false;
       if(!res.success) {
-        resDiv.innerHTML = `<div class="alert alert-danger rounded-3 mb-0 mt-2">${res.message}</div>`;
+        resDiv.innerHTML = `<div class="alert alert-danger rounded-3 mb-0 mt-3 border-0 shadow-sm"><i class="bi bi-exclamation-octagon-fill me-2"></i>${res.message}</div>`;
       } else if(res.passed) {
-        resDiv.innerHTML = `<div class="alert alert-success rounded-3 mb-0 mt-2"><h6 class="fw-bold font-heading mb-1"><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่าน</h6><p class="mb-0 small">${res.message}</p></div>`;
+        resDiv.innerHTML = `<div class="alert alert-success rounded-3 mb-0 mt-3 border-0 shadow-sm"><h6 class="fw-bold font-heading mb-1"><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่านเรียบร้อย!</h6><p class="mb-0 small">${res.message}</p></div>`;
       } else {
         let list = res.feedback.map(f => `<li>${f}</li>`).join('');
-        resDiv.innerHTML = `<div class="alert alert-warning rounded-3 mb-0 mt-2"><h6 class="fw-bold font-heading mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> จุดที่ต้องแก้ไขเพิ่มเติม:</h6><ul class="mb-0 ps-3 small">${list}</ul></div>`;
+        resDiv.innerHTML = `<div class="alert alert-warning rounded-3 mb-0 mt-3 border-0 shadow-sm"><h6 class="fw-bold font-heading mb-1 text-dark"><i class="bi bi-exclamation-triangle-fill me-1"></i> จุดที่ต้องแก้ไขเพิ่มเติม:</h6><ul class="mb-0 ps-3 small text-dark">${list}</ul></div>`;
       }
     })
     .catch(err => {
       btn.disabled = false;
-      resDiv.innerHTML = `<div class="alert alert-danger rounded-3 mb-0 mt-2">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
+      resDiv.innerHTML = `<div class="alert alert-danger rounded-3 mb-0 mt-3 border-0 shadow-sm">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
     });
   }
 
