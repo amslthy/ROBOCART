@@ -408,19 +408,20 @@
       }
     }
 
-    // 🟢 ส่วนที่ 2: วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้ (Lesson Review)
+    // 🟢 ส่วนที่ 2: วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้
     let reviewVidsHtml = '';
-    let reviewEmbeds = l.videos ? l.videos.map(v => {
-      let embedUrl = getEmbedYoutubeUrl(v);
-      return embedUrl ? `<div class="video-container mb-3"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
-    }).join('') : '';
-
+    let reviewUrl = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
+    let embedReview = getEmbedYoutubeUrl(reviewUrl);
+    
     reviewVidsHtml = `
       <div class="review-card-modern mb-4">
         <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2 text-dark">
           <i class="bi bi-play-btn-fill text-danger fs-4"></i> วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้
         </h5>
-        ${reviewEmbeds || '<div class="p-3 bg-white rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอทบทวนเนื้อหาสำหรับบทเรียนนี้</div>'}
+        ${embedReview ? 
+          `<div class="video-container mb-0"><iframe src="${embedReview}" allowfullscreen></iframe></div>` : 
+          '<div class="p-3 bg-white rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอทบทวนเนื้อหาสำหรับบทเรียนนี้</div>'
+        }
       </div>
     `;
 
