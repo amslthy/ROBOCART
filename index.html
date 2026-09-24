@@ -16,7 +16,7 @@
       --primary-color: #00bcd4;
       --bg-color: #e0e0e0;
       --card-radius: 14px;
-      --checker-theme-color: #ff751f; /* โทนสีหลักตามที่ต้องการ */
+      --checker-theme-color: #ff751f;
     }
     
     body {
@@ -66,7 +66,7 @@
       color: #fff;
     }
 
-    /* Main Layout Canvas */
+    /* Main Layout */
     .main-wrapper {
       width: 100%;
       max-width: 1750px;
@@ -115,13 +115,13 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
-    /* Video Container */
+    /* Video Frame */
     .video-container {
       position: relative;
       padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
-      border-radius: 14px;
+      border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
       background: #000;
     }
@@ -133,37 +133,73 @@
       border: 0;
     }
 
-    /* ✨ 1. การ์ตูนสถานการณ์จำลอง (ขยายขนาดตัวหนังสือ) */
+    /* 🎬 กล่องที่ 1: การ์ตูนสถานการณ์จำลอง */
     .scenario-card-modern {
       background: linear-gradient(135deg, #fff3eb 0%, #ffe5d9 100%);
       border: 2px solid #ff9f1c;
       border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 10px 25px -5px rgba(255, 159, 28, 0.25);
-      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(255, 159, 28, 0.2);
     }
 
     .scenario-badge {
       background: linear-gradient(135deg, #ff9f1c 0%, #ff4000 100%);
       color: #fff;
       font-family: 'Prompt', sans-serif;
-      font-size: 1.15rem; /* ตัวอักษรใหญ่ขึ้น */
+      font-size: 1.15rem;
       font-weight: 600;
       padding: 8px 22px;
       border-radius: 30px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 14px rgba(255, 64, 0, 0.3);
+      box-shadow: 0 4px 14px rgba(255, 64, 0, 0.25);
     }
 
     .scenario-subtext {
-      font-size: 1.1rem; /* ขยายขนาดข้อความชวนคิด */
+      font-size: 1.1rem;
       font-weight: 600;
       color: #c2410c;
     }
 
-    /* 🔥 2. กล่องตรวจสอบ Block Code โทนสี #ff751f */
+    /* 🎬 กล่องที่ 2: วิดีโอทบทวนเนื้อหา */
+    .review-card-modern {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    /* 🎬 กล่องที่ 3: การ์ตูนมอบหมายภารกิจ */
+    .mission-card-modern {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 2px solid #3b82f6;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+    }
+
+    .mission-badge {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      padding: 8px 22px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+    }
+
+    .mission-subtext {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    /* 🔥 กล่องตรวจสอบ Block Code (โทนส้ม #ff751f) */
     .checker-hero-card {
       background: linear-gradient(135deg, #ff751f 0%, #e65c00 100%);
       border: 2px solid #ff9d5c;
@@ -283,7 +319,7 @@
   </div>
 </div>
 
-<!-- Modal ยืนยันตัวตนสำหรับโหมดคุณครู -->
+<!-- Modal ยืนยันตัวตนโหมดคุณครู -->
 <div class="modal fade" id="teacherModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg" style="border-radius: var(--card-radius);">
@@ -349,9 +385,9 @@
     let l = lessonsData.find(item => item.id === id);
     if (!l) return;
 
-    // ✨ 1. การ์ตูนสถานการณ์จำลอง (ข้อความใหญ่ขึ้นตามสั่ง)
+    // 🟢 ส่วนที่ 1: การ์ตูนสถานการณ์จำลอง (Simulation Scenario)
     let scenarioVidHtml = '';
-    if ([2, 3, 4].includes(l.id) && l.scenarioVideo) {
+    if (l.scenarioVideo) {
       let embedScenario = getEmbedYoutubeUrl(l.scenarioVideo);
       if (embedScenario) {
         scenarioVidHtml = `
@@ -372,28 +408,47 @@
       }
     }
 
-    let vids = l.videos ? l.videos.map(v => {
+    // 🟢 ส่วนที่ 2: วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้ (Lesson Review)
+    let reviewVidsHtml = '';
+    let reviewEmbeds = l.videos ? l.videos.map(v => {
       let embedUrl = getEmbedYoutubeUrl(v);
       return embedUrl ? `<div class="video-container mb-3"><iframe src="${embedUrl}" allowfullscreen></iframe></div>` : '';
     }).join('') : '';
 
-    let mainVidsHtml = `
-      <div class="mb-4">
+    reviewVidsHtml = `
+      <div class="review-card-modern mb-4">
         <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2 text-dark">
-          <i class="bi bi-play-btn-fill text-danger fs-4"></i> วิดีโอเนื้อหาประกอบการเรียนรู้
+          <i class="bi bi-play-btn-fill text-danger fs-4"></i> วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้
         </h5>
-        ${vids || '<div class="p-4 bg-light rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอสำหรับบทเรียนนี้</div>'}
+        ${reviewEmbeds || '<div class="p-3 bg-white rounded-3 text-center text-muted border">ยังไม่มีคลิปวิดีโอทบทวนเนื้อหาสำหรับบทเรียนนี้</div>'}
       </div>
     `;
 
-    let combinedVideosHtml = '';
-    let pos = l.scenarioPosition || 'before';
-    if (pos === 'after') {
-      combinedVideosHtml = mainVidsHtml + scenarioVidHtml;
-    } else {
-      combinedVideosHtml = scenarioVidHtml + mainVidsHtml;
+    // 🟢 ส่วนที่ 3: การ์ตูนมอบหมายภารกิจ (Mission Assignment)
+    let missionVidHtml = '';
+    let missionUrl = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
+    if (missionUrl) {
+      let embedMission = getEmbedYoutubeUrl(missionUrl);
+      if (embedMission) {
+        missionVidHtml = `
+          <div class="mission-card-modern mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <span class="mission-badge">
+                <i class="bi bi-flag-fill"></i> การ์ตูนมอบหมายภารกิจ (บทที่ ${l.id})
+              </span>
+              <span class="mission-subtext">
+                <i class="bi bi-trophy-fill me-1"></i>พร้อมลุยภารกิจท้าทายประจำบทเรียน!
+              </span>
+            </div>
+            <div class="video-container shadow">
+              <iframe src="${embedMission}" allowfullscreen></iframe>
+            </div>
+          </div>
+        `;
+      }
     }
 
+    // 🟢 โหมดคุณครู
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
       teacherHtml = `
@@ -443,7 +498,7 @@
                 
                 <div class="text-center p-2 bg-light rounded-3 border mt-2">
                   ${l.solutionImgUrl ? 
-                    `<img src="${l.solutionImgUrl}" style="max-height: 480px; width: 100%; object-fit: contain;" alt="รูปเฉลย Block Code">` : 
+                    `<img src="${l.solutionImgUrl}" style="max-height: 480px; width: 100%; object-fit: contain;" alt="รูปเฉลย Block Code" onerror="this.onerror=null; this.src='https://placehold.co/800x400?text=Solution+Image+Not+Found';">` : 
                     '<div class="py-4 text-muted small"><i class="bi bi-image fs-1 d-block mb-2 text-black-50"></i>ยังไม่ได้อัปโหลดรูปภาพ Block Code เฉลยสำหรับบทเรียนนี้</div>'
                   }
                 </div>
@@ -454,7 +509,6 @@
       `;
     }
 
-    // 🔥 2. ระบบตรวจ Code อัตโนมัติ (ป้าย "check" + สี #ff751f)
     let html = `
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
         <div>
@@ -466,9 +520,17 @@
       <p class="text-secondary fs-5 mb-4 leading-relaxed">${l.desc || ''}</p>
 
       ${teacherHtml}
-      ${combinedVideosHtml}
+      
+      <!-- คลิปส่วนที่ 1: การ์ตูนสถานการณ์จำลอง -->
+      ${scenarioVidHtml}
 
-      <!-- Hero Auto Code Checker (โทนสีส้ม #ff751f) -->
+      <!-- คลิปส่วนที่ 2: วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้ -->
+      ${reviewVidsHtml}
+
+      <!-- คลิปส่วนที่ 3: การ์ตูนมอบหมายภารกิจ -->
+      ${missionVidHtml}
+
+      <!-- กล่องตรวจ Block Code อัตโนมัติ (Hero Color #ff751f) -->
       <div class="checker-hero-card mt-5">
         <div class="d-flex align-items-center gap-2 mb-2">
           <span class="badge-check">
