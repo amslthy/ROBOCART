@@ -64,21 +64,28 @@
       box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
     }
 
-    /* กล่องกลุ่มที่ 1: ข้อมูลบทเรียนทั่วไป */
+    /* กล่องข้อมูลทั่วไป */
     .section-box-general {
       background-color: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
     }
 
-    /* กล่องกลุ่มที่ 2: วิดีโอ 3 ส่วน */
+    /* กล่องวิดีโอ 3 ส่วน */
     .section-box-videos {
       background: linear-gradient(135deg, #fffbf5 0%, #fff7ed 100%);
       border: 1.5px solid #fed7aa;
       border-radius: 12px;
     }
 
-    /* กล่องกลุ่มที่ 3: สื่อโหมดคุณครู */
+    /* กล่องจัดการภารกิจมอบหมาย */
+    .section-box-tasks {
+      background-color: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 12px;
+    }
+
+    /* กล่องสื่อโหมดคุณครู */
     .section-box-teacher {
       background-color: #f0fdf4;
       border: 1.5px dashed #34d399;
@@ -216,6 +223,19 @@
       let mainVideoLink = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
       let missionVideoLink = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
 
+      // ดึงข้อความภารกิจเดิมมาแสดง (แยกบรรทัด)
+      let practiceText = '';
+      let worksheetText = '';
+      if (l.missionTasks && Array.isArray(l.missionTasks)) {
+        l.missionTasks.forEach(t => {
+          if (t.type === 'practice' || t.tag.includes('ปฏิบัติ')) {
+            practiceText = t.text;
+          } else if (t.type === 'worksheet' || t.tag.includes('ใบงาน')) {
+            worksheetText = t.text;
+          }
+        });
+      }
+
       html += `
         <div class="admin-card-item mb-4">
           <div class="admin-card-header d-flex justify-content-between align-items-center">
@@ -247,7 +267,7 @@
               </div>
             </div>
 
-            <!-- ส่วนที่ 2: วิดีโอการเรียนรู้ 3 ส่วน (Scenario, Review, Mission) -->
+            <!-- ส่วนที่ 2: วิดีโอการเรียนรู้ 3 ส่วน -->
             <div class="section-box-videos p-3 mb-4">
               <h6 class="fw-bold text-warning-emphasis font-heading mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-play-circle-fill text-danger fs-5"></i> 2. สื่อวิดีโอ 3 ส่วนประจำบทเรียน (YouTube Links)
@@ -276,10 +296,32 @@
               </div>
             </div>
 
-            <!-- ส่วนที่ 3: สื่อและเฉลยโหมดคุณครู -->
+            <!-- ส่วนที่ 3: จัดการภารกิจมอบหมายใต้คลิป (Mission Tasks) -->
+            <div class="section-box-tasks p-3 mb-4">
+              <h6 class="fw-bold text-primary font-heading mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-check2-square text-primary fs-5"></i> 3. รายละเอียดภารกิจมอบหมายประจำบทเรียน (แสดงใต้คลิปที่ 3)
+              </h6>
+              <div class="row g-3">
+                <div class="col-md-12">
+                  <label class="form-label small fw-bold mb-1 text-dark">
+                    <span class="badge bg-warning text-dark me-1 font-heading">กิจกรรมปฏิบัติ</span> รายละเอียดงานเขียนโค้ด / ต่อวงจร (เว้นว่างไว้หากไม่มี)
+                  </label>
+                  <input type="text" class="form-control bg-white border-primary-subtle" id="taskPractice_${i}" value="${practiceText}" placeholder="เช่น นักเรียนต้อง coding ให้หุ่นเคลื่อนไหว ได้ 2 ทิศทาง...">
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label small fw-bold mb-1 text-dark">
+                    <span class="badge bg-primary text-white me-1 font-heading">กิจกรรมใบงาน</span> รายละเอียดงานในใบงาน / วางแผน (เว้นว่างไว้หากไม่มี)
+                  </label>
+                  <input type="text" class="form-control bg-white border-primary-subtle" id="taskWorksheet_${i}" value="${worksheetText}" placeholder="เช่น นักเรียนต้องออกแบบเส้นทางให้หุ่นยนต์เพื่อหาทางออกตามแผนที่...">
+                </div>
+              </div>
+            </div>
+
+            <!-- ส่วนที่ 4: สื่อและเฉลยโหมดคุณครู -->
             <div class="section-box-teacher p-3">
               <h6 class="fw-bold text-success font-heading mb-3 d-flex align-items-center gap-2">
-                <i class="bi bi-person-badge"></i> 3. สื่อคู่มือและเฉลยสำหรับผู้สอน (Teacher Mode)
+                <i class="bi bi-person-badge"></i> 4. สื่อคู่มือและเฉลยสำหรับผู้สอน (Teacher Mode)
               </h6>
               <div class="row g-3">
                 <div class="col-md-4">
@@ -299,7 +341,7 @@
                     <i class="bi bi-image text-info me-1"></i>ลิงก์รูปภาพ หรือ Path รูปภาพ Block Code เฉลย (Direct URL)
                   </label>
                   <input type="text" class="form-control bg-white" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="เช่น images/solution1.png หรือ https://i.imgur.com/your-image.png">
-                  <span class="text-muted small">💡 คำแนะนำ: นำไฟล์รูปไปใส่ไว้ใน GitHub (เช่น โฟลเดอร์ images/) หรืออัปโหลดผ่านเว็บฝากรูปสาธารณะ แล้วนำ Direct Image URL มาวางที่นี่ได้ทันที</span>
+                  <span class="text-muted small">💡 คำแนะนำ: นำไฟล์รูปไปใส่ไว้ใน GitHub (โฟลเดอร์ images/) หรือฝากรูปเว็บสาธารณะ แล้วนำลิงก์ตรงมาวาง</span>
                 </div>
               </div>
             </div>
@@ -317,16 +359,35 @@
       l.desc = document.getElementById(`desc_${i}`).value;
       l.worksheetUrl = document.getElementById(`work_${i}`).value;
       
-      // ดึงค่าคลิปวิดีโอ 3 ส่วน
+      // ดึงคลิป 3 ส่วน
       l.scenarioVideo = document.getElementById(`scenarioVid_${i}`).value;
       let reviewVid = document.getElementById(`vid_${i}`).value.trim();
       l.missionVideo = document.getElementById(`missionVid_${i}`).value.trim();
 
-      // จัดเก็บ Array videos ให้รองรับ backward compatibility
       l.videos = [];
       if (reviewVid) l.videos.push(reviewVid);
       if (l.missionVideo) l.videos.push(l.missionVideo);
       
+      // 🟢 ดึงข้อมูลภารกิจมอบหมาย (Mission Tasks)
+      l.missionTasks = [];
+      let practiceVal = document.getElementById(`taskPractice_${i}`).value.trim();
+      let worksheetVal = document.getElementById(`taskWorksheet_${i}`).value.trim();
+      
+      if (practiceVal) {
+        l.missionTasks.push({
+          type: "practice",
+          tag: "กิจกรรมปฏิบัติ",
+          text: practiceVal
+        });
+      }
+      if (worksheetVal) {
+        l.missionTasks.push({
+          type: "worksheet",
+          tag: "กิจกรรมใบงาน",
+          text: worksheetVal
+        });
+      }
+
       // ดึงข้อมูลโหมดคุณครู
       l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
       l.answerSheetUrl = document.getElementById(`answerSheet_${i}`).value;
