@@ -199,6 +199,41 @@
       color: #1e40af;
     }
 
+    /* 🎯 กล่องรายละเอียดภารกิจที่มอบหมาย (ใต้คลิปภารกิจ) */
+    .mission-detail-box {
+      background-color: #ffffff;
+      border: 2px solid #93c5fd;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-top: 18px;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08);
+    }
+
+    .task-item {
+      background-color: #f8fafc;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      border-left: 5px solid #3b82f6;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .task-item.coding {
+      border-left-color: #ff751f;
+      background-color: #fff7ed;
+    }
+
+    .task-badge-tag {
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'Prompt', sans-serif;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
     /* 🔥 กล่องตรวจสอบ Block Code (โทนส้ม #ff751f) */
     .checker-hero-card {
       background: linear-gradient(135deg, #ff751f 0%, #e65c00 100%);
@@ -346,6 +381,25 @@
   let teacherModalObj = null;
   let isTeacherLoggedIn = false;
 
+  // 📝 ฐานข้อมูลภารกิจประจำบทเรียน (สามารถปรับแต่งให้แต่ละบทมีภารกิจไม่เท่ากันได้)
+  const DEFAULT_MISSION_TASKS = {
+    1: [
+      { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดแสดงผลรูปไอคอนหัวใจและตัวอักษรชื่อตนเองบนหน้าจอ micro:bit" },
+      { type: "worksheet", tag: "กิจกรรมใบงาน", text: "บันทึกส่วนประกอบและหน้าที่ของบอร์ด micro:bit และหุ่นยนต์ ROBOCART" }
+    ],
+    2: [
+      { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนต้อง coding ให้หุ่นเคลื่อนไหว ได้ 2 ทิศทาง (เพิ่มเติมจากวิดีโอที่สอน)" },
+      { type: "worksheet", tag: "กิจกรรมใบงาน", text: "นักเรียนต้องออกแบบเส้นทางให้หุ่นยนต์เพื่อหาทางออกตามแผนที่" }
+    ],
+    3: [
+      { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโปรแกรมอ่านค่าเซนเซอร์ IR เพื่อสั่งงานให้หุ่นยนต์วิ่งตามเส้นสีดำจนถึงจุดหมาย" }
+    ],
+    4: [
+      { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดประมวลผลเซนเซอร์อัลตราโซนิก สั่งให้หุ่นยนต์หยุดหรือเลี้ยวหลบสิ่งกีดขวางในระยะ 15 cm" },
+      { type: "worksheet", tag: "กิจกรรมใบงาน", text: "บันทึกผลการทดลองระยะการตรวจจับและวิเคราะห์ทิศทางการหลบหลีก" }
+    ]
+  };
+
   window.onload = function() {
     teacherModalObj = new bootstrap.Modal(document.getElementById('teacherModal'));
     fetchInitialData();
@@ -385,7 +439,7 @@
     let l = lessonsData.find(item => item.id === id);
     if (!l) return;
 
-    // 🟢 ส่วนที่ 1: การ์ตูนสถานการณ์จำลอง (Simulation Scenario)
+    // 🟢 1. การ์ตูนสถานการณ์จำลอง (Simulation Scenario)
     let scenarioVidHtml = '';
     if (l.scenarioVideo) {
       let embedScenario = getEmbedYoutubeUrl(l.scenarioVideo);
@@ -408,11 +462,11 @@
       }
     }
 
-    // 🟢 ส่วนที่ 2: วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้
+    // 🟢 2. วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้ (แสดงคลิปแรกเพียงคลิปเดียว)
     let reviewVidsHtml = '';
     let reviewUrl = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
     let embedReview = getEmbedYoutubeUrl(reviewUrl);
-    
+
     reviewVidsHtml = `
       <div class="review-card-modern mb-4">
         <h5 class="fw-bold font-heading mb-3 d-flex align-items-center gap-2 text-dark">
@@ -425,28 +479,55 @@
       </div>
     `;
 
-    // 🟢 ส่วนที่ 3: การ์ตูนมอบหมายภารกิจ (Mission Assignment)
+    // 🟢 3. การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจที่มอบหมายด้านล่างคลิป
     let missionVidHtml = '';
     let missionUrl = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
-    if (missionUrl) {
-      let embedMission = getEmbedYoutubeUrl(missionUrl);
-      if (embedMission) {
-        missionVidHtml = `
-          <div class="mission-card-modern mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-              <span class="mission-badge">
-                <i class="bi bi-flag-fill"></i> การ์ตูนมอบหมายภารกิจ (บทที่ ${l.id})
-              </span>
-              <span class="mission-subtext">
-                <i class="bi bi-trophy-fill me-1"></i>พร้อมลุยภารกิจท้าทายประจำบทเรียน!
-              </span>
-            </div>
-            <div class="video-container shadow">
-              <iframe src="${embedMission}" allowfullscreen></iframe>
-            </div>
+    
+    // ดึงภารกิจประจำบทเรียน (ถ้ามีใน backend ให้ใช้จาก backend ถ้าไม่มีให้ใช้ DEFAULT_MISSION_TASKS)
+    let tasks = l.missionTasks || DEFAULT_MISSION_TASKS[l.id] || [];
+    let tasksListHtml = '';
+
+    if (tasks.length > 0) {
+      let taskCards = tasks.map(t => {
+        let isCode = t.type === 'practice' || t.tag.includes('ปฏิบัติ');
+        return `
+          <div class="task-item ${isCode ? 'coding' : ''}">
+            <span class="task-badge-tag ${isCode ? 'bg-warning text-dark' : 'bg-primary text-white'}">
+              <i class="bi ${isCode ? 'bi-cpu-fill' : 'bi-file-earmark-text-fill'} me-1"></i>${t.tag}
+            </span>
+            <div class="fw-medium text-dark fs-6">${t.text}</div>
           </div>
         `;
-      }
+      }).join('');
+
+      tasksListHtml = `
+        <div class="mission-detail-box">
+          <h6 class="fw-bold font-heading text-primary mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-check2-square fs-5 text-primary"></i> ภารกิจที่ต้องพิชิตในบทเรียนนี้ (${tasks.length} ภารกิจ):
+          </h6>
+          <div>${taskCards}</div>
+        </div>
+      `;
+    }
+
+    if (missionUrl || tasks.length > 0) {
+      let embedMission = getEmbedYoutubeUrl(missionUrl);
+      missionVidHtml = `
+        <div class="mission-card-modern mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <span class="mission-badge">
+              <i class="bi bi-flag-fill"></i> การ์ตูนมอบหมายภารกิจ (บทที่ ${l.id})
+            </span>
+            <span class="mission-subtext">
+              <i class="bi bi-trophy-fill me-1"></i>พร้อมลุยภารกิจท้าทายประจำบทเรียน!
+            </span>
+          </div>
+          ${embedMission ? `<div class="video-container shadow"><iframe src="${embedMission}" allowfullscreen></iframe></div>` : ''}
+          
+          <!-- 🎯 กล่องรายละเอียดภารกิจที่มอบหมายด้านล่างคลิป -->
+          ${tasksListHtml}
+        </div>
+      `;
     }
 
     // 🟢 โหมดคุณครู
@@ -525,10 +606,10 @@
       <!-- คลิปส่วนที่ 1: การ์ตูนสถานการณ์จำลอง -->
       ${scenarioVidHtml}
 
-      <!-- คลิปส่วนที่ 2: วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้ -->
+      <!-- คลิปส่วนที่ 2: วิดีโอทบทวนเนื้อหา (แสดงคลิปเดียว) -->
       ${reviewVidsHtml}
 
-      <!-- คลิปส่วนที่ 3: การ์ตูนมอบหมายภารกิจ -->
+      <!-- คลิปส่วนที่ 3: การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจ -->
       ${missionVidHtml}
 
       <!-- กล่องตรวจ Block Code อัตโนมัติ (Hero Color #ff751f) -->
