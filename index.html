@@ -201,7 +201,6 @@
       box-shadow: 0 3px 8px rgba(255, 117, 31, 0.3);
     }
 
-    /* 🖼️ ปรับแก้กรอบรูปภาพไม่ให้ล้นและแสดงผลพอดี */
     .poster-showcase-card {
       background: #f8fafc;
       border: 2px solid #e2e8f0;
@@ -584,7 +583,7 @@
     document.getElementById('lessonTabs').innerHTML = tabs;
   }
 
-  // 🏠 หน้าหลัก แก้ไขขนาดกรอบรูปไม่ให้ล้น และเพิ่มกล่องเตือนเพิ่ม Extension
+  // 🏠 หน้าหลัก
   function loadHomePage(btnElem) {
     currentLessonId = 'home';
     document.querySelectorAll('#lessonTabs .nav-link').forEach(b => b.classList.remove('active'));
@@ -618,27 +617,6 @@
               <i class="bi bi-robot display-1 text-warning d-block mb-2"></i>
               <div class="fw-bold font-heading fs-5">ROBOCART</div>
               <small class="opacity-75">4 บทเรียน • 5 ขั้นตอนการสอน</small>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 🌟 เพิ่มกล่องแจ้งเตือนการเพิ่มส่วนขยาย (Extensions) ก่อนเขียนโค้ด -->
-      <div class="alert alert-warning border-2 border-warning shadow-sm rounded-4 p-4 mb-5" role="alert">
-        <div class="d-flex align-items-start gap-3">
-          <i class="bi bi-exclamation-triangle-fill text-warning fs-1 flex-shrink-0"></i>
-          <div>
-            <h5 class="fw-bold font-heading text-dark mb-2">
-              <i class="bi bi-puzzle-fill me-1"></i> คำแนะนำสำคัญก่อนเริ่มเขียนโปรแกรมใน Microsoft MakeCode:
-            </h5>
-            <p class="mb-2 text-dark fs-6 leading-relaxed">
-              ก่อนเริ่มต้นลงมือเขียนโค้ดคำสั่งควบคุมหุ่นยนต์ ROBOCART ในแต่ละบทเรียน นักเรียนและผู้สอนจะต้องทำการ<strong>เพิ่มส่วนขยาย (Extensions)</strong> ของหุ่นยนต์เข้าสู่โปรแกรม MakeCode เสียก่อน โดยไปที่เมนู <em>Extensions (ส่วนขยาย)</em> แล้วทำการค้นหาด้วยคีย์เวิร์ด:
-            </p>
-            <div class="bg-white border rounded-3 p-3 font-monospace text-primary fw-bold fs-5 shadow-sm d-inline-block mb-2">
-              <i class="bi bi-github me-1"></i> amslthy/ro-robocart
-            </div>
-            <div class="small text-muted">
-              หรือคัดลอกลิงก์ Repository นี้ไปวางในช่องค้นหา: <a href="https://github.com/amslthy/ro-robocart" target="_blank" class="fw-bold text-decoration-underline">https://github.com/amslthy/ro-robocart</a> เพื่อเรียกใช้งานบล็อกคำสั่ง ROBOCART ทั้งหมดได้อย่างถูกต้อง
             </div>
           </div>
         </div>
@@ -697,11 +675,12 @@
         </div>
 
         <div class="row g-4 align-items-start">
-          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg ปรับขนาดไม่ให้ล้น -->
+          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg ปรับความสูงไม่ให้ล้น -->
           <div class="col-lg-5">
             <div class="poster-showcase-card">
               <img src="ID.jpg" 
                    alt="รูปแบบการจัดการเรียนรู้ 5 ขั้นตอน" 
+                   style="max-height: 480px; width: auto; margin: 0 auto;"
                    onerror="if(this.src.indexOf('ใบงาน.jpg')===-1){this.src='ใบงาน.jpg';}else{this.onerror=null;this.src='https://placehold.co/600x750/e0f2fe/0369a1?text=ID.jpg';}">
               <div class="mt-2 small text-muted font-heading">
                 <i class="bi bi-image me-1"></i> แผนภาพรูปแบบการจัดการเรียนรู้ 5 ขั้นตอน
@@ -842,7 +821,6 @@
           <i class="bi bi-tools text-warning me-2"></i>ชิ้นส่วนประกอบที่สำคัญ (9 ชิ้นส่วน):
         </h5>
         <div class="row g-3 mb-5">
-          <!-- 1. Reka bit -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -853,7 +831,6 @@
               <span class="badge bg-danger-subtle text-danger rounded-pill">REKA:BIT</span>
             </div>
           </div>
-          <!-- 2. Micro bit -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -864,7 +841,6 @@
               <span class="badge bg-primary-subtle text-primary rounded-pill">micro:bit</span>
             </div>
           </div>
-          <!-- 3. MakerLine -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -875,7 +851,6 @@
               <span class="badge bg-secondary-subtle text-dark rounded-pill">Maker Line</span>
             </div>
           </div>
-          <!-- 4. Ultrasonic -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -886,7 +861,6 @@
               <span class="badge bg-info-subtle text-info-emphasis rounded-pill">Ultrasonic Sensor</span>
             </div>
           </div>
-          <!-- 5. Servo -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -897,7 +871,6 @@
               <span class="badge bg-primary-subtle text-primary rounded-pill">Micro Servo</span>
             </div>
           </div>
-          <!-- 6. Motor -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -908,7 +881,6 @@
               <span class="badge bg-warning-subtle text-dark rounded-pill">DC Motor</span>
             </div>
           </div>
-          <!-- 7. Wheel -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -919,7 +891,6 @@
               <span class="badge bg-dark-subtle text-dark rounded-pill">Rubber Wheel</span>
             </div>
           </div>
-          <!-- 8. Battery -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
@@ -930,7 +901,6 @@
               <span class="badge bg-success-subtle text-success rounded-pill">Battery Holder</span>
             </div>
           </div>
-          <!-- 9. สายไฟเชื่อมต่อ -->
           <div class="col-12">
             <div class="hardware-card d-flex align-items-center justify-content-center gap-3 py-3">
               <i class="bi bi-plug-fill text-secondary fs-2"></i>
@@ -942,7 +912,7 @@
           </div>
         </div>
 
-        <!-- 5. ระดับบทเรียน Level 1-3 ใช้รูป Unit_Robocart.jpg -->
+        <!-- 5. ระดับบทเรียน Level 1-3 -->
         <div class="row g-4 align-items-center">
           <div class="col-lg-5">
             <div class="poster-showcase-card">
@@ -992,15 +962,104 @@
     `;
 
     document.getElementById('lessonContent').innerHTML = html;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function triggerLessonTab(chapterId) {
-    let targetBtn = document.getElementById(`tabBtn_${chapterId}`);
-    loadLesson(chapterId, targetBtn);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  function getEmbedYoutubeUrl(url) {
+    if (!url) return '';
+    url = url.trim();
+    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    let match = url.match(regExp);
+    return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : url;
   }
 
+  function formatFeedbackCard(feedbackText, index, total) {
+    let lines = feedbackText.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+    if (lines.length >= 3) {
+      return `
+        <div class="hint-card">
+          <div class="hint-line-location">
+            ${total > 1 ? `<span class="badge bg-warning text-dark me-1">จุดที่ ${index + 1}</span>` : ''}
+            ${lines[0]}
+          </div>
+          <div class="hint-line-finding">${lines[1]}</div>
+          <div class="hint-line-tip">${lines[2]}</div>
+        </div>
+      `;
+    }
+    return `<div class="hint-card"><div class="hint-raw-text">${feedbackText}</div></div>`;
+  }
+
+  function handleInlineCheck(event, chapterId) {
+    event.preventDefault();
+    let urlInput = document.getElementById(`inlineCheckUrl_${chapterId}`);
+    let btn = document.getElementById(`btnInlineCheck_${chapterId}`);
+    let resDiv = document.getElementById(`inlineCheckResult_${chapterId}`);
+
+    btn.disabled = true;
+    resDiv.innerHTML = `<div class="p-3 text-center text-white bg-dark rounded-4 border border-secondary mt-3"><div class="spinner-border spinner-border-sm text-warning me-2"></div> กำลังตรวจดูบล็อกโค้ดให้... รอสักครู่นะครับ</div>`;
+
+    fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "checkCode", chapterId: chapterId, shareUrl: urlInput.value })
+    })
+    .then(res => res.json())
+    .then(res => {
+      btn.disabled = false;
+      if(!res.success) {
+        resDiv.innerHTML = `<div class="alert alert-danger rounded-4 mb-0 mt-3 border-0 shadow-sm fs-6"><i class="bi bi-exclamation-octagon-fill me-2"></i>${res.message}</div>`;
+      } else if(res.passed) {
+        resDiv.innerHTML = `
+          <div class="alert alert-success rounded-4 mb-0 mt-3 border-0 shadow-sm p-3">
+            <h5 class="fw-bold font-heading mb-1 text-success"><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่านเรียบร้อย!</h5>
+            <p class="mb-0 fs-6 text-dark">${res.message}</p>
+          </div>`;
+      } else {
+        let cardsHtml = res.feedback.map((f, idx) => formatFeedbackCard(f, idx, res.feedback.length)).join('');
+        resDiv.innerHTML = `
+          <div class="feedback-box-wrapper">
+            <h6 class="fw-bold font-heading mb-3 text-dark fs-5 d-flex align-items-center gap-2">
+              <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i> 
+              <span>จุดที่ต้องลองกลับไปปรับแก้ไข (${res.feedback.length} จุด):</span>
+            </h6>
+            <div>${cardsHtml}</div>
+          </div>`;
+      }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      resDiv.innerHTML = `<div class="alert alert-danger rounded-4 mb-0 mt-3 border-0 shadow-sm">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
+    });
+  }
+
+  function openTeacherModal() {
+    document.getElementById('teacherPassInput').value = '';
+    document.getElementById('teacherAuthAlert').innerHTML = '';
+    teacherModalObj.show();
+  }
+
+  function verifyTeacherPassword() {
+    let pass = document.getElementById('teacherPassInput').value;
+    if (pass === '1234') {
+      isTeacherLoggedIn = true;
+      document.getElementById('teacherBadgeBar').style.display = 'block';
+      document.getElementById('btnTeacherLogin').style.display = 'none';
+      teacherModalObj.hide();
+      if (currentLessonId === 'home') loadHomePage();
+      else loadLesson(currentLessonId);
+    } else {
+      document.getElementById('teacherAuthAlert').innerHTML = `<div class="alert alert-danger py-2 small rounded-3 mb-3">รหัสผ่านไม่ถูกต้อง!</div>`;
+    }
+  }
+
+  function logoutTeacher() {
+    isTeacherLoggedIn = false;
+    document.getElementById('teacherBadgeBar').style.display = 'none';
+    document.getElementById('btnTeacherLogin').style.display = 'inline-flex';
+    if (currentLessonId === 'home') loadHomePage();
+    else loadLesson(currentLessonId);
+  }
+
+  // 🌟 ฟังก์ชันแสดงผลหน้าเนื้อหาบทเรียน (ย้ายกล่องแจ้งเตือน Extension มาไว้ก่อนวิดีโอทบทวนเนื้อหา)
   function loadLesson(id, btnElem) {
     currentLessonId = id;
     document.querySelectorAll('#lessonTabs .nav-link').forEach(b => b.classList.remove('active'));
@@ -1115,26 +1174,27 @@
       `;
     }
 
-    // 🌟 กล่องเตือน Extension เฉพาะบทที่ 2, 3, 4 (ก่อนทำภารกิจเขียนโค้ด)
+    // 🌟 กล่องเตือน Extension ดีไซน์สวยงาม (แสดงเฉพาะบทที่ 2, 3, 4) วางไว้ก่อนวิดีโอทบทวนเนื้อหา
     let extensionAlertHtml = '';
-    let chapNumInt = parseInt(l.id, 10);
-    if (chapNumInt !== 1) {
+    if (chapNum !== 1) {
       extensionAlertHtml = `
-        <div class="alert alert-warning border-2 border-warning shadow-sm rounded-4 p-4 mb-4" role="alert">
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 6px solid #f59e0b !important;">
           <div class="d-flex align-items-start gap-3">
-            <i class="bi bi-exclamation-triangle-fill text-warning fs-1 flex-shrink-0"></i>
+            <div class="bg-warning text-dark rounded-circle p-2 d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width: 48px; height: 48px;">
+              <i class="bi bi-puzzle-fill fs-4"></i>
+            </div>
             <div>
               <h5 class="fw-bold font-heading text-dark mb-2">
-                <i class="bi bi-puzzle-fill me-1"></i> คำแนะนำก่อนเขียนโค้ดบทที่ ${l.id}:
+                คำแนะนำสำคัญก่อนเริ่มเขียนโปรแกรมใน Microsoft MakeCode:
               </h5>
-              <p class="mb-2 text-dark fs-6">
-                อย่าลืมเพิ่มส่วนขยาย (Extensions) ของหุ่นยนต์ใน MakeCode โดยค้นหาด้วยคีย์เวิร์ด:
+              <p class="mb-2 text-secondary fs-6 leading-relaxed">
+                ก่อนเริ่มต้นลงมือเขียนโค้ดคำสั่งควบคุมหุ่นยนต์ ROBOCART ในบทเรียนนี้ นักเรียนจะต้องทำการ<strong>เพิ่มส่วนขยาย (Extensions)</strong> ของหุ่นยนต์เข้าสู่โปรแกรม MakeCode เสียก่อน โดยไปที่เมนู <em>Extensions (ส่วนขยาย)</em> แล้วทำการค้นหาด้วยคีย์เวิร์ด:
               </p>
-              <div class="bg-white border rounded-3 p-2 font-monospace text-primary fw-bold fs-6 shadow-sm d-inline-block mb-1">
-                amslthy/ro-robocart
+              <div class="bg-white border border-warning rounded-3 p-2 px-3 font-monospace text-primary fw-bold fs-5 shadow-sm d-inline-block mb-2">
+                <i class="bi bi-github me-1"></i> amslthy/ro-robocart
               </div>
               <div class="small text-muted">
-                หรือใช้ลิงก์: <a href="https://github.com/amslthy/ro-robocart" target="_blank" class="fw-bold text-decoration-underline">https://github.com/amslthy/ro-robocart</a>
+                หรือคัดลอกลิงก์ Repository นี้ไปวางในช่องค้นหา: <a href="https://github.com/amslthy/ro-robocart" target="_blank" class="fw-bold text-decoration-underline text-dark">https://github.com/amslthy/ro-robocart</a> เพื่อเรียกใช้งานบล็อกคำสั่ง ROBOCART ทั้งหมดได้อย่างถูกต้อง
               </div>
             </div>
           </div>
@@ -1267,109 +1327,15 @@
       <p class="text-secondary fs-5 mb-4 leading-relaxed">${l.desc || ''}</p>
 
       ${teacherHtml}
-      ${extensionAlertHtml}
       ${scenarioVidHtml}
+      ${extensionAlertHtml}
       ${reviewVidsHtml}
       ${missionVidHtml}
       ${codeCheckerHtml}
     `;
 
     document.getElementById('lessonContent').innerHTML = html;
-  }
-
-  function getEmbedYoutubeUrl(url) {
-    if (!url) return '';
-    url = url.trim();
-    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = url.match(regExp);
-    return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : url;
-  }
-
-  function formatFeedbackCard(feedbackText, index, total) {
-    let lines = feedbackText.split('\n').map(s => s.trim()).filter(s => s.length > 0);
-    if (lines.length >= 3) {
-      return `
-        <div class="hint-card">
-          <div class="hint-line-location">
-            ${total > 1 ? `<span class="badge bg-warning text-dark me-1">จุดที่ ${index + 1}</span>` : ''}
-            ${lines[0]}
-          </div>
-          <div class="hint-line-finding">${lines[1]}</div>
-          <div class="hint-line-tip">${lines[2]}</div>
-        </div>
-      `;
-    }
-    return `<div class="hint-card"><div class="hint-raw-text">${feedbackText}</div></div>`;
-  }
-
-  function handleInlineCheck(event, chapterId) {
-    event.preventDefault();
-    let urlInput = document.getElementById(`inlineCheckUrl_${chapterId}`);
-    let btn = document.getElementById(`btnInlineCheck_${chapterId}`);
-    let resDiv = document.getElementById(`inlineCheckResult_${chapterId}`);
-
-    btn.disabled = true;
-    resDiv.innerHTML = `<div class="p-3 text-center text-white bg-dark rounded-4 border border-secondary mt-3"><div class="spinner-border spinner-border-sm text-warning me-2"></div> กำลังตรวจดูบล็อกโค้ดให้... รอสักครู่นะครับ</div>`;
-
-    fetch(GAS_API_URL, {
-      method: "POST",
-      body: JSON.stringify({ action: "checkCode", chapterId: chapterId, shareUrl: urlInput.value })
-    })
-    .then(res => res.json())
-    .then(res => {
-      btn.disabled = false;
-      if(!res.success) {
-        resDiv.innerHTML = `<div class="alert alert-danger rounded-4 mb-0 mt-3 border-0 shadow-sm fs-6"><i class="bi bi-exclamation-octagon-fill me-2"></i>${res.message}</div>`;
-      } else if(res.passed) {
-        resDiv.innerHTML = `
-          <div class="alert alert-success rounded-4 mb-0 mt-3 border-0 shadow-sm p-3">
-            <h5 class="fw-bold font-heading mb-1 text-success"><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่านเรียบร้อย!</h5>
-            <p class="mb-0 fs-6 text-dark">${res.message}</p>
-          </div>`;
-      } else {
-        let cardsHtml = res.feedback.map((f, idx) => formatFeedbackCard(f, idx, res.feedback.length)).join('');
-        resDiv.innerHTML = `
-          <div class="feedback-box-wrapper">
-            <h6 class="fw-bold font-heading mb-3 text-dark fs-5 d-flex align-items-center gap-2">
-              <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i> 
-              <span>จุดที่ต้องลองกลับไปปรับแก้ไข (${res.feedback.length} จุด):</span>
-            </h6>
-            <div>${cardsHtml}</div>
-          </div>`;
-      }
-    })
-    .catch(err => {
-      btn.disabled = false;
-      resDiv.innerHTML = `<div class="alert alert-danger rounded-4 mb-0 mt-3 border-0 shadow-sm">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
-    });
-  }
-
-  function openTeacherModal() {
-    document.getElementById('teacherPassInput').value = '';
-    document.getElementById('teacherAuthAlert').innerHTML = '';
-    teacherModalObj.show();
-  }
-
-  function verifyTeacherPassword() {
-    let pass = document.getElementById('teacherPassInput').value;
-    if (pass === '1234') {
-      isTeacherLoggedIn = true;
-      document.getElementById('teacherBadgeBar').style.display = 'block';
-      document.getElementById('btnTeacherLogin').style.display = 'none';
-      teacherModalObj.hide();
-      if (currentLessonId === 'home') loadHomePage();
-      else loadLesson(currentLessonId);
-    } else {
-      document.getElementById('teacherAuthAlert').innerHTML = `<div class="alert alert-danger py-2 small rounded-3 mb-3">รหัสผ่านไม่ถูกต้อง!</div>`;
-    }
-  }
-
-  function logoutTeacher() {
-    isTeacherLoggedIn = false;
-    document.getElementById('teacherBadgeBar').style.display = 'none';
-    document.getElementById('btnTeacherLogin').style.display = 'inline-flex';
-    if (currentLessonId === 'home') loadHomePage();
-    else loadLesson(currentLessonId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
