@@ -64,28 +64,24 @@
       box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
     }
 
-    /* กล่องข้อมูลทั่วไป */
     .section-box-general {
       background-color: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
     }
 
-    /* กล่องวิดีโอ 3 ส่วน */
     .section-box-videos {
       background: linear-gradient(135deg, #fffbf5 0%, #fff7ed 100%);
       border: 1.5px solid #fed7aa;
       border-radius: 12px;
     }
 
-    /* กล่องจัดการภารกิจมอบหมาย */
     .section-box-tasks {
       background-color: #eff6ff;
       border: 1.5px solid #bfdbfe;
       border-radius: 12px;
     }
 
-    /* กล่องสื่อโหมดคุณครู */
     .section-box-teacher {
       background-color: #f0fdf4;
       border: 1.5px dashed #34d399;
@@ -134,7 +130,6 @@
 </nav>
 
 <div class="container my-4">
-  <!-- ล็อกอิน Admin -->
   <div id="authSection" class="row justify-content-center my-5">
     <div class="col-md-6 col-lg-5">
       <div class="card border-0 shadow-lg p-4" style="border-radius: var(--card-radius);">
@@ -154,7 +149,6 @@
     </div>
   </div>
 
-  <!-- ส่วนฟอร์มแก้ไขเนื้อหา -->
   <div id="editorSection" style="display: none;">
     <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm border">
       <span class="badge bg-success text-white px-3 py-2 rounded-pill font-heading fs-6">
@@ -167,7 +161,6 @@
   </div>
 </div>
 
-<!-- Floating Action Bar -->
 <div class="floating-action-bar" id="floatingBar" style="display: none;">
   <div class="container d-flex justify-content-between align-items-center">
     <span class="text-muted small d-none d-sm-inline">
@@ -223,7 +216,6 @@
       let mainVideoLink = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
       let missionVideoLink = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
 
-      // ดึงข้อความภารกิจเดิมมาแสดง
       let practiceText = '';
       let worksheetText = '';
       if (l.missionTasks && Array.isArray(l.missionTasks)) {
@@ -246,7 +238,6 @@
           </div>
           
           <div class="p-4">
-            <!-- ส่วนที่ 1: ข้อมูลบทเรียนทั่วไป -->
             <div class="section-box-general p-3 mb-4">
               <h6 class="fw-bold text-primary font-heading mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-card-text"></i> 1. ข้อมูลบทเรียนและเอกสารประกอบ
@@ -267,7 +258,6 @@
               </div>
             </div>
 
-            <!-- ส่วนที่ 2: วิดีโอการเรียนรู้ 3 ส่วน -->
             <div class="section-box-videos p-3 mb-4">
               <h6 class="fw-bold text-warning-emphasis font-heading mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-play-circle-fill text-danger fs-5"></i> 2. สื่อวิดีโอ 3 ส่วนประจำบทเรียน (YouTube Links)
@@ -296,7 +286,6 @@
               </div>
             </div>
 
-            <!-- ส่วนที่ 3: จัดการภารกิจมอบหมายใต้คลิป (Mission Tasks) -->
             <div class="section-box-tasks p-3 mb-4">
               <h6 class="fw-bold text-primary font-heading mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-check2-square text-primary fs-5"></i> 3. รายละเอียดภารกิจมอบหมายประจำบทเรียน (แสดงใต้คลิปที่ 3)
@@ -318,7 +307,6 @@
               </div>
             </div>
 
-            <!-- ส่วนที่ 4: สื่อและเฉลยโหมดคุณครู (เพิ่มช่องเกณฑ์คะแนนประเมิน Rubric) -->
             <div class="section-box-teacher p-3">
               <h6 class="fw-bold text-success font-heading mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-person-badge"></i> 4. สื่อคู่มือ เกณฑ์ประเมิน และเฉลยสำหรับผู้สอน (Teacher Mode)
@@ -345,7 +333,7 @@
                     <i class="bi bi-image text-info me-1"></i>ลิงก์รูปภาพ หรือ Path รูปภาพ Block Code เฉลย (Direct URL)
                   </label>
                   <input type="text" class="form-control bg-white" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="เช่น images/solution1.png หรือ https://i.imgur.com/your-image.png">
-                  <span class="text-muted small">💡 คำแนะนำ: นำไฟล์รูปไปใส่ไว้ใน GitHub (โฟลเดอร์ images/) หรือฝากรูปเว็บสาธารณะ แล้วนำลิงก์ตรงมาวาง</span>
+                  <span class="text-muted small">💡 คำแนะนำ: นำไฟล์รูปไปใส่ไว้ใน GitHub หรือเว็บฝากรูป แล้วนำลิงก์มาวาง</span>
                 </div>
               </div>
             </div>
@@ -363,36 +351,26 @@
       l.desc = document.getElementById(`desc_${i}`).value;
       l.worksheetUrl = document.getElementById(`work_${i}`).value;
       
-      // ดึงคลิป 3 ส่วน
       l.scenarioVideo = document.getElementById(`scenarioVid_${i}`).value;
       let reviewVid = document.getElementById(`vid_${i}`).value.trim();
-      l.missionVideo = document.getElementById(`missionVid_${i}`).value.trim();
+      let missionVidInput = document.getElementById(`missionVid_${i}`).value.trim();
 
+      l.missionVideo = missionVidInput; // แก้ไขให้ใช้ตัวแปรถูกต้อง
       l.videos = [];
       if (reviewVid) l.videos.push(reviewVid);
-      if (l.missionVideo) l.videos.push(missionVideo);
+      if (missionVidInput) l.videos.push(missionVidInput);
       
-      // ดึงข้อมูลภารกิจมอบหมาย (Mission Tasks)
       l.missionTasks = [];
       let practiceVal = document.getElementById(`taskPractice_${i}`).value.trim();
       let worksheetVal = document.getElementById(`taskWorksheet_${i}`).value.trim();
       
       if (practiceVal) {
-        l.missionTasks.push({
-          type: "practice",
-          tag: "กิจกรรมปฏิบัติ",
-          text: practiceVal
-        });
+        l.missionTasks.push({ type: "practice", tag: "กิจกรรมปฏิบัติ", text: practiceVal });
       }
       if (worksheetVal) {
-        l.missionTasks.push({
-          type: "worksheet",
-          tag: "กิจกรรมใบงาน",
-          text: worksheetVal
-        });
+        l.missionTasks.push({ type: "worksheet", tag: "กิจกรรมใบงาน", text: worksheetVal });
       }
 
-      // ดึงข้อมูลโหมดคุณครู (รวมถึง rubricUrl)
       l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
       l.answerSheetUrl = document.getElementById(`answerSheet_${i}`).value;
       l.rubricUrl = document.getElementById(`rubric_${i}`).value;
