@@ -135,8 +135,6 @@
       padding: 36px 32px;
       color: #ffffff;
       box-shadow: 0 12px 30px rgba(0, 180, 216, 0.25);
-      position: relative;
-      overflow: hidden;
     }
 
     .home-chapter-pill {
@@ -156,38 +154,51 @@
       box-shadow: 0 8px 20px rgba(2, 132, 199, 0.15);
     }
 
-    .step-card {
+    /* 🔽 สไตล์ปุ่มกดดูเพิ่มเติม (Accordion) */
+    .accordion-step-btn {
+      width: 100%;
+      text-align: left;
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-left: 6px solid #00b4d8;
       border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      padding: 18px 22px;
+      margin-bottom: 12px;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #1e293b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .accordion-step-btn:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .accordion-step-btn:not(.collapsed) {
+      background-color: #f0fdf4;
+      border-left-color: #10b981;
+      color: #065f46;
     }
 
     .step-number-badge {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       background: linear-gradient(135deg, #ff9f1c 0%, #ff751f 100%);
       color: #fff;
-      font-family: 'Prompt', sans-serif;
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(255, 117, 31, 0.3);
-    }
-
-    .sub-step-item {
-      background-color: #f8fafc;
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-top: 10px;
-      border-left: 4px solid #ffb703;
+      box-shadow: 0 3px 8px rgba(255, 117, 31, 0.3);
     }
 
     .poster-showcase-card {
@@ -201,7 +212,7 @@
 
     .poster-showcase-card img {
       width: 100%;
-      height: auto;
+      max-height: 550px;
       border-radius: 14px;
       object-fit: contain;
     }
@@ -267,13 +278,11 @@
       border: 0;
     }
 
-    /* 🎬 กล่องที่ 1: การ์ตูนสถานการณ์จำลอง */
     .scenario-card-modern {
       background: linear-gradient(135deg, #fff3eb 0%, #ffe5d9 100%);
       border: 2px solid #ff9f1c;
       border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 10px 25px -5px rgba(255, 159, 28, 0.2);
     }
 
     .scenario-badge {
@@ -287,16 +296,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 14px rgba(255, 64, 0, 0.25);
     }
 
-    .scenario-subtext {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #c2410c;
-    }
-
-    /* 🎬 กล่องที่ 2: วิดีโอทบทวนเนื้อหา */
     .review-card-modern {
       background-color: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -304,13 +305,11 @@
       padding: 24px;
     }
 
-    /* 🎬 กล่องที่ 3: การ์ตูนมอบหมายภารกิจ */
     .mission-card-modern {
       background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
       border: 2px solid #3b82f6;
       border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
     }
 
     .mission-badge {
@@ -324,23 +323,14 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
     }
 
-    .mission-subtext {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #1e40af;
-    }
-
-    /* 🎯 กล่องรายละเอียดภารกิจที่มอบหมาย (ใต้คลิปภารกิจ) */
     .mission-detail-box {
       background-color: #ffffff;
       border: 2px solid #93c5fd;
       border-radius: 16px;
       padding: 20px 24px;
       margin-top: 18px;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08);
     }
 
     .task-item {
@@ -368,7 +358,6 @@
       white-space: nowrap;
     }
 
-    /* 🔥 กล่องตรวจสอบ Block Code (โทนส้ม #ff751f) */
     .checker-hero-card {
       background: linear-gradient(135deg, #ff751f 0%, #e65c00 100%);
       border: 2px solid #ff9d5c;
@@ -376,20 +365,6 @@
       padding: 28px;
       color: #ffffff;
       box-shadow: 0 12px 30px -5px rgba(255, 117, 31, 0.4);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .checker-hero-card::before {
-      content: "";
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 150px;
-      height: 150px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      blur: 40px;
     }
 
     .badge-check {
@@ -400,8 +375,6 @@
       font-weight: 700;
       padding: 6px 16px;
       border-radius: 30px;
-      text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     .btn-checker-submit {
@@ -412,26 +385,14 @@
       border-radius: 12px;
       padding: 12px 28px;
       border: none;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-      transition: all 0.2s ease;
     }
 
-    .btn-checker-submit:hover {
-      background-color: #0f172a;
-      color: #ffffff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    }
-
-    /* 🌟 สไตล์สำหรับกล่องคำใบ้ (อ่านง่าย สบายตา สำหรับ ป.4-6) */
     .feedback-box-wrapper {
       background-color: #fffbeb;
       border: 2px solid #fde68a;
       border-radius: 16px;
       padding: 20px;
       margin-top: 18px;
-      color: #1e293b;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }
 
     .hint-card {
@@ -440,11 +401,6 @@
       padding: 14px 18px;
       margin-bottom: 12px;
       border-left: 6px solid #f59e0b;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .hint-card:last-child {
-      margin-bottom: 0;
     }
 
     .hint-line-location {
@@ -471,12 +427,6 @@
       border-radius: 8px;
       display: inline-block;
       width: 100%;
-    }
-
-    .hint-raw-text {
-      white-space: pre-line;
-      line-height: 1.7;
-      font-size: 1rem;
     }
 
     .teacher-section {
@@ -567,11 +517,10 @@
 <script>
   const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxGW940He6iuNQYc2cjADRL6jWa1n5D2huSKH4x7dz8iTNRiFOm9HVijWXIq8aCgYJG/exec";
   let lessonsData = [];
-  let currentLessonId = 'home'; // เริ่มต้นที่หน้าหลัก
+  let currentLessonId = 'home';
   let teacherModalObj = null;
   let isTeacherLoggedIn = false;
 
-  // 📝 ฐานข้อมูลภารกิจประจำบทเรียน
   const DEFAULT_MISSION_TASKS = {
     1: [
       { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดแสดงผลรูปไอคอนหัวใจและตัวอักษรชื่อตนเองบนหน้าจอ micro:bit" },
@@ -593,7 +542,7 @@
 
   window.onload = function() {
     teacherModalObj = new bootstrap.Modal(document.getElementById('teacherModal'));
-    loadHomePage(); // แสดงหน้าหลักทันทีที่เปิดเว็บ
+    loadHomePage();
     fetchInitialData();
   };
 
@@ -629,7 +578,7 @@
     document.getElementById('lessonTabs').innerHTML = tabs;
   }
 
-  // 🏠 ฟังก์ชันแสดงผล "หน้าหลัก" (อธิบายรูปแบบการจัดการเรียนรู้และหุ่นยนต์ ROBOCART)
+  // 🏠 หน้าหลัก พร้อมระบบกด "ดูเพิ่มเติม" (Accordion) สำหรับ 5 ขั้นตอน และจับคู่ชื่อไฟล์ภาพใหม่ทั้งหมด
   function loadHomePage(btnElem) {
     currentLessonId = 'home';
     document.querySelectorAll('#lessonTabs .nav-link').forEach(b => b.classList.remove('active'));
@@ -641,7 +590,7 @@
     }
 
     let html = `
-      <!-- 1. Hero Banner แนะนำรูปแบบการจัดการเรียนรู้ -->
+      <!-- 1. Hero Banner -->
       <div class="home-hero-banner mb-5">
         <div class="row align-items-center g-4">
           <div class="col-lg-8">
@@ -655,7 +604,7 @@
               เพื่อส่งเสริมทักษะการเขียนโปรแกรม และการคิดเชิงคำนวณ
             </h4>
             <p class="fs-5 mb-0 opacity-90 leading-relaxed">
-              ออกแบบการเรียนรู้สำหรับนักเรียนชั้นประถมศึกษาปีที่ 4 - 6 ผ่านกิจกรรมลงมือปฏิบัติจริงด้วยบอร์ด <strong>micro:bit</strong> และ <strong>REKA:BIT</strong> ควบคู่กับระบบตรวจสอบโค้ดและให้คำใบ้ชวนคิดอัตโนมัติ (Scaffolding)
+              ออกแบบการเรียนรู้สำหรับนักเรียนชั้นประถมศึกษาปีที่ 4 - 6 ผ่านกิจกรรมลงมือปฏิบัติจริงด้วยบอร์ด <strong>micro:bit</strong> และ <strong>REKA:BIT</strong> ควบคู่กับระบบตรวจสอบโค้ดและคำใบ้ชวนคิดอัตโนมัติ
             </p>
           </div>
           <div class="col-lg-4 text-center">
@@ -668,43 +617,43 @@
         </div>
       </div>
 
-      <!-- 2. ภาพรวมเนื้อหาทั้ง 4 บทเรียน -->
+      <!-- 2. โครงสร้าง 4 บทเรียน -->
       <div class="mb-5">
         <div class="d-flex align-items-center gap-2 mb-3">
           <i class="bi bi-journal-code text-primary fs-3"></i>
           <h3 class="fw-bold font-heading mb-0 text-dark">โครงสร้างเนื้อหาบทเรียน (4 บทเรียน)</h3>
         </div>
         <p class="text-secondary fs-5 mb-4">
-          รูปแบบการจัดการเรียนรู้โดยใช้หุ่นยนต์ช่วยสอนเพื่อส่งเสริมทักษะการเขียนโปรแกรมและการคิดเชิงคำนวณ ประกอบด้วยเนื้อหา 4 บท ได้แก่ (คลิกที่บทเรียนเพื่อเข้าสู่เนื้อหาได้ทันที)
+          รูปแบบการจัดการเรียนรู้โดยใช้หุ่นยนต์ช่วยสอน ประกอบด้วยเนื้อหา 4 บท ได้แก่ (คลิกเพื่อเข้าสู่บทเรียนได้ทันที)
         </p>
 
         <div class="row g-3">
           <div class="col-md-6 col-lg-3">
             <div class="home-chapter-pill" onclick="triggerLessonTab(1)">
               <span class="badge bg-primary rounded-pill mb-2 px-3 py-1 font-heading">บทที่ 1</span>
-              <h6 class="fw-bold font-heading text-dark mb-1">แนะนำหุ่นยนต์และโปรแกรม Microsoft MakeCode เบื้องต้น</h6>
-              <small class="text-muted">เรียนรู้ส่วนประกอบพื้นฐานและการแสดงผลบนหน้าจอ micro:bit</small>
+              <h6 class="fw-bold font-heading text-dark mb-1">แนะนำหุ่นยนต์และโปรแกรม MakeCode</h6>
+              <small class="text-muted">ส่วนประกอบพื้นฐานและการแสดงผลบน micro:bit</small>
             </div>
           </div>
           <div class="col-md-6 col-lg-3">
             <div class="home-chapter-pill" onclick="triggerLessonTab(2)">
               <span class="badge bg-warning text-dark rounded-pill mb-2 px-3 py-1 font-heading">บทที่ 2 • Level 1</span>
-              <h6 class="fw-bold font-heading text-dark mb-1">เขียนโปรแกรมควบคุมหุ่นยนต์ให้เคลื่อนที่</h6>
-              <small class="text-muted">การสั่งงานมอเตอร์ขับเคลื่อนเดินหน้า ถอยหลัง และหมุนเลี้ยว</small>
+              <h6 class="fw-bold font-heading text-dark mb-1">เขียนโปรแกรมควบคุมหุ่นยนต์เคลื่อนที่</h6>
+              <small class="text-muted">สั่งงานมอเตอร์เดินหน้า ถอยหลัง และหมุนเลี้ยว</small>
             </div>
           </div>
           <div class="col-md-6 col-lg-3">
             <div class="home-chapter-pill" onclick="triggerLessonTab(3)">
               <span class="badge bg-success rounded-pill mb-2 px-3 py-1 font-heading">บทที่ 3 • Level 2</span>
-              <h6 class="fw-bold font-heading text-dark mb-1">เขียนโปรแกรมควบคุมหุ่นยนต์วิ่งตามเส้น</h6>
-              <small class="text-muted">การใช้เซนเซอร์ Maker Line ตรวจจับเส้นทางและตัดสินใจเลี้ยว</small>
+              <h6 class="fw-bold font-heading text-dark mb-1">เขียนโปรแกรมหุ่นยนต์วิ่งตามเส้น</h6>
+              <small class="text-muted">ใช้เซนเซอร์ Maker Line ตรวจจับและเลี้ยวตามเส้น</small>
             </div>
           </div>
           <div class="col-md-6 col-lg-3">
             <div class="home-chapter-pill" onclick="triggerLessonTab(4)">
               <span class="badge bg-danger rounded-pill mb-2 px-3 py-1 font-heading">บทที่ 4 • Level 3</span>
-              <h6 class="fw-bold font-heading text-dark mb-1">เขียนโปรแกรมควบคุมหุ่นยนต์หลบหลีกวัตถุ</h6>
-              <small class="text-muted">การใช้เซนเซอร์ Ultrasonic วัดระยะห่างและหลบสิ่งกีดขวาง</small>
+              <h6 class="fw-bold font-heading text-dark mb-1">เขียนโปรแกรมหุ่นยนต์หลบหลีกวัตถุ</h6>
+              <small class="text-muted">ใช้เซนเซอร์ Ultrasonic วัดระยะและหลบสิ่งกีดขวาง</small>
             </div>
           </div>
         </div>
@@ -712,256 +661,267 @@
 
       <hr class="my-5 opacity-25">
 
-      <!-- 3. ขั้นตอนการจัดการเรียนรู้ 5 ขั้นตอน + รูปภาพอินโฟกราฟิก -->
+      <!-- 3. ขั้นตอนการจัดการเรียนรู้ 5 ขั้นตอน (แบบกดดูเพิ่มเติม / Accordion) -->
       <div class="mb-5">
         <div class="d-flex align-items-center gap-2 mb-4">
           <i class="bi bi-diagram-3-fill text-warning fs-3"></i>
           <h3 class="fw-bold font-heading mb-0 text-dark">ขั้นตอนการจัดการเรียนรู้ (5 ขั้นตอน)</h3>
+          <span class="badge bg-light text-secondary border ms-auto"><i class="bi bi-hand-index-thumb me-1"></i> คลิกปุ่มเพื่อดูรายละเอียด</span>
         </div>
 
         <div class="row g-4 align-items-start">
-          <!-- คอลัมน์ซ้าย: รูปภาพอินโฟกราฟิก 5 ขั้นตอน -->
+          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg ไม่ลอยทับ -->
           <div class="col-lg-5">
             <div class="poster-showcase-card sticky-lg-top" style="top: 90px;">
-              <img src="learning_model.jpg" 
+              <img src="ID.jpg" 
                    alt="รูปแบบการจัดการเรียนรู้ 5 ขั้นตอน" 
-                   onerror="if(this.src.indexOf('ใบงาน.jpg')===-1){this.src='ใบงาน.jpg';}else{this.onerror=null;this.src='https://placehold.co/600x840/e0f2fe/0369a1?text=อัปโหลดไฟล์+learning_model.jpg+หรือ+ใบงาน.jpg';}">
+                   onerror="if(this.src.indexOf('ใบงาน.jpg')===-1){this.src='ใบงาน.jpg';}else{this.onerror=null;this.src='https://placehold.co/600x750/e0f2fe/0369a1?text=ID.jpg';}">
               <div class="mt-2 small text-muted font-heading">
                 <i class="bi bi-image me-1"></i> แผนภาพรูปแบบการจัดการเรียนรู้ 5 ขั้นตอน
               </div>
             </div>
           </div>
 
-          <!-- คอลัมน์ขวา: รายละเอียด 5 ขั้นตอน -->
+          <!-- คอลัมน์ขวา: 5 หัวข้อหลัก พร้อมปุ่มกดดูเพิ่มเติม -->
           <div class="col-lg-7">
+            
             <!-- ขั้นที่ 1 -->
-            <div class="step-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="step-number-badge">1</span>
-                <div>
-                  <h5 class="fw-bold font-heading mb-0 text-dark">กำหนดสถานการณ์ปัญหา</h5>
-                  <small class="text-muted">นำเสนอสถานการณ์เพื่อกระตุ้นให้ผู้เรียนเกิดความอยากรู้ และรู้สึกว่าปัญหาเป็นเรื่องใกล้ตัว</small>
+            <div>
+              <button class="accordion-step-btn" type="button" data-bs-toggle="collapse" data-bs-target="#step1Collapse" aria-expanded="true">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="step-number-badge">1</span>
+                  <span>กำหนดสถานการณ์ปัญหา</span>
                 </div>
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-film text-danger me-1"></i> ชมวิดีโอแอนิเมชันสถานการณ์ปัญหา:</strong> ผู้สอนเปิดวิดีโอแอนิเมชันสั้น ๆ ที่เล่าเรื่องตัวละครหรือหุ่นยนต์ที่กำลังเผชิญปัญหา เพื่อนำผู้เรียนไปสู่เป้าหมายของบทเรียน
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-question-circle-fill text-primary me-1"></i> ตั้งคำถามและระบุปัญหา:</strong> ผู้สอนตั้งคำถามกระตุ้นความคิด แล้วให้ผู้เรียนช่วยกันระบุปัญหา และคิดว่าต้องใช้ความรู้อะไรในการแก้ปัญหา
+                <i class="bi bi-chevron-down small text-muted"></i>
+              </button>
+              <div class="collapse show" id="step1Collapse">
+                <div class="card card-body border-0 bg-light rounded-4 mb-3 p-3">
+                  <p class="text-muted small mb-2">นำเสนอสถานการณ์เพื่อกระตุ้นให้ผู้เรียนเกิดความอยากรู้ และรู้สึกว่าปัญหาเป็นเรื่องใกล้ตัว</p>
+                  <div class="sub-step-item mb-2">
+                    <strong><i class="bi bi-film text-danger me-1"></i> ชมวิดีโอแอนิเมชันสถานการณ์ปัญหา:</strong> ผู้สอนเปิดวิดีโอแอนิเมชันสั้น ๆ ที่เล่าเรื่องตัวละครหรือหุ่นยนต์ที่กำลังเผชิญปัญหา
+                  </div>
+                  <div class="sub-step-item mb-0">
+                    <strong><i class="bi bi-question-circle-fill text-primary me-1"></i> ตั้งคำถามและระบุปัญหา:</strong> ผู้สอนตั้งคำถามกระตุ้นความคิด ให้ผู้เรียนช่วยกันระบุปัญหาและคิดวิธีแก้
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- ขั้นที่ 2 -->
-            <div class="step-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="step-number-badge">2</span>
-                <div>
-                  <h5 class="fw-bold font-heading mb-0 text-dark">นำเสนอความรู้</h5>
-                  <small class="text-muted">ให้ผู้เรียนมีความรู้และทักษะพื้นฐานเพียงพอสำหรับลงมือทำภารกิจ พร้อมสื่อวิดีโอทบทวนเนื้อหาที่ดูซ้ำได้ทั้งในและนอกห้องเรียน</small>
+            <div>
+              <button class="accordion-step-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2Collapse" aria-expanded="false">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="step-number-badge">2</span>
+                  <span>นำเสนอความรู้</span>
                 </div>
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-book-half text-info me-1"></i> อธิบายหลักการทำงาน:</strong> ผู้สอนอธิบายหลักการที่เกี่ยวข้องกับเนื้อหาของบทนั้น เช่น ส่วนประกอบของหุ่นยนต์ การทำงานของเซนเซอร์ และแนวคิดเรื่องลำดับ การวนซ้ำ และเงื่อนไข โดยใช้ภาพ ตัวอย่างใกล้ตัว หรือผังงานประกอบ
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-laptop text-success me-1"></i> สาธิตการเขียนโปรแกรม:</strong> ผู้สอนสาธิตการเขียนโปรแกรมใน MakeCode ให้ดูทีละขั้นตอน ผู้เรียนเขียนตามและทดสอบกับตัวจำลองและหุ่นยนต์จริง โดยผู้สอนเดินตรวจและช่วยแก้ไขเมื่อผู้เรียนติดขัด
+                <i class="bi bi-chevron-down small text-muted"></i>
+              </button>
+              <div class="collapse" id="step2Collapse">
+                <div class="card card-body border-0 bg-light rounded-4 mb-3 p-3">
+                  <p class="text-muted small mb-2">ให้ผู้เรียนมีความรู้และทักษะพื้นฐานเพียงพอ พร้อมสื่อวิดีโอทบทวนเนื้อหาดูซ้ำได้ทั้งในและนอกห้องเรียน</p>
+                  <div class="sub-step-item mb-2">
+                    <strong><i class="bi bi-book-half text-info me-1"></i> อธิบายหลักการทำงาน:</strong> อธิบายส่วนประกอบของหุ่นยนต์ เซนเซอร์ และแนวคิดลำดับ การวนซ้ำ เงื่อนไข ด้วยภาพและผังงาน
+                  </div>
+                  <div class="sub-step-item mb-0">
+                    <strong><i class="bi bi-laptop text-success me-1"></i> สาธิตการเขียนโปรแกรม:</strong> สาธิต MakeCode ทีละขั้นตอน ผู้เรียนเขียนตามและทดสอบกับตัวจำลองและหุ่นยนต์จริง
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- ขั้นที่ 3 -->
-            <div class="step-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="step-number-badge">3</span>
-                <div>
-                  <h5 class="fw-bold font-heading mb-0 text-dark">มอบหมายภารกิจ</h5>
-                  <small class="text-muted">ให้ผู้เรียนนำความรู้ไปประยุกต์แก้ปัญหาจริงและฝึกคิดอย่างเป็นระบบ</small>
+            <div>
+              <button class="accordion-step-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3Collapse" aria-expanded="false">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="step-number-badge">3</span>
+                  <span>มอบหมายภารกิจ</span>
                 </div>
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-flag-fill text-primary me-1"></i> ชมวิดีโอแอนิเมชันมอบภารกิจ:</strong> เปิดวิดีโอแอนิเมชันที่ต่อเนื่องจากสถานการณ์ปัญหา เพื่อมอบภารกิจหรือกิจกรรมให้ผู้เรียนทำต่อ
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-people-fill text-warning me-1"></i> ปฏิบัติภารกิจ:</strong> แบ่งกลุ่ม (กลุ่มละ 2-3 คน) กำหนดบทบาทในกลุ่ม แล้วทำภารกิจ 2 ส่วนควบคู่กัน ได้แก่ <em>การเขียนโปรแกรมควบคุมหุ่นยนต์</em> และการทำ<em>ใบงาน</em> (วิเคราะห์โจทย์ วางแผนผังงาน บันทึกผล และสรุปการปรับปรุง)
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-cpu-fill text-danger me-1"></i> ทดสอบและตรวจสอบ:</strong> ทดลองใช้บล็อกคำสั่งและนำไปตรวจสอบหาข้อผิดพลาดบนเว็บของผู้พัฒนา โดยเว็บจะให้คำแนะนำแบบค่อยเป็นค่อยไปโดยไม่บอกคำตอบทันที เพื่อฝึกทักษะการแก้ปัญหา
+                <i class="bi bi-chevron-down small text-muted"></i>
+              </button>
+              <div class="collapse" id="step3Collapse">
+                <div class="card card-body border-0 bg-light rounded-4 mb-3 p-3">
+                  <p class="text-muted small mb-2">ให้ผู้เรียนนำความรู้ไปประยุกต์แก้ปัญหาจริงและฝึกคิดอย่างเป็นระบบ</p>
+                  <div class="sub-step-item mb-2">
+                    <strong><i class="bi bi-flag-fill text-primary me-1"></i> ชมวิดีโอแอนิเมชันมอบภารกิจ:</strong> เปิดวิดีโอต่อเนื่องเพื่อมอบหมายภารกิจท้าทาย
+                  </div>
+                  <div class="sub-step-item mb-2">
+                    <strong><i class="bi bi-people-fill text-warning me-1"></i> ปฏิบัติภารกิจ:</strong> แบ่งกลุ่ม 2-3 คน ทำภารกิจเขียนโปรแกรมควบคุมหุ่นยนต์และทำใบงานควบคู่กัน
+                  </div>
+                  <div class="sub-step-item mb-0">
+                    <strong><i class="bi bi-cpu-fill text-danger me-1"></i> ทดสอบและตรวจสอบ:</strong> ตรวจสอบโค้ดผ่านระบบอัตโนมัติที่ให้คำใบ้ชวนคิดแบบค่อยเป็นค่อยไปโดยไม่บอกคำตอบตรงๆ
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- ขั้นที่ 4 -->
-            <div class="step-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="step-number-badge">4</span>
-                <div>
-                  <h5 class="fw-bold font-heading mb-0 text-dark">เชื่อมโยงผลกิจกรรม</h5>
-                  <small class="text-muted">เห็นความเชื่อมโยงกับชีวิตจริงที่ได้ฝึกกระบวนการทำงานและทักษะ Soft Skills ผ่านการตอบคำถามในใบงาน</small>
+            <div>
+              <button class="accordion-step-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4Collapse" aria-expanded="false">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="step-number-badge">4</span>
+                  <span>เชื่อมโยงผลกิจกรรม</span>
                 </div>
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-list-check text-success me-1"></i> การทบทวนความเข้าใจ:</strong> ทบทวนและสรุปลำดับขั้นตอนการทำงานของกลุ่มตนเองตั้งแต่เริ่มต้นจนจบภารกิจ เพื่อพัฒนาทักษะการคิดอย่างเป็นระบบและการลำดับขั้นตอนวิธี
-              </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-chat-heart-fill text-danger me-1"></i> ทักษะการทำงานเป็นทีมและการสื่อสาร (Soft Skills):</strong> ประเมินการทำงานร่วมกันผ่านคำถามสะท้อนคิดเกี่ยวกับการแบ่งหน้าที่และความรับผิดชอบภายในกลุ่ม ตลอดจนการสื่อสารและรับฟังความคิดเห็น
+                <i class="bi bi-chevron-down small text-muted"></i>
+              </button>
+              <div class="collapse" id="step4Collapse">
+                <div class="card card-body border-0 bg-light rounded-4 mb-3 p-3">
+                  <p class="text-muted small mb-2">เชื่อมโยงกับชีวิตจริงและฝึกทักษะ Soft Skills ผ่านการตอบคำถามในใบงาน</p>
+                  <div class="sub-step-item mb-2">
+                    <strong><i class="bi bi-list-check text-success me-1"></i> การทบทวนความเข้าใจ:</strong> สรุปลำดับขั้นตอนการทำงานตั้งแต่เริ่มต้นจนจบ เพื่อพัฒนาการคิดอย่างเป็นระบบ
+                  </div>
+                  <div class="sub-step-item mb-0">
+                    <strong><i class="bi bi-chat-heart-fill text-danger me-1"></i> ทักษะการทำงานเป็นทีม (Soft Skills):</strong> ประเมินการทำงานร่วมกันผ่านคำถามสะท้อนคิดเกี่ยวกับการแบ่งหน้าที่
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- ขั้นที่ 5 -->
-            <div class="step-card mb-0">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="step-number-badge">5</span>
-                <div>
-                  <h5 class="fw-bold font-heading mb-0 text-dark">นำเสนออย่างสร้างสรรค์</h5>
-                  <small class="text-muted">ให้ผู้เรียนสื่อสารสิ่งที่ได้เรียนรู้ด้วยตนเอง เพื่อเสริมความเข้าใจและความมั่นใจ</small>
+            <div>
+              <button class="accordion-step-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step5Collapse" aria-expanded="false">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="step-number-badge">5</span>
+                  <span>นำเสนออย่างสร้างสรรค์</span>
+                </div>
+                <i class="bi bi-chevron-down small text-muted"></i>
+              </button>
+              <div class="collapse" id="step5Collapse">
+                <div class="card card-body border-0 bg-light rounded-4 mb-0 p-3">
+                  <p class="text-muted small mb-2">สื่อสารสิ่งที่ได้เรียนรู้ด้วยตนเอง เพื่อเสริมความเข้าใจและความมั่นใจ</p>
+                  <div class="sub-step-item mb-0">
+                    <strong><i class="bi bi-easel2-fill text-primary me-1"></i> นำเสนอหน้าชั้นเรียน:</strong> ออกมาพูดเกี่ยวกับสิ่งที่ได้รับ ขั้นตอนวิธีคิด ปัญหาและวิธีแก้ไข โดยเลือกรูปแบบได้อย่างอิสระ เช่น สาธิตหุ่นยนต์ เล่าเรื่อง หรือใช้โปสเตอร์ประกอบ
+                  </div>
                 </div>
               </div>
-              <div class="sub-step-item">
-                <strong><i class="bi bi-easel2-fill text-primary me-1"></i> นำเสนอหน้าชั้นเรียน:</strong> ออกมาพูดเกี่ยวกับสิ่งที่ได้รับจากกิจกรรม ได้แก่ ภารกิจที่ทำ ขั้นตอนและวิธีคิด ปัญหาที่พบและวิธีแก้ไข รวมถึงความรู้สึกและสิ่งที่ได้เรียนรู้ โดยเลือกรูปแบบการนำเสนอได้อย่างอิสระ (เช่น สาธิตหุ่นยนต์ เล่าเรื่องราว หรือใช้โปสเตอร์ประกอบ)
-              </div>
             </div>
+
           </div>
         </div>
       </div>
 
       <hr class="my-5 opacity-25">
 
-      <!-- 4. แนะนำหุ่นยนต์ช่วยสอน ROBOCART และชิ้นส่วนประกอบสำคัญ -->
+      <!-- 4. หุ่นยนต์ ROBOCART และชิ้นส่วน (จับคู่ชื่อไฟล์ภาพใหม่ทั้งหมด) -->
       <div class="mb-5">
         <div class="d-flex align-items-center gap-2 mb-3">
           <i class="bi bi-cpu-fill text-info fs-3"></i>
           <h3 class="fw-bold font-heading mb-0 text-dark">หุ่นยนต์ช่วยสอน ROBOCART และชิ้นส่วนประกอบ</h3>
         </div>
         <p class="text-secondary fs-5 mb-4 leading-relaxed">
-          <strong>หุ่นยนต์ช่วยสอน ROBOCART</strong> เป็นหุ่นยนต์เพื่อส่งเสริมทักษะการเขียนโปรแกรมและการคิดเชิงคำนวณ ออกแบบโครงสร้างเป็น<strong>รถแบบสองล้อ ฐานสองชั้น</strong> ที่ผู้เรียนสามารถประกอบและถอดชิ้นส่วนอุปกรณ์เซนเซอร์เข้าออกได้ตามระดับของบทเรียนที่เลือกทำ โดยเลือกใช้บอร์ดไมโครคอนโทรลเลอร์ (<strong>micro:bit</strong>) ทำงานร่วมกับบอร์ดขยายการทำงาน รุ่น <strong>REKA:BIT</strong> ซึ่งรองรับการเขียนโปรแกรมแบบบล็อกคำสั่งที่เหมาะสมกับระดับสติปัญญาของนักเรียน
+          <strong>หุ่นยนต์ช่วยสอน ROBOCART</strong> ออกแบบโครงสร้างเป็นรถสองล้อฐานสองชั้น ถอดประกอบชิ้นส่วนเซนเซอร์ได้ตามระดับบทเรียน ใช้บอร์ด <strong>micro:bit</strong> ร่วมกับบอร์ดขยาย <strong>REKA:BIT</strong> ที่รองรับการเขียนโปรแกรมแบบบล็อกคำสั่ง
         </p>
 
-        <!-- การ์ดแสดงชิ้นส่วนประกอบที่สำคัญ 9 ชิ้น -->
         <h5 class="fw-bold font-heading text-dark mb-3">
-          <i class="bi bi-tools text-warning me-2"></i>ชิ้นส่วนประกอบที่สำคัญของ ROBOCART (9 ชิ้นส่วน):
+          <i class="bi bi-tools text-warning me-2"></i>ชิ้นส่วนประกอบที่สำคัญ (9 ชิ้นส่วน):
         </h5>
         <div class="row g-3 mb-5">
-          <!-- ชิ้นที่ 1: REKA:BIT -->
+          <!-- 1. Reka bit -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="rekabit.jpg" alt="REKA:BIT"
-                     onerror="if(this.src.indexOf('Gemini_Generated_Image_ffvoc5ffvoc5ffvo.jpg')===-1){this.src='Gemini_Generated_Image_ffvoc5ffvoc5ffvo.jpg';}else{this.style.display='none';this.nextElementSibling.style.display='block';}">
+                <img src="Reka bit.jpg" alt="Reka bit" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-motherboard text-danger display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">1. บอร์ดขยายการทำงาน</h6>
               <span class="badge bg-danger-subtle text-danger rounded-pill">REKA:BIT</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 2: micro:bit -->
+          <!-- 2. Micro bit -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="microbit.webp" alt="micro:bit"
-                     onerror="if(this.src.indexOf('Y2336797-07.webp')===-1){this.src='Y2336797-07.webp';}else{this.style.display='none';this.nextElementSibling.style.display='block';}">
+                <img src="Micro bit.jpg" alt="Micro bit" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-cpu text-primary display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">2. บอร์ดไมโครคอนโทรลเลอร์</h6>
               <span class="badge bg-primary-subtle text-primary rounded-pill">micro:bit</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 3: Maker Line -->
+          <!-- 3. MakerLine -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="maker_line.jpg" alt="Maker Line"
-                     onerror="if(this.src.indexOf('Gemini_Generated_Image_97qcbp97qcbp97qc.jpg')===-1){this.src='Gemini_Generated_Image_97qcbp97qcbp97qc.jpg';}else{this.style.display='none';this.nextElementSibling.style.display='block';}">
+                <img src="MakerLine.jpg" alt="MakerLine" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-bezier2 text-purple display-4" style="display:none; color:#7e22ce;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">3. เซนเซอร์ตรวจจับเส้น</h6>
               <span class="badge bg-secondary-subtle text-dark rounded-pill">Maker Line</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 4: Ultrasonic Sensor -->
+          <!-- 4. Ultrasonic -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="ultrasonic.jpg" alt="Ultrasonic Sensor"
-                     onerror="if(this.src.indexOf('Gemini_Generated_Image_thsgvbthsgvbthsg.jpg')===-1){this.src='Gemini_Generated_Image_thsgvbthsgvbthsg.jpg';}else{this.style.display='none';this.nextElementSibling.style.display='block';}">
+                <img src="Ultrasonic.jpg" alt="Ultrasonic" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-broadcast text-info display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">4. เซนเซอร์อัลตราโซนิก</h6>
               <span class="badge bg-info-subtle text-info-emphasis rounded-pill">Ultrasonic Sensor</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 5: Servo -->
+          <!-- 5. Servo -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="servo.jpg" alt="Micro Servo"
-                     onerror="if(this.src.indexOf('Gemini_Generated_Image_1h1dr81h1dr81h1d.jpg')===-1){this.src='Gemini_Generated_Image_1h1dr81h1dr81h1d.jpg';}else{this.style.display='none';this.nextElementSibling.style.display='block';}">
+                <img src="Servo.jpg" alt="Servo" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-gear-wide-connected text-primary display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">5. มอเตอร์เซอร์โวขนาดเล็ก</h6>
               <span class="badge bg-primary-subtle text-primary rounded-pill">Micro Servo</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 6: DC Motor -->
+          <!-- 6. Motor -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="dc_motor.jpg" alt="DC Motor"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <img src="Motor.jpg" alt="Motor" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-lightning-charge-fill text-warning display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">6. มอเตอร์เกียร์กระแสตรง</h6>
               <span class="badge bg-warning-subtle text-dark rounded-pill">DC Motor</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 7: ล้อยาง -->
+          <!-- 7. Wheel -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="wheel.jpg" alt="Rubber Wheel"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <img src="Wheel.jpg" alt="Wheel" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-vinyl-fill text-dark display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">7. ล้อยาง</h6>
-              <span class="badge bg-dark-subtle text-dark rounded-pill">Rubber Wheel Robot</span>
+              <span class="badge bg-dark-subtle text-dark rounded-pill">Rubber Wheel</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 8: รางถ่าน -->
+          <!-- 8. Battery -->
           <div class="col-6 col-md-4 col-lg-3">
             <div class="hardware-card">
               <div class="hardware-img-box">
-                <img src="battery.jpg" alt="Battery Holder"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <img src="Battery.jpg" alt="Battery" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                 <i class="bi bi-battery-charging text-success display-4" style="display:none;"></i>
               </div>
               <h6 class="fw-bold font-heading text-dark mb-1">8. รางถ่าน</h6>
               <span class="badge bg-success-subtle text-success rounded-pill">Battery Holder</span>
             </div>
           </div>
-
-          <!-- ชิ้นที่ 9: สายไฟเชื่อมต่อ -->
-          <div class="col-12 col-md-8 col-lg-12">
+          <!-- 9. สายไฟเชื่อมต่อ -->
+          <div class="col-12">
             <div class="hardware-card d-flex align-items-center justify-content-center gap-3 py-3">
               <i class="bi bi-plug-fill text-secondary fs-2"></i>
               <div class="text-start">
                 <h6 class="fw-bold font-heading text-dark mb-0">9. สายไฟเชื่อมต่อ (Grove 4 Pin Buckled to Female Cable)</h6>
-                <small class="text-muted">เชื่อมต่อระหว่างพอร์ตบนบอร์ดขยายการทำงาน REKA:BIT กับอุปกรณ์เซนเซอร์ต่าง ๆ อย่างสะดวกและปลอดภัย</small>
+                <small class="text-muted">เชื่อมต่อระหว่างพอร์ตบน REKA:BIT กับเซนเซอร์ต่าง ๆ อย่างสะดวก</small>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 5. การประกอบชิ้นส่วนตามระดับบทเรียน (Level 1 - 3) คู่กับโปสเตอร์ -->
+        <!-- 5. ระดับบทเรียน Level 1-3 ใช้รูป Unit_Robocart.jpg -->
         <div class="row g-4 align-items-center">
           <div class="col-lg-5">
             <div class="poster-showcase-card">
-              <img src="robocart_levels.jpg" 
-                   alt="การประกอบหุ่นยนต์ ROBOCART ตามบทเรียน" 
-                   onerror="if(this.src.indexOf('ใบงาน (1).jpg')===-1){this.src='ใบงาน (1).jpg';}else{this.onerror=null;this.src='https://placehold.co/600x840/fef3c7/b45309?text=อัปโหลดไฟล์+robocart_levels.jpg+หรือ+ใบงาน+(1).jpg';}">
+              <img src="Unit_Robocart.jpg" 
+                   alt="การประกอบหุ่นยนต์ตามบทเรียน" 
+                   onerror="if(this.src.indexOf('ใบงาน (1).jpg')===-1){this.src='ใบงาน (1).jpg';}else{this.onerror=null;this.src='https://placehold.co/600x750/fef3c7/b45309?text=Unit_Robocart.jpg';}">
               <div class="mt-2 small text-muted font-heading">
                 <i class="bi bi-layers-fill me-1"></i> การประกอบอุปกรณ์ตามระดับบทเรียน (Level 1 - 3)
               </div>
@@ -973,40 +933,31 @@
               <i class="bi bi-puzzle-fill text-warning me-2"></i>การประกอบชิ้นส่วนเซนเซอร์ตามเนื้อหาบทเรียน
             </h4>
             <p class="text-secondary fs-6 mb-4">
-              ผู้เรียนสามารถประกอบชิ้นส่วนเซนเซอร์เข้ากับโครงสร้างพื้นฐานได้ตามเนื้อหาการจัดการเรียนรู้ในแต่ละระดับ ดังนี้:
+              ผู้เรียนสามารถประกอบชิ้นส่วนเซนเซอร์เข้ากับโครงสร้างพื้นฐานได้ตามเนื้อหาในแต่ละระดับ:
             </p>
 
-            <!-- Level 1 (บทที่ 2) -->
             <div class="level-config-card mb-3">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="badge bg-warning text-dark font-heading px-3 py-2 rounded-pill fs-6">Level 1 • สำหรับบทที่ 2</span>
-                <h5 class="fw-bold font-heading mb-0 text-dark">ควบคุมหุ่นยนต์ให้เคลื่อนที่</h5>
+                <span class="badge bg-warning text-dark font-heading px-3 py-2 rounded-pill fs-6">Level 1 • บทที่ 2</span>
+                <h5 class="fw-bold font-heading mb-0 text-dark">ควบคุมหุ่นยนต์เคลื่อนที่</h5>
               </div>
-              <p class="mb-0 text-dark fs-6">
-                เป็นการใช้<strong>โครงสร้างพื้นฐานของหุ่นยนต์</strong> (ประกอบด้วย <em>บอร์ด micro:bit, บอร์ด REKA:BIT, มอเตอร์กระแสตรง, ล้อยาง และรางถ่าน</em>) ในการเรียนรู้การสั่งการขับเคลื่อนพื้นฐาน
-              </p>
+              <p class="mb-0 text-dark fs-6">ใช้<strong>โครงสร้างพื้นฐาน</strong> (micro:bit, REKA:BIT, มอเตอร์ DC, ล้อยาง, รางถ่าน) ในการขับเคลื่อนพื้นฐาน</p>
             </div>
 
-            <!-- Level 2 (บทที่ 3) -->
             <div class="level-config-card mb-3" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #86efac;">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="badge bg-success text-white font-heading px-3 py-2 rounded-pill fs-6">Level 2 • สำหรับบทที่ 3</span>
+                <span class="badge bg-success text-white font-heading px-3 py-2 rounded-pill fs-6">Level 2 • บทที่ 3</span>
                 <h5 class="fw-bold font-heading mb-0 text-dark">ควบคุมหุ่นยนต์วิ่งตามเส้น</h5>
               </div>
-              <p class="mb-0 text-dark fs-6">
-                ใช้โครงสร้างพื้นฐาน โดยติดตั้ง<strong>แผงวงจรเซนเซอร์ตรวจจับเส้น (Maker Line)</strong> เพิ่มเข้าไปในส่วนประกอบด้านหน้าของหุ่นยนต์
-              </p>
+              <p class="mb-0 text-dark fs-6">ติดตั้ง<strong>แผงวงจรเซนเซอร์ตรวจจับเส้น (Maker Line)</strong> เพิ่มเติมด้านหน้า</p>
             </div>
 
-            <!-- Level 3 (บทที่ 4) -->
             <div class="level-config-card" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-color: #93c5fd;">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="badge bg-primary text-white font-heading px-3 py-2 rounded-pill fs-6">Level 3 • สำหรับบทที่ 4</span>
+                <span class="badge bg-primary text-white font-heading px-3 py-2 rounded-pill fs-6">Level 3 • บทที่ 4</span>
                 <h5 class="fw-bold font-heading mb-0 text-dark">ควบคุมหุ่นยนต์หลบหลีกวัตถุ</h5>
               </div>
-              <p class="mb-0 text-dark fs-6">
-                เป็นการปรับเปลี่ยนอุปกรณ์โดยใช้โครงสร้างพื้นฐานประกอบร่วมกับการติดตั้ง<strong>มอเตอร์เซอร์โว (Servo)</strong> และ<strong>เซนเซอร์อัลตราโซนิก (Ultrasonic Sensor)</strong> เพิ่มเติม เพื่อใช้ในการตรวจจับระยะห่างของสิ่งกีดขวาง
-              </p>
+              <p class="mb-0 text-dark fs-6">ติดตั้ง<strong>มอเตอร์เซอร์โว (Servo)</strong> และ<strong>เซนเซอร์อัลตราโซนิก (Ultrasonic)</strong> เพิ่มเติมเพื่อตรวจจับสิ่งกีดขวาง</p>
             </div>
           </div>
         </div>
@@ -1038,7 +989,6 @@
 
     let chapNum = parseInt(l.id, 10);
 
-    // 🟢 1. การ์ตูนสถานการณ์จำลอง (Simulation Scenario)
     let scenarioVidHtml = '';
     if (l.scenarioVideo) {
       let embedScenario = getEmbedYoutubeUrl(l.scenarioVideo);
@@ -1061,7 +1011,6 @@
       }
     }
 
-    // 🟢 2. วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้
     let reviewVidsHtml = '';
     let reviewUrl = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
     let embedReview = getEmbedYoutubeUrl(reviewUrl);
@@ -1078,7 +1027,6 @@
       </div>
     `;
 
-    // 🟢 3. การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจ
     let missionVidHtml = '';
     let missionUrl = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
     let rawTasks = (l.missionTasks && l.missionTasks.length > 0) ? [...l.missionTasks] : [...(DEFAULT_MISSION_TASKS[chapNum] || [])];
@@ -1090,7 +1038,6 @@
       });
     }
 
-    // สำหรับบทที่ 3 และ 4: จัดเรียงให้ "กิจกรรมใบงาน" ขึ้นก่อน "กิจกรรมปฏิบัติ" เสมอ
     if (chapNum === 3 || chapNum === 4) {
       rawTasks.sort((a, b) => {
         let aIsWorksheet = (a.type === 'worksheet' || (a.tag && a.tag.includes('ใบงาน'))) ? 0 : 1;
@@ -1141,7 +1088,6 @@
       `;
     }
 
-    // 🟢 โหมดคุณครู (บทที่ 1 ซ่อน MakeCode Project และ รูปภาพเฉลย Block Code)
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
       let isChap1 = (chapNum === 1);
@@ -1150,7 +1096,6 @@
       let makeCodeAndSolutionHtml = '';
       if (!isChap1) {
         makeCodeAndSolutionHtml = `
-          <!-- 4. ลิงก์ MakeCode Project (แสดงเฉพาะบทที่ 2-4) -->
           <div class="${colClass}">
             <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
               <div>
@@ -1161,7 +1106,6 @@
             </div>
           </div>
 
-          <!-- รูปภาพเฉลย Block Code (แสดงเฉพาะบทที่ 2-4) -->
           <div class="col-12 mt-3">
             <div class="p-3 bg-white rounded-3 border">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1188,7 +1132,6 @@
           </div>
           
           <div class="row g-3">
-            <!-- 1. คู่มือคำชี้แจงผู้สอน -->
             <div class="${colClass}">
               <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
                 <div>
@@ -1199,7 +1142,6 @@
               </div>
             </div>
 
-            <!-- 2. เฉลยใบกิจกรรม -->
             <div class="${colClass}">
               <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
                 <div>
@@ -1210,7 +1152,6 @@
               </div>
             </div>
 
-            <!-- 3. เกณฑ์คะแนนประเมิน (Rubric) -->
             <div class="${colClass}">
               <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
                 <div>
@@ -1227,7 +1168,6 @@
       `;
     }
 
-    // 🟢 กล่องตรวจ Block Code อัตโนมัติ (แสดงเฉพาะบทที่ 2, 3, 4 เท่านั้น บทที่ 1 ไม่แสดง)
     let codeCheckerHtml = '';
     if (chapNum !== 1) {
       codeCheckerHtml = `
@@ -1273,17 +1213,9 @@
       <p class="text-secondary fs-5 mb-4 leading-relaxed">${l.desc || ''}</p>
 
       ${teacherHtml}
-      
-      <!-- คลิปส่วนที่ 1: การ์ตูนสถานการณ์จำลอง -->
       ${scenarioVidHtml}
-
-      <!-- คลิปส่วนที่ 2: วิดีโอทบทวนเนื้อหา -->
       ${reviewVidsHtml}
-
-      <!-- คลิปส่วนที่ 3: การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจ -->
       ${missionVidHtml}
-
-      <!-- กล่องตรวจ Block Code อัตโนมัติ (แสดงเฉพาะบทที่ 2-4) -->
       ${codeCheckerHtml}
     `;
 
@@ -1300,7 +1232,6 @@
 
   function formatFeedbackCard(feedbackText, index, total) {
     let lines = feedbackText.split('\n').map(s => s.trim()).filter(s => s.length > 0);
-    
     if (lines.length >= 3) {
       return `
         <div class="hint-card">
@@ -1313,12 +1244,7 @@
         </div>
       `;
     }
-
-    return `
-      <div class="hint-card">
-        <div class="hint-raw-text">${feedbackText}</div>
-      </div>
-    `;
+    return `<div class="hint-card"><div class="hint-raw-text">${feedbackText}</div></div>`;
   }
 
   function handleInlineCheck(event, chapterId) {
