@@ -289,6 +289,62 @@
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
     }
 
+    /* 🌟 สไตล์ใหม่สำหรับกล่องคำใบ้ (อ่านง่าย สบายตา สำหรับ ป.4-6) */
+    .feedback-box-wrapper {
+      background-color: #fffbeb;
+      border: 2px solid #fde68a;
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 18px;
+      color: #1e293b;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .hint-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      border-left: 6px solid #f59e0b;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .hint-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .hint-line-location {
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #b45309;
+      margin-bottom: 6px;
+    }
+
+    .hint-line-finding {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #dc2626;
+      margin-bottom: 8px;
+    }
+
+    .hint-line-tip {
+      background-color: #fef3c7;
+      color: #92400e;
+      font-size: 0.98rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .hint-raw-text {
+      white-space: pre-line;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
     .teacher-section {
       background: #f0fdf4;
       border: 2px dashed #10b981;
@@ -381,7 +437,7 @@
   let teacherModalObj = null;
   let isTeacherLoggedIn = false;
 
-  // 📝 ฐานข้อมูลภารกิจประจำบทเรียน (สามารถปรับแต่งให้แต่ละบทมีภารกิจไม่เท่ากันได้)
+  // 📝 ฐานข้อมูลภารกิจประจำบทเรียน
   const DEFAULT_MISSION_TASKS = {
     1: [
       { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดแสดงผลรูปไอคอนหัวใจและตัวอักษรชื่อตนเองบนหน้าจอ micro:bit" },
@@ -462,7 +518,7 @@
       }
     }
 
-    // 🟢 2. วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้ (แสดงคลิปแรกเพียงคลิปเดียว)
+    // 🟢 2. วิดีโอทบทวนเนื้อหาประกอบการเรียนรู้
     let reviewVidsHtml = '';
     let reviewUrl = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
     let embedReview = getEmbedYoutubeUrl(reviewUrl);
@@ -479,11 +535,9 @@
       </div>
     `;
 
-    // 🟢 3. การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจที่มอบหมายด้านล่างคลิป
+    // 🟢 3. การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจ
     let missionVidHtml = '';
     let missionUrl = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
-    
-    // ดึงภารกิจประจำบทเรียน (ถ้ามีใน backend ให้ใช้จาก backend ถ้าไม่มีให้ใช้ DEFAULT_MISSION_TASKS)
     let tasks = l.missionTasks || DEFAULT_MISSION_TASKS[l.id] || [];
     let tasksListHtml = '';
 
@@ -523,8 +577,6 @@
             </span>
           </div>
           ${embedMission ? `<div class="video-container shadow"><iframe src="${embedMission}" allowfullscreen></iframe></div>` : ''}
-          
-          <!-- 🎯 กล่องรายละเอียดภารกิจที่มอบหมายด้านล่างคลิป -->
           ${tasksListHtml}
         </div>
       `;
@@ -606,7 +658,7 @@
       <!-- คลิปส่วนที่ 1: การ์ตูนสถานการณ์จำลอง -->
       ${scenarioVidHtml}
 
-      <!-- คลิปส่วนที่ 2: วิดีโอทบทวนเนื้อหา (แสดงคลิปเดียว) -->
+      <!-- คลิปส่วนที่ 2: วิดีโอทบทวนเนื้อหา -->
       ${reviewVidsHtml}
 
       <!-- คลิปส่วนที่ 3: การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจ -->
@@ -654,6 +706,32 @@
     return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : url;
   }
 
+  // 🌟 ฟังก์ชันจัดรูปแบบการ์ดคำใบ้ให้อ่านง่าย แยกบรรทัดชัดเจนสำหรับเด็ก ป.4-6
+  function formatFeedbackCard(feedbackText, index, total) {
+    let lines = feedbackText.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+    
+    // กรณีข้อความเป็นรูปแบบ 3 บรรทัด (📍 จุดที่ต้องดู / 🔍 พบว่า / 💡 คำใบ้)
+    if (lines.length >= 3) {
+      return `
+        <div class="hint-card">
+          <div class="hint-line-location">
+            ${total > 1 ? `<span class="badge bg-warning text-dark me-1">จุดที่ ${index + 1}</span>` : ''}
+            ${lines[0]}
+          </div>
+          <div class="hint-line-finding">${lines[1]}</div>
+          <div class="hint-line-tip">${lines[2]}</div>
+        </div>
+      `;
+    }
+
+    // กรณีข้อความรูปแบบอื่นๆ ให้แสดงผลโดยเคารพการขึ้นบรรทัดใหม่ (\n)
+    return `
+      <div class="hint-card">
+        <div class="hint-raw-text">${feedbackText}</div>
+      </div>
+    `;
+  }
+
   function handleInlineCheck(event, chapterId) {
     event.preventDefault();
     let urlInput = document.getElementById(`inlineCheckUrl_${chapterId}`);
@@ -661,7 +739,7 @@
     let resDiv = document.getElementById(`inlineCheckResult_${chapterId}`);
 
     btn.disabled = true;
-    resDiv.innerHTML = `<div class="p-3 text-center text-white bg-dark rounded-3 border border-secondary mt-3"><div class="spinner-border spinner-border-sm text-warning me-2"></div> กำลังวิเคราะห์ Block Code อัตโนมัติ...</div>`;
+    resDiv.innerHTML = `<div class="p-3 text-center text-white bg-dark rounded-4 border border-secondary mt-3"><div class="spinner-border spinner-border-sm text-warning me-2"></div> กำลังตรวจดูบล็อกโค้ดให้... รอสักครู่นะครับ</div>`;
 
     fetch(GAS_API_URL, {
       method: "POST",
@@ -671,17 +749,28 @@
     .then(res => {
       btn.disabled = false;
       if(!res.success) {
-        resDiv.innerHTML = `<div class="alert alert-danger rounded-3 mb-0 mt-3 border-0 shadow-sm"><i class="bi bi-exclamation-octagon-fill me-2"></i>${res.message}</div>`;
+        resDiv.innerHTML = `<div class="alert alert-danger rounded-4 mb-0 mt-3 border-0 shadow-sm fs-6"><i class="bi bi-exclamation-octagon-fill me-2"></i>${res.message}</div>`;
       } else if(res.passed) {
-        resDiv.innerHTML = `<div class="alert alert-success rounded-3 mb-0 mt-3 border-0 shadow-sm"><h6 class="fw-bold font-heading mb-1"><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่านเรียบร้อย!</h6><p class="mb-0 small">${res.message}</p></div>`;
+        resDiv.innerHTML = `
+          <div class="alert alert-success rounded-4 mb-0 mt-3 border-0 shadow-sm p-3">
+            <h5 class="fw-bold font-heading mb-1 text-success"><i class="bi bi-patch-check-fill me-1"></i> ตรวจสอบผ่านเรียบร้อย!</h5>
+            <p class="mb-0 fs-6 text-dark">${res.message}</p>
+          </div>`;
       } else {
-        let list = res.feedback.map(f => `<li>${f}</li>`).join('');
-        resDiv.innerHTML = `<div class="alert alert-warning rounded-3 mb-0 mt-3 border-0 shadow-sm"><h6 class="fw-bold font-heading mb-1 text-dark"><i class="bi bi-exclamation-triangle-fill me-1"></i> จุดที่ต้องแก้ไขเพิ่มเติม:</h6><ul class="mb-0 ps-3 small text-dark">${list}</ul></div>`;
+        let cardsHtml = res.feedback.map((f, idx) => formatFeedbackCard(f, idx, res.feedback.length)).join('');
+        resDiv.innerHTML = `
+          <div class="feedback-box-wrapper">
+            <h6 class="fw-bold font-heading mb-3 text-dark fs-5 d-flex align-items-center gap-2">
+              <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i> 
+              <span>จุดที่ต้องลองกลับไปปรับแก้ไข (${res.feedback.length} จุด):</span>
+            </h6>
+            <div>${cardsHtml}</div>
+          </div>`;
       }
     })
     .catch(err => {
       btn.disabled = false;
-      resDiv.innerHTML = `<div class="alert alert-danger rounded-3 mb-0 mt-3 border-0 shadow-sm">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
+      resDiv.innerHTML = `<div class="alert alert-danger rounded-4 mb-0 mt-3 border-0 shadow-sm">เกิดข้อผิดพลาดในการเชื่อมต่อ: ${err.message}</div>`;
     });
   }
 
@@ -693,7 +782,7 @@
 
   function verifyTeacherPassword() {
     let pass = document.getElementById('teacherPassInput').value;
-    if (pass === 'admin1234') {
+    if (pass === '1234') {
       isTeacherLoggedIn = true;
       document.getElementById('teacherBadgeBar').style.display = 'block';
       document.getElementById('btnTeacherLogin').style.display = 'none';
