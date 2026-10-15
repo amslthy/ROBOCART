@@ -213,6 +213,10 @@
 
     let html = '';
     lessonsData.forEach((l, i) => {
+      let chapNum = parseInt(l.id, 10);
+      let isChap1 = (chapNum === 1);
+      let isWorksheetFirst = (chapNum === 3 || chapNum === 4);
+
       let mainVideoLink = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
       let missionVideoLink = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
 
@@ -220,13 +224,33 @@
       let worksheetText = '';
       if (l.missionTasks && Array.isArray(l.missionTasks)) {
         l.missionTasks.forEach(t => {
-          if (t.type === 'practice' || t.tag.includes('ปฏิบัติ')) {
+          if (t.type === 'practice' || (t.tag && t.tag.includes('ปฏิบัติ'))) {
             practiceText = t.text;
-          } else if (t.type === 'worksheet' || t.tag.includes('ใบงาน')) {
+          } else if (t.type === 'worksheet' || (t.tag && t.tag.includes('ใบงาน'))) {
             worksheetText = t.text;
           }
         });
       }
+
+      let practiceInputHtml = `
+        <div class="col-md-12">
+          <label class="form-label small fw-bold mb-1 text-dark">
+            <span class="badge bg-warning text-dark me-1 font-heading">กิจกรรมปฏิบัติ</span> รายละเอียดงานเขียนโค้ด / ต่อวงจร (เว้นว่างไว้หากไม่มี)
+          </label>
+          <input type="text" class="form-control bg-white border-primary-subtle" id="taskPractice_${i}" value="${practiceText}" placeholder="เช่น นักเรียนต้อง coding ให้หุ่นเคลื่อนไหว...">
+        </div>
+      `;
+
+      let worksheetInputHtml = `
+        <div class="col-md-12">
+          <label class="form-label small fw-bold mb-1 text-dark">
+            <span class="badge bg-primary text-white me-1 font-heading">กิจกรรมใบงาน</span> รายละเอียดงานในใบงาน / วางแผน (เว้นว่างไว้หากไม่มี)
+          </label>
+          <input type="text" class="form-control bg-white border-primary-subtle" id="taskWorksheet_${i}" value="${worksheetText}" placeholder="เช่น นักเรียนบันทึกผลการทดลองในใบงาน...">
+        </div>
+      `;
+
+      let teacherColClass = isChap1 ? "col-md-4" : "col-md-6 col-lg-3";
 
       html += `
         <div class="admin-card-item mb-4">
@@ -291,19 +315,7 @@
                 <i class="bi bi-check2-square text-primary fs-5"></i> 3. รายละเอียดภารกิจมอบหมายประจำบทเรียน (แสดงใต้คลิปที่ 3)
               </h6>
               <div class="row g-3">
-                <div class="col-md-12">
-                  <label class="form-label small fw-bold mb-1 text-dark">
-                    <span class="badge bg-warning text-dark me-1 font-heading">กิจกรรมปฏิบัติ</span> รายละเอียดงานเขียนโค้ด / ต่อวงจร (เว้นว่างไว้หากไม่มี)
-                  </label>
-                  <input type="text" class="form-control bg-white border-primary-subtle" id="taskPractice_${i}" value="${practiceText}" placeholder="เช่น นักเรียนต้อง coding ให้หุ่นเคลื่อนไหว ได้ 2 ทิศทาง...">
-                </div>
-
-                <div class="col-md-12">
-                  <label class="form-label small fw-bold mb-1 text-dark">
-                    <span class="badge bg-primary text-white me-1 font-heading">กิจกรรมใบงาน</span> รายละเอียดงานในใบงาน / วางแผน (เว้นว่างไว้หากไม่มี)
-                  </label>
-                  <input type="text" class="form-control bg-white border-primary-subtle" id="taskWorksheet_${i}" value="${worksheetText}" placeholder="เช่น นักเรียนต้องออกแบบเส้นทางให้หุ่นยนต์เพื่อหาทางออกตามแผนที่...">
-                </div>
+                ${isWorksheetFirst ? (worksheetInputHtml + practiceInputHtml) : (practiceInputHtml + worksheetInputHtml)}
               </div>
             </div>
 
@@ -312,27 +324,27 @@
                 <i class="bi bi-person-badge"></i> 4. สื่อคู่มือ เกณฑ์ประเมิน และเฉลยสำหรับผู้สอน (Teacher Mode)
               </h6>
               <div class="row g-3">
-                <div class="col-md-6 col-lg-3">
+                <div class="${teacherColClass}">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-pdf text-danger me-1"></i>PDF คู่มือคำชี้แจงผู้สอน</label>
                   <input type="text" class="form-control bg-white" id="teacherPdf_${i}" value="${l.teacherPdfUrl || ''}" placeholder="https://drive.google.com/...">
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="${teacherColClass}">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-check text-success me-1"></i>เฉลยใบงานกิจกรรม</label>
                   <input type="text" class="form-control bg-white" id="answerSheet_${i}" value="${l.answerSheetUrl || ''}" placeholder="https://drive.google.com/...">
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="${teacherColClass}">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-clipboard2-data text-warning me-1"></i>เกณฑ์คะแนนประเมิน (Rubric)</label>
                   <input type="text" class="form-control bg-white" id="rubric_${i}" value="${l.rubricUrl || ''}" placeholder="https://drive.google.com/...">
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="${teacherColClass}" style="${isChap1 ? 'display:none;' : ''}">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-code-slash text-primary me-1"></i>ลิงก์ MakeCode เฉลย</label>
                   <input type="text" class="form-control bg-white" id="solutionCode_${i}" value="${l.solutionCodeUrl || ''}" placeholder="https://makecode.microbit.org/...">
                 </div>
-                <div class="col-12">
+                <div class="col-12" style="${isChap1 ? 'display:none;' : ''}">
                   <label class="form-label small fw-bold mb-1 text-dark">
                     <i class="bi bi-image text-info me-1"></i>ลิงก์รูปภาพ หรือ Path รูปภาพ Block Code เฉลย (Direct URL)
                   </label>
-                  <input type="text" class="form-control bg-white" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="เช่น images/solution1.png หรือ https://i.imgur.com/your-image.png">
+                  <input type="text" class="form-control bg-white" id="solutionImg_${i}" value="${l.solutionImgUrl || ''}" placeholder="เช่น code_unit2.jpg หรือ https://i.imgur.com/your-image.png">
                   <span class="text-muted small">💡 คำแนะนำ: นำไฟล์รูปไปใส่ไว้ใน GitHub หรือเว็บฝากรูป แล้วนำลิงก์มาวาง</span>
                 </div>
               </div>
@@ -347,6 +359,7 @@
   function saveAdminData() {
     let pass = document.getElementById('adminPassInput').value;
     let updated = lessonsData.map((l, i) => {
+      let chapNum = parseInt(l.id, 10);
       l.title = document.getElementById(`title_${i}`).value;
       l.desc = document.getElementById(`desc_${i}`).value;
       l.worksheetUrl = document.getElementById(`work_${i}`).value;
@@ -355,7 +368,7 @@
       let reviewVid = document.getElementById(`vid_${i}`).value.trim();
       let missionVidInput = document.getElementById(`missionVid_${i}`).value.trim();
 
-      l.missionVideo = missionVidInput; // แก้ไขให้ใช้ตัวแปรถูกต้อง
+      l.missionVideo = missionVidInput;
       l.videos = [];
       if (reviewVid) l.videos.push(reviewVid);
       if (missionVidInput) l.videos.push(missionVidInput);
@@ -364,11 +377,21 @@
       let practiceVal = document.getElementById(`taskPractice_${i}`).value.trim();
       let worksheetVal = document.getElementById(`taskWorksheet_${i}`).value.trim();
       
-      if (practiceVal) {
-        l.missionTasks.push({ type: "practice", tag: "กิจกรรมปฏิบัติ", text: practiceVal });
-      }
-      if (worksheetVal) {
-        l.missionTasks.push({ type: "worksheet", tag: "กิจกรรมใบงาน", text: worksheetVal });
+      // บทที่ 3 และ 4 ให้บันทึก "กิจกรรมใบงาน" ขึ้นก่อน "กิจกรรมปฏิบัติ"
+      if (chapNum === 3 || chapNum === 4) {
+        if (worksheetVal) {
+          l.missionTasks.push({ type: "worksheet", tag: "กิจกรรมใบงาน", text: worksheetVal });
+        }
+        if (practiceVal) {
+          l.missionTasks.push({ type: "practice", tag: "กิจกรรมปฏิบัติ", text: practiceVal });
+        }
+      } else {
+        if (practiceVal) {
+          l.missionTasks.push({ type: "practice", tag: "กิจกรรมปฏิบัติ", text: practiceVal });
+        }
+        if (worksheetVal) {
+          l.missionTasks.push({ type: "worksheet", tag: "กิจกรรมใบงาน", text: worksheetVal });
+        }
       }
 
       l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
