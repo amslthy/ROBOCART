@@ -128,7 +128,7 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
-    /* 🏠 สไตล์สำหรับหน้าหลัก (Home Page) */
+    /* 🏠 หน้าหลัก (Home Page) */
     .home-hero-banner {
       background: linear-gradient(135deg, #0077b6 0%, #00b4d8 55%, #48cae4 100%);
       border-radius: 22px;
@@ -154,7 +154,7 @@
       box-shadow: 0 8px 20px rgba(2, 132, 199, 0.15);
     }
 
-    /* 🔽 สไตล์ปุ่มกดดูเพิ่มเติม (Accordion) */
+    /* 🔽 Accordion ขั้นตอน 5 ขั้น */
     .accordion-step-btn {
       width: 100%;
       text-align: left;
@@ -201,6 +201,7 @@
       box-shadow: 0 3px 8px rgba(255, 117, 31, 0.3);
     }
 
+    /* 🖼️ ปรับแก้กรอบรูปภาพไม่ให้ล้นและแสดงผลพอดี */
     .poster-showcase-card {
       background: #f8fafc;
       border: 2px solid #e2e8f0;
@@ -208,16 +209,19 @@
       padding: 16px;
       text-align: center;
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
     }
 
     .poster-showcase-card img {
       width: 100%;
-      max-height: 550px;
+      height: auto;
+      max-height: 600px;
       border-radius: 14px;
       object-fit: contain;
+      display: block;
+      margin: 0 auto;
     }
 
-    /* 🌟 ขยายกล่องอุปกรณ์ให้ใหญ่และเด่นชัดขึ้น */
     .hardware-card {
       background: #ffffff;
       border: 1.5px solid #cbd5e1;
@@ -236,7 +240,7 @@
     }
 
     .hardware-img-box {
-      height: 170px; /* ขยายความสูงกล่องรูป */
+      height: 170px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -249,14 +253,9 @@
     }
 
     .hardware-img-box img {
-      max-height: 150px; /* ขยายขนาดรูปให้ใหญ่ขึ้นชัดเจน */
+      max-height: 150px;
       max-width: 100%;
       object-fit: contain;
-      transition: transform 0.2s ease;
-    }
-
-    .hardware-img-box img:hover {
-      transform: scale(1.05);
     }
 
     .level-config-card {
@@ -585,7 +584,7 @@
     document.getElementById('lessonTabs').innerHTML = tabs;
   }
 
-  // 🏠 หน้าหลัก ขยายขนาดรูปอุปกรณ์ 9 ชิ้นให้ชัดเจนยิ่งขึ้น
+  // 🏠 หน้าหลัก แก้ไขขนาดกรอบรูปไม่ให้ล้น และเพิ่มกล่องเตือนเพิ่ม Extension
   function loadHomePage(btnElem) {
     currentLessonId = 'home';
     document.querySelectorAll('#lessonTabs .nav-link').forEach(b => b.classList.remove('active'));
@@ -611,7 +610,7 @@
               เพื่อส่งเสริมทักษะการเขียนโปรแกรม และการคิดเชิงคำนวณ
             </h4>
             <p class="fs-5 mb-0 opacity-90 leading-relaxed">
-              ออกแบบการเรียนรู้สำหรับนักเรียนชั้นประถมศึกษาปีที่ 4 - 6 ผ่านกิจกรรมลงมือปฏิบัติจริงด้วยบอร์ด <strong>micro:bit</strong> ควบคู่กับกิจกรรมภายในบทเรียน
+              ออกแบบการเรียนรู้สำหรับนักเรียนชั้นประถมศึกษาปีที่ 4 - 6 ผ่านกิจกรรมลงมือปฏิบัติจริงด้วยบอร์ด <strong>micro:bit</strong> และ <strong>REKA:BIT</strong> ควบคู่กับระบบตรวจสอบโค้ดและคำใบ้ชวนคิดอัตโนมัติ
             </p>
           </div>
           <div class="col-lg-4 text-center">
@@ -619,6 +618,27 @@
               <i class="bi bi-robot display-1 text-warning d-block mb-2"></i>
               <div class="fw-bold font-heading fs-5">ROBOCART</div>
               <small class="opacity-75">4 บทเรียน • 5 ขั้นตอนการสอน</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🌟 เพิ่มกล่องแจ้งเตือนการเพิ่มส่วนขยาย (Extensions) ก่อนเขียนโค้ด -->
+      <div class="alert alert-warning border-2 border-warning shadow-sm rounded-4 p-4 mb-5" role="alert">
+        <div class="d-flex align-items-start gap-3">
+          <i class="bi bi-exclamation-triangle-fill text-warning fs-1 flex-shrink-0"></i>
+          <div>
+            <h5 class="fw-bold font-heading text-dark mb-2">
+              <i class="bi bi-puzzle-fill me-1"></i> คำแนะนำสำคัญก่อนเริ่มเขียนโปรแกรมใน Microsoft MakeCode:
+            </h5>
+            <p class="mb-2 text-dark fs-6 leading-relaxed">
+              ก่อนเริ่มต้นลงมือเขียนโค้ดคำสั่งควบคุมหุ่นยนต์ ROBOCART ในแต่ละบทเรียน นักเรียนและผู้สอนจะต้องทำการ<strong>เพิ่มส่วนขยาย (Extensions)</strong> ของหุ่นยนต์เข้าสู่โปรแกรม MakeCode เสียก่อน โดยไปที่เมนู <em>Extensions (ส่วนขยาย)</em> แล้วทำการค้นหาด้วยคีย์เวิร์ด:
+            </p>
+            <div class="bg-white border rounded-3 p-3 font-monospace text-primary fw-bold fs-5 shadow-sm d-inline-block mb-2">
+              <i class="bi bi-github me-1"></i> amslthy/ro-robocart
+            </div>
+            <div class="small text-muted">
+              หรือคัดลอกลิงก์ Repository นี้ไปวางในช่องค้นหา: <a href="https://github.com/amslthy/ro-robocart" target="_blank" class="fw-bold text-decoration-underline">https://github.com/amslthy/ro-robocart</a> เพื่อเรียกใช้งานบล็อกคำสั่ง ROBOCART ทั้งหมดได้อย่างถูกต้อง
             </div>
           </div>
         </div>
@@ -677,9 +697,9 @@
         </div>
 
         <div class="row g-4 align-items-start">
-          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg -->
+          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg ปรับขนาดไม่ให้ล้น -->
           <div class="col-lg-5">
-            <div class="poster-showcase-card sticky-lg-top" style="top: 90px;">
+            <div class="poster-showcase-card">
               <img src="ID.jpg" 
                    alt="รูปแบบการจัดการเรียนรู้ 5 ขั้นตอน" 
                    onerror="if(this.src.indexOf('ใบงาน.jpg')===-1){this.src='ใบงาน.jpg';}else{this.onerror=null;this.src='https://placehold.co/600x750/e0f2fe/0369a1?text=ID.jpg';}">
@@ -808,7 +828,7 @@
 
       <hr class="my-5 opacity-25">
 
-      <!-- 4. หุ่นยนต์ ROBOCART และชิ้นส่วน (ขยายรูปอุปกรณ์ให้ใหญ่และชัดเจนขึ้น) -->
+      <!-- 4. หุ่นยนต์ ROBOCART และชิ้นส่วน -->
       <div class="mb-5">
         <div class="d-flex align-items-center gap-2 mb-3">
           <i class="bi bi-cpu-fill text-info fs-3"></i>
@@ -1095,6 +1115,33 @@
       `;
     }
 
+    // 🌟 กล่องเตือน Extension เฉพาะบทที่ 2, 3, 4 (ก่อนทำภารกิจเขียนโค้ด)
+    let extensionAlertHtml = '';
+    let chapNumInt = parseInt(l.id, 10);
+    if (chapNumInt !== 1) {
+      extensionAlertHtml = `
+        <div class="alert alert-warning border-2 border-warning shadow-sm rounded-4 p-4 mb-4" role="alert">
+          <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-exclamation-triangle-fill text-warning fs-1 flex-shrink-0"></i>
+            <div>
+              <h5 class="fw-bold font-heading text-dark mb-2">
+                <i class="bi bi-puzzle-fill me-1"></i> คำแนะนำก่อนเขียนโค้ดบทที่ ${l.id}:
+              </h5>
+              <p class="mb-2 text-dark fs-6">
+                อย่าลืมเพิ่มส่วนขยาย (Extensions) ของหุ่นยนต์ใน MakeCode โดยค้นหาด้วยคีย์เวิร์ด:
+              </p>
+              <div class="bg-white border rounded-3 p-2 font-monospace text-primary fw-bold fs-6 shadow-sm d-inline-block mb-1">
+                amslthy/ro-robocart
+              </div>
+              <div class="small text-muted">
+                หรือใช้ลิงก์: <a href="https://github.com/amslthy/ro-robocart" target="_blank" class="fw-bold text-decoration-underline">https://github.com/amslthy/ro-robocart</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
       let isChap1 = (chapNum === 1);
@@ -1220,6 +1267,7 @@
       <p class="text-secondary fs-5 mb-4 leading-relaxed">${l.desc || ''}</p>
 
       ${teacherHtml}
+      ${extensionAlertHtml}
       ${scenarioVidHtml}
       ${reviewVidsHtml}
       ${missionVidHtml}
