@@ -379,7 +379,7 @@
   <div class="alert alert-success d-flex justify-content-between align-items-center rounded-4 shadow-sm py-2 mb-0 border-0 bg-success text-white">
     <span class="d-flex align-items-center gap-2">
       <i class="bi bi-check-circle-fill fs-5"></i>
-      <div><strong>โหมดคุณครูทำงานอยู่:</strong> แสดงสื่อเอกสาร เกณฑ์การประเมิน และเฉลย Block Code เรียบร้อยแล้ว</div>
+      <div><strong>โหมดคุณครูทำงานอยู่:</strong> แสดงสื่อเอกสาร เกณฑ์การประเมิน และเฉลยเรียบร้อยแล้ว</div>
     </span>
     <button class="btn btn-sm btn-light text-danger rounded-pill fw-bold" onclick="logoutTeacher()">ออกจากโหมดคุณครู</button>
   </div>
@@ -437,7 +437,7 @@
   let teacherModalObj = null;
   let isTeacherLoggedIn = false;
 
-  // 📝 ฐานข้อมูลภารกิจประจำบทเรียน
+  // 📝 ฐานข้อมูลภารกิจประจำบทเรียน (บทที่ 3 และ 4 ให้กิจกรรมใบงานขึ้นก่อนกิจกรรมปฏิบัติ)
   const DEFAULT_MISSION_TASKS = {
     1: [
       { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดแสดงผลรูปไอคอนหัวใจและตัวอักษรชื่อตนเองบนหน้าจอ micro:bit" },
@@ -448,11 +448,12 @@
       { type: "worksheet", tag: "กิจกรรมใบงาน", text: "นักเรียนต้องออกแบบเส้นทางให้หุ่นยนต์เพื่อหาทางออกตามแผนที่" }
     ],
     3: [
+      { type: "worksheet", tag: "กิจกรรมใบงาน", text: "บันทึกหลักการทำงานของเซนเซอร์ตรวจจับเส้น (IR Line Sensor) และวางแผนทิศทางการเลี้ยวของหุ่นยนต์" },
       { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโปรแกรมอ่านค่าเซนเซอร์ IR เพื่อสั่งงานให้หุ่นยนต์วิ่งตามเส้นสีดำจนถึงจุดหมาย" }
     ],
     4: [
-      { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดประมวลผลเซนเซอร์อัลตราโซนิก สั่งให้หุ่นยนต์หยุดหรือเลี้ยวหลบสิ่งกีดขวางในระยะ 15 cm" },
-      { type: "worksheet", tag: "กิจกรรมใบงาน", text: "บันทึกผลการทดลองระยะการตรวจจับและวิเคราะห์ทิศทางการหลบหลีก" }
+      { type: "worksheet", tag: "กิจกรรมใบงาน", text: "บันทึกผลการทดลองระยะการตรวจจับและวิเคราะห์ทิศทางการหลบหลีก" },
+      { type: "practice", tag: "กิจกรรมปฏิบัติ", text: "นักเรียนเขียนโค้ดประมวลผลเซนเซอร์อัลตราโซนิก สั่งให้หุ่นยนต์หยุดหรือเลี้ยวหลบสิ่งกีดขวางในระยะ 15 cm" }
     ]
   };
 
@@ -494,6 +495,8 @@
 
     let l = lessonsData.find(item => item.id === id);
     if (!l) return;
+
+    let chapNum = parseInt(l.id, 10);
 
     // 🟢 1. การ์ตูนสถานการณ์จำลอง (Simulation Scenario)
     let scenarioVidHtml = '';
@@ -538,12 +541,29 @@
     // 🟢 3. การ์ตูนมอบหมายภารกิจ + กล่องรายละเอียดภารกิจ
     let missionVidHtml = '';
     let missionUrl = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
-    let tasks = l.missionTasks || DEFAULT_MISSION_TASKS[l.id] || [];
-    let tasksListHtml = '';
+    let rawTasks = (l.missionTasks && l.missionTasks.length > 0) ? [...l.missionTasks] : [...(DEFAULT_MISSION_TASKS[chapNum] || [])];
 
-    if (tasks.length > 0) {
-      let taskCards = tasks.map(t => {
-        let isCode = t.type === 'practice' || t.tag.includes('ปฏิบัติ');
+    // สำหรับบทที่ 3 และ 4: यदिในระบบมีเพียง 1 ภารกิจแต่ในค่าเริ่มต้นมีครบ 2 ภารกิจ ให้เติมภารกิจที่ขาดให้ครบ 2 ภารกิจ
+    if ((chapNum === 3 || chapNum === 4) && rawTasks.length < 2 && DEFAULT_MISSION_TASKS[chapNum]) {
+      DEFAULT_MISSION_TASKS[chapNum].forEach(defTask => {
+        let exists = rawTasks.some(rt => rt.type === defTask.type || (rt.tag && rt.tag === defTask.tag));
+        if (!exists) rawTasks.push(defTask);
+      });
+    }
+
+    // สำหรับบทที่ 3 และ 4: จัดเรียงให้ "กิจกรรมใบงาน" (worksheet) ขึ้นก่อน "กิจกรรมปฏิบัติ" (practice) เสมอ
+    if (chapNum === 3 || chapNum === 4) {
+      rawTasks.sort((a, b) => {
+        let aIsWorksheet = (a.type === 'worksheet' || (a.tag && a.tag.includes('ใบงาน'))) ? 0 : 1;
+        let bIsWorksheet = (b.type === 'worksheet' || (b.tag && b.tag.includes('ใบงาน'))) ? 0 : 1;
+        return aIsWorksheet - bIsWorksheet;
+      });
+    }
+
+    let tasksListHtml = '';
+    if (rawTasks.length > 0) {
+      let taskCards = rawTasks.map(t => {
+        let isCode = t.type === 'practice' || (t.tag && t.tag.includes('ปฏิบัติ'));
         return `
           <div class="task-item ${isCode ? 'coding' : ''}">
             <span class="task-badge-tag ${isCode ? 'bg-warning text-dark' : 'bg-primary text-white'}">
@@ -557,14 +577,14 @@
       tasksListHtml = `
         <div class="mission-detail-box">
           <h6 class="fw-bold font-heading text-primary mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-check2-square fs-5 text-primary"></i> ภารกิจที่ต้องพิชิตในบทเรียนนี้ (${tasks.length} ภารกิจ):
+            <i class="bi bi-check2-square fs-5 text-primary"></i> ภารกิจที่ต้องพิชิตในบทเรียนนี้ (${rawTasks.length} ภารกิจ):
           </h6>
           <div>${taskCards}</div>
         </div>
       `;
     }
 
-    if (missionUrl || tasks.length > 0) {
+    if (missionUrl || rawTasks.length > 0) {
       let embedMission = getEmbedYoutubeUrl(missionUrl);
       missionVidHtml = `
         <div class="mission-card-modern mb-4">
@@ -582,9 +602,45 @@
       `;
     }
 
-    // 🟢 โหมดคุณครู (เพิ่มช่องดาวน์โหลด "เกณฑ์คะแนนประเมิน" ครบทุกบทเรียน)
+    // 🟢 โหมดคุณครู (บทที่ 1 ลบส่วน MakeCode Project และ รูปภาพเฉลย Block Code ที่ถูกต้อง ออก)
     let teacherHtml = '';
     if (isTeacherLoggedIn) {
+      let isChap1 = (chapNum === 1);
+      let colClass = isChap1 ? "col-md-4" : "col-md-6 col-lg-3";
+
+      let makeCodeAndSolutionHtml = '';
+      if (!isChap1) {
+        makeCodeAndSolutionHtml = `
+          <!-- 4. ลิงก์ MakeCode Project (แสดงเฉพาะบทที่ 2-4) -->
+          <div class="${colClass}">
+            <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
+              <div>
+                <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-code-slash text-primary me-2"></i> MakeCode Project</h6>
+                <p class="text-muted small mb-3">ลิงก์โปรเจกต์โค้ดเฉลยต้นแบบ</p>
+              </div>
+              ${l.solutionCodeUrl ? `<a href="${l.solutionCodeUrl}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill font-heading w-100"><i class="bi bi-box-arrow-up-right me-1"></i> เปิด MakeCode</a>` : '<span class="badge bg-light text-muted w-100 py-2">ยังไม่มีลิงก์</span>'}
+            </div>
+          </div>
+
+          <!-- รูปภาพเฉลย Block Code (แสดงเฉพาะบทที่ 2-4) -->
+          <div class="col-12 mt-3">
+            <div class="p-3 bg-white rounded-3 border">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold text-dark font-heading mb-0"><i class="bi bi-image text-info me-2"></i>รูปภาพเฉลย Block Code ที่ถูกต้อง</h6>
+                ${l.solutionImgUrl ? `<a href="${l.solutionImgUrl}" target="_blank" class="btn btn-sm btn-link text-decoration-none small"><i class="bi bi-arrows-angle-expand me-1"></i> ดูภาพขนาดเต็ม</a>` : ''}
+              </div>
+              
+              <div class="text-center p-2 bg-light rounded-3 border mt-2">
+                ${l.solutionImgUrl ? 
+                  `<img src="${l.solutionImgUrl}" style="max-height: 480px; width: 100%; object-fit: contain;" alt="รูปเฉลย Block Code" onerror="this.onerror=null; this.src='https://placehold.co/800x400?text=Solution+Image+Not+Found';">` : 
+                  '<div class="py-4 text-muted small"><i class="bi bi-image fs-1 d-block mb-2 text-black-50"></i>ยังไม่ได้อัปโหลดรูปภาพ Block Code เฉลยสำหรับบทเรียนนี้</div>'
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       teacherHtml = `
         <div class="teacher-section p-4 my-4">
           <div class="d-flex align-items-center gap-2 text-success mb-3 pb-2 border-bottom border-success-subtle">
@@ -594,7 +650,7 @@
           
           <div class="row g-3">
             <!-- 1. คู่มือคำชี้แจงผู้สอน -->
-            <div class="col-md-6 col-lg-3">
+            <div class="${colClass}">
               <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
                 <div>
                   <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>คู่มือคำชี้แจงผู้สอน</h6>
@@ -605,7 +661,7 @@
             </div>
 
             <!-- 2. เฉลยใบกิจกรรม -->
-            <div class="col-md-6 col-lg-3">
+            <div class="${colClass}">
               <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
                 <div>
                   <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-file-earmark-check-fill text-success me-2"></i>เฉลยใบกิจกรรม</h6>
@@ -616,7 +672,7 @@
             </div>
 
             <!-- 3. เกณฑ์คะแนนประเมิน (Rubric) -->
-            <div class="col-md-6 col-lg-3">
+            <div class="${colClass}">
               <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
                 <div>
                   <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-clipboard2-data-fill text-warning me-2"></i>เกณฑ์คะแนนประเมิน</h6>
@@ -626,33 +682,7 @@
               </div>
             </div>
 
-            <!-- 4. ลิงก์ MakeCode Project -->
-            <div class="col-md-6 col-lg-3">
-              <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
-                <div>
-                  <h6 class="fw-bold text-dark font-heading mb-1"><i class="bi bi-code-slash text-primary me-2"></i> MakeCode Project</h6>
-                  <p class="text-muted small mb-3">ลิงก์โปรเจกต์โค้ดเฉลยต้นแบบ</p>
-                </div>
-                ${l.solutionCodeUrl ? `<a href="${l.solutionCodeUrl}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill font-heading w-100"><i class="bi bi-box-arrow-up-right me-1"></i> เปิด MakeCode</a>` : '<span class="badge bg-light text-muted w-100 py-2">ยังไม่มีลิงก์</span>'}
-              </div>
-            </div>
-
-            <!-- รูปภาพเฉลย Block Code -->
-            <div class="col-12 mt-3">
-              <div class="p-3 bg-white rounded-3 border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h6 class="fw-bold text-dark font-heading mb-0"><i class="bi bi-image text-info me-2"></i>รูปภาพเฉลย Block Code ที่ถูกต้อง</h6>
-                  ${l.solutionImgUrl ? `<a href="${l.solutionImgUrl}" target="_blank" class="btn btn-sm btn-link text-decoration-none small"><i class="bi bi-arrows-angle-expand me-1"></i> ดูภาพขนาดเต็ม</a>` : ''}
-                </div>
-                
-                <div class="text-center p-2 bg-light rounded-3 border mt-2">
-                  ${l.solutionImgUrl ? 
-                    `<img src="${l.solutionImgUrl}" style="max-height: 480px; width: 100%; object-fit: contain;" alt="รูปเฉลย Block Code" onerror="this.onerror=null; this.src='https://placehold.co/800x400?text=Solution+Image+Not+Found';">` : 
-                    '<div class="py-4 text-muted small"><i class="bi bi-image fs-1 d-block mb-2 text-black-50"></i>ยังไม่ได้อัปโหลดรูปภาพ Block Code เฉลยสำหรับบทเรียนนี้</div>'
-                  }
-                </div>
-              </div>
-            </div>
+            ${makeCodeAndSolutionHtml}
           </div>
         </div>
       `;
@@ -660,7 +690,7 @@
 
     // 🟢 กล่องตรวจ Block Code อัตโนมัติ (แสดงเฉพาะบทที่ 2, 3, 4 เท่านั้น บทที่ 1 ไม่แสดง)
     let codeCheckerHtml = '';
-    if (parseInt(l.id, 10) !== 1) {
+    if (chapNum !== 1) {
       codeCheckerHtml = `
         <div class="checker-hero-card mt-5">
           <div class="d-flex align-items-center gap-2 mb-2">
@@ -733,7 +763,6 @@
   function formatFeedbackCard(feedbackText, index, total) {
     let lines = feedbackText.split('\n').map(s => s.trim()).filter(s => s.length > 0);
     
-    // กรณีข้อความเป็นรูปแบบ 3 บรรทัด (📍 จุดที่ต้องดู / 🔍 พบว่า / 💡 คำใบ้)
     if (lines.length >= 3) {
       return `
         <div class="hint-card">
@@ -747,7 +776,6 @@
       `;
     }
 
-    // กรณีข้อความรูปแบบอื่นๆ ให้แสดงผลโดยเคารพการขึ้นบรรทัดใหม่ (\n)
     return `
       <div class="hint-card">
         <div class="hint-raw-text">${feedbackText}</div>
