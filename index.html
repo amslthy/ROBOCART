@@ -217,39 +217,46 @@
       object-fit: contain;
     }
 
+    /* 🌟 ขยายกล่องอุปกรณ์ให้ใหญ่และเด่นชัดขึ้น */
     .hardware-card {
       background: #ffffff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 18px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 22px 16px;
       text-align: center;
       height: 100%;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
     }
 
     .hardware-card:hover {
       border-color: #ffb703;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.1);
     }
 
     .hardware-img-box {
-      height: 130px;
+      height: 170px; /* ขยายความสูงกล่องรูป */
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: #f8fafc;
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 12px;
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
       overflow: hidden;
+      border: 1px solid #f1f5f9;
     }
 
     .hardware-img-box img {
-      max-height: 110px;
+      max-height: 150px; /* ขยายขนาดรูปให้ใหญ่ขึ้นชัดเจน */
       max-width: 100%;
       object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+
+    .hardware-img-box img:hover {
+      transform: scale(1.05);
     }
 
     .level-config-card {
@@ -578,7 +585,7 @@
     document.getElementById('lessonTabs').innerHTML = tabs;
   }
 
-  // 🏠 หน้าหลัก พร้อมระบบกด "ดูเพิ่มเติม" (Accordion) สำหรับ 5 ขั้นตอน และจับคู่ชื่อไฟล์ภาพใหม่ทั้งหมด
+  // 🏠 หน้าหลัก ขยายขนาดรูปอุปกรณ์ 9 ชิ้นให้ชัดเจนยิ่งขึ้น
   function loadHomePage(btnElem) {
     currentLessonId = 'home';
     document.querySelectorAll('#lessonTabs .nav-link').forEach(b => b.classList.remove('active'));
@@ -604,7 +611,7 @@
               เพื่อส่งเสริมทักษะการเขียนโปรแกรม และการคิดเชิงคำนวณ
             </h4>
             <p class="fs-5 mb-0 opacity-90 leading-relaxed">
-              ออกแบบการเรียนรู้สำหรับนักเรียนชั้นประถมศึกษาปีที่ 4 - 6 ผ่านกิจกรรมลงมือปฏิบัติจริงด้วยบอร์ด <strong>micro:bit</strong> และ <strong>REKA:BIT</strong> ควบคู่กับระบบตรวจสอบโค้ดและคำใบ้ชวนคิดอัตโนมัติ
+              ออกแบบการเรียนรู้สำหรับนักเรียนชั้นประถมศึกษาปีที่ 4 - 6 ผ่านกิจกรรมลงมือปฏิบัติจริงด้วยบอร์ด <strong>micro:bit</strong> ควบคู่กับกิจกรรมภายในบทเรียน
             </p>
           </div>
           <div class="col-lg-4 text-center">
@@ -670,7 +677,7 @@
         </div>
 
         <div class="row g-4 align-items-start">
-          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg ไม่ลอยทับ -->
+          <!-- คอลัมน์ซ้าย: รูปโปสเตอร์ ID.jpg -->
           <div class="col-lg-5">
             <div class="poster-showcase-card sticky-lg-top" style="top: 90px;">
               <img src="ID.jpg" 
@@ -801,7 +808,7 @@
 
       <hr class="my-5 opacity-25">
 
-      <!-- 4. หุ่นยนต์ ROBOCART และชิ้นส่วน (จับคู่ชื่อไฟล์ภาพใหม่ทั้งหมด) -->
+      <!-- 4. หุ่นยนต์ ROBOCART และชิ้นส่วน (ขยายรูปอุปกรณ์ให้ใหญ่และชัดเจนขึ้น) -->
       <div class="mb-5">
         <div class="d-flex align-items-center gap-2 mb-3">
           <i class="bi bi-cpu-fill text-info fs-3"></i>
