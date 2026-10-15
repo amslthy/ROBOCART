@@ -223,7 +223,7 @@
       let mainVideoLink = (l.videos && l.videos.length > 0) ? l.videos[0] : '';
       let missionVideoLink = l.missionVideo || (l.videos && l.videos[1] ? l.videos[1] : '');
 
-      // ดึงข้อความภารกิจเดิมมาแสดง (แยกบรรทัด)
+      // ดึงข้อความภารกิจเดิมมาแสดง
       let practiceText = '';
       let worksheetText = '';
       if (l.missionTasks && Array.isArray(l.missionTasks)) {
@@ -318,21 +318,25 @@
               </div>
             </div>
 
-            <!-- ส่วนที่ 4: สื่อและเฉลยโหมดคุณครู -->
+            <!-- ส่วนที่ 4: สื่อและเฉลยโหมดคุณครู (เพิ่มช่องเกณฑ์คะแนนประเมิน Rubric) -->
             <div class="section-box-teacher p-3">
               <h6 class="fw-bold text-success font-heading mb-3 d-flex align-items-center gap-2">
-                <i class="bi bi-person-badge"></i> 4. สื่อคู่มือและเฉลยสำหรับผู้สอน (Teacher Mode)
+                <i class="bi bi-person-badge"></i> 4. สื่อคู่มือ เกณฑ์ประเมิน และเฉลยสำหรับผู้สอน (Teacher Mode)
               </h6>
               <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-3">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-pdf text-danger me-1"></i>PDF คู่มือคำชี้แจงผู้สอน</label>
                   <input type="text" class="form-control bg-white" id="teacherPdf_${i}" value="${l.teacherPdfUrl || ''}" placeholder="https://drive.google.com/...">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-3">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-file-earmark-check text-success me-1"></i>เฉลยใบงานกิจกรรม</label>
                   <input type="text" class="form-control bg-white" id="answerSheet_${i}" value="${l.answerSheetUrl || ''}" placeholder="https://drive.google.com/...">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-3">
+                  <label class="form-label small fw-bold mb-1"><i class="bi bi-clipboard2-data text-warning me-1"></i>เกณฑ์คะแนนประเมิน (Rubric)</label>
+                  <input type="text" class="form-control bg-white" id="rubric_${i}" value="${l.rubricUrl || ''}" placeholder="https://drive.google.com/...">
+                </div>
+                <div class="col-md-6 col-lg-3">
                   <label class="form-label small fw-bold mb-1"><i class="bi bi-code-slash text-primary me-1"></i>ลิงก์ MakeCode เฉลย</label>
                   <input type="text" class="form-control bg-white" id="solutionCode_${i}" value="${l.solutionCodeUrl || ''}" placeholder="https://makecode.microbit.org/...">
                 </div>
@@ -366,9 +370,9 @@
 
       l.videos = [];
       if (reviewVid) l.videos.push(reviewVid);
-      if (l.missionVideo) l.videos.push(l.missionVideo);
+      if (l.missionVideo) l.videos.push(missionVideo);
       
-      // 🟢 ดึงข้อมูลภารกิจมอบหมาย (Mission Tasks)
+      // ดึงข้อมูลภารกิจมอบหมาย (Mission Tasks)
       l.missionTasks = [];
       let practiceVal = document.getElementById(`taskPractice_${i}`).value.trim();
       let worksheetVal = document.getElementById(`taskWorksheet_${i}`).value.trim();
@@ -388,9 +392,10 @@
         });
       }
 
-      // ดึงข้อมูลโหมดคุณครู
+      // ดึงข้อมูลโหมดคุณครู (รวมถึง rubricUrl)
       l.teacherPdfUrl = document.getElementById(`teacherPdf_${i}`).value;
       l.answerSheetUrl = document.getElementById(`answerSheet_${i}`).value;
+      l.rubricUrl = document.getElementById(`rubric_${i}`).value;
       l.solutionCodeUrl = document.getElementById(`solutionCode_${i}`).value;
       l.solutionImgUrl = document.getElementById(`solutionImg_${i}`).value;
       return l;
